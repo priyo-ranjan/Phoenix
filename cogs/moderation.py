@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from datetime import datetime, timedelta
 
 class Moderation(commands.Cog):
     def __init__(self, bot):
@@ -35,11 +36,26 @@ class Moderation(commands.Cog):
 
 
     @commands.command(name="mute", help="Mute a member in the server.")
-    @commands.has_permissions(moderate_members=True)
+    @commands.has_permissions(manage_roles=True)
     async def mute(self, ctx, member: discord.Member, minutes: int, *, reason=None):
        reason = reason or "No reason provided"
-       await member.timeout(discord.utils.utcnow() + discord.timedelta(minutes=minutes), reason=reason)
-       await ctx.send(f"{member} has been muted for {minutes} minutes. Reason: {reason}")       
+       muted_role = discord.utils.get(ctx.guild.roles, name="Muted")
+       if muted_role is None:
+        await ctx.send("Muted role not found. Please create a role named 'Muted' and set the appropriate permissions.")
+        return
+
+       try:
+        await member.add_roles(
+            muted_role,
+            reason=reason
+        )
+        await ctx.send(f"{member} has been muted for {minutes} minutes. Reason : {reason}")
+        await asyncio.sleep(minutes * 60)
+        await member.remove_roles(muted_role)
+        await ctx.send(f"{member.mention} has been automatically unmuted")
+
+       except discord.Forbidden:
+        await ctx.send(f"I cannot mute {member.mention}. Their role may be higher than mine.")   
 
 
 
