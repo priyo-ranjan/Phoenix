@@ -25,7 +25,7 @@ class AI(commands.Cog):
                 "role": "user", "content": prompt
                 }
         ],
-        temperature=0.9,
+        temperature=1.2,
         max_tokens=500
     )
         reply = response.choices[0].message.content
