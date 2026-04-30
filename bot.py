@@ -7,6 +7,7 @@ load_dotenv()
 TOKEN = os.getenv("TOKEN")
 
 intents = discord.Intents.default()
+intents.members = True
 intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents = intents, case_insensitive=True)
@@ -19,6 +20,7 @@ async def on_ready():
     await bot.load_extension("cogs.moderation")
     await bot.load_extension("cogs.welcome")
     await bot.load_extension("cogs.ai")
+
     print(f"{bot.user} is online!")
 
 bot.run(TOKEN)
