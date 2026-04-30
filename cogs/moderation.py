@@ -33,6 +33,7 @@ class Moderation(commands.Cog):
                     await ctx.send("Something went wrong while trying to ban the member.")
 
 
+
     @commands.command(name="mute", help="Mute a member in the server.")
     @commands.has_permissions(moderate_members=True)
     async def mute(self, ctx, member: discord.Member, minutes: int, *, reason=None):
@@ -42,11 +43,22 @@ class Moderation(commands.Cog):
 
 
 
+
     @commands.command(name="unmute", help="Unmute a member in the server.")
     @commands.has_permissions(moderate_members=True)
     async def unmute(self, ctx, member: discord.Member):
         await member.timeout(None)
         await ctx.send(f"{member} has been unmuted.")
+
+
+
+    @commands.command(name="Purge", help="Deletes specific number of messages from the channel.")
+    @commands.has_permissions(manage_messages=True)
+    async def purge(self, ctx, amount: int):
+        await ctx.channel.purge(limit=amount + 1)
+        msg = await ctx.send(f"Deleted {amount} messages.")
+        await msg.delete(delay = 0)
+
 
 
 async def setup(bot):   
