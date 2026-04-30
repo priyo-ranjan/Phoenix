@@ -25,6 +25,8 @@ class Welcome(commands.Cog):
 
            embed.set_thumbnail(url=member.avatar.url)
 
+           embed.set_image(url="https://cdn.discordapp.com/attachments/1499252105947386088/1499453612777279710/sad-anime-blue-monday-illustration_23-2151910258.png?ex=69f4da7f&is=69f388ff&hm=d6c57d4c65be4cc0422193b5a551ebb20e3c1664c0415e9dd093d28cac8f486d&")
+
            embed.add_field(
               name="👤 Username",
               value=member.name,
