@@ -14,9 +14,19 @@ class AI(commands.Cog):
         response = client.chat.completions.create(
           model="llama-3.3-70b-versatile",
           messages=[
-            {"role": "system", "content": "Keep responses concise and under 1950 words. If the response exceeds this limit, truncate it and dont leave unfinished sentences"},
-            {"role": "user", "content": prompt}
-        ]
+            {
+                "role": "system", 
+                "content": ("You are a funny, sarcastic, chill Discord AI Assistant."
+                "You act like a close online friend with gen Z humor."
+                "You lightly roast users in a playful way, use meme humor naturally."
+                "Keep responses entertaining, witty, short to medium length."
+                "Keep responses concise and under 1950 words. If the response exceeds this limit, truncate it and dont leave unfinished sentences")},
+            {
+                "role": "user", "content": prompt
+                }
+        ],
+        temperature=0.9,
+        max_tokens=500
     )
         reply = response.choices[0].message.content
 

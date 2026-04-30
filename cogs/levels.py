@@ -32,7 +32,21 @@ class Levels(commands.Cog):
             level_channel = self.bot.get_channel(1499481612067278958)
 
             if level_channel:
-                await level_channel.send(f"🎉 {message.author.mention} leveled up to level {level + 1}!")
+                embed = discord.Embed(
+                    title="💫Level up!",
+                    description=f"Congratulations 🎉 {message.author.mention}, you have reached **Level {level + 1}!**",
+                    color=0x5865F2
+                )
+                embed.add_field(
+                    name="Current XP",
+                    value=users[user_id]["xp"],
+                    inline=True
+                )
+                embed.set_footer(
+                    text="Keep chatting to gain more XP 💫"
+                )
+                                   
+                await level_channel.send(embed=embed)
 
         with open("levels.json", "w") as f:
             json.dump(users, f, indent = 4)
