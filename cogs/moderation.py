@@ -1,0 +1,53 @@
+import discord
+from discord.ext import commands
+
+class Moderation(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.command(name="kick", help="Kick a member from the server.")
+    @commands.has_permissions(kick_members=True)
+    async def kick(self, ctx, member: discord.Member, *, reason=None):
+        reason = reason or "No reason provided"
+        try:
+            await member.kick(reason=reason)
+            await ctx.send(f"{member} has been kicked from the server. Reason : {reason}")
+        except discord.Forbidden:
+                await ctx.send(f"I cannot kick {member.mention}. Their role may be higher than mine.")
+        except discord.HTTPException:
+                    await ctx.send("Something went wrong while trying to kick the member.")
+        
+
+
+
+    @commands.command(name="ban", help="Ban a member from the server.")
+    @commands.has_permissions(ban_members=True)
+    async def ban(self, ctx, member: discord.Member, *, reason=None):
+        reason = reason or "No reason provided"
+        try:
+            await member.ban(reason=reason)
+            await ctx.send(f"{member} has been banned from the server. Reason : {reason}")
+        except discord.Forbidden:
+                await ctx.send(f"I cannot ban {member.mention}. Their role may be higher than mine.")
+        except discord.HTTPException:
+                    await ctx.send("Something went wrong while trying to ban the member.")
+
+
+    @commands.command(name="mute", help="Mute a member in the server.")
+    @commands.has_permissions(moderate_members=True)
+    async def mute(self, ctx, member: discord.Member, minutes: int, *, reason=None):
+       reason = reason or "No reason provided"
+       await member.timeout(discord.utils.utcnow() + discord.timedelta(minutes=minutes), reason=reason)
+       await ctx.send(f"{member} has been muted for {minutes} minutes. Reason: {reason}")       
+
+
+
+    @commands.command(name="unmute", help="Unmute a member in the server.")
+    @commands.has_permissions(moderate_members=True)
+    async def unmute(self, ctx, member: discord.Member):
+        await member.timeout(None)
+        await ctx.send(f"{member} has been unmuted.")
+
+
+async def setup(bot):   
+    await bot.add_cog(Moderation(bot))
