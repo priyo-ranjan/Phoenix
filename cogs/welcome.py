@@ -15,7 +15,7 @@ class Welcome(commands.Cog):
 
             embed = discord.Embed(
               title="🌌 Another story begins!",
-              description=f"Welcome {member.mention} to **{member.guild.name}**",
+              description=f"╭・Welcome {member.mention} to **{member.guild.name}**\n╰・Enjoy your stay ✨",
               color=0x5865F2)
 
             embed.set_thumbnail(url=member.display_avatar.url)
