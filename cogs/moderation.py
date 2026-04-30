@@ -64,6 +64,7 @@ class Moderation(commands.Cog):
     @commands.has_permissions(moderate_members=True)
     async def unmute(self, ctx, member: discord.Member):
         await member.timeout(None)
+        await member.remove_roles(muted_role)
         await ctx.send(f"{member} has been unmuted.")
 
 
