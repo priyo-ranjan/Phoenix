@@ -29,15 +29,16 @@ class Levels(commands.Cog):
 
         if xp >= level * 100:
             users[user_id]["level"] += 1
-            await message.channel.send(
-                f"🎉 {message.author.mention} leveled up to level {level + 1}!"
-            )
+            level_channel = self.bot.get_channel(1499481612067278958)
+
+            if level_channel:
+                await level_channel.send(f"🎉 {message.author.mention} leveled up to level {level + 1}!")
 
         with open("levels.json", "w") as f:
             json.dump(users, f, indent = 4)
 
 async def setup(bot):
-    await bod.add_cog(Levels(bot))  
-    
+    await bot.add_cog(Levels(bot))  
+
 
 
