@@ -17,7 +17,33 @@ class Welcome(commands.Cog):
        print(channel)
 
        if channel:
-        await channel.send(f"{member.display_name} has left the server.")
+        
+           embed = discord.Embed(
+              title="💔 Member Left",
+              description=f"### {member.mention} left the server.",
+              color=0x2b2d31)
+
+           embed.set_thumbnail(url=member.avatar.url)
+
+           embed.add_field(
+              name="👤 Username",
+              value=member.name,
+              inline=True)
+
+           embed.add_field(
+              name="🆔 ID",
+              value=member.id,
+              inline=True)
+
+           embed.add_field(
+              name="📉 Members Remaining",
+              value=member.guild.member_count,
+              inline=False)
+
+           embed.set_footer(
+              text="We hope to see them again...")
+
+           await channel.send(embed=embed)
   
 async def setup(bot):
     await bot.add_cog(Welcome(bot))
