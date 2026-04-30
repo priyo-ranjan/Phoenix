@@ -35,38 +35,57 @@ class Moderation(commands.Cog):
 
 
 
-    @commands.command(name="mute", help="Mute a member in the server.")
-    @commands.has_permissions(manage_roles=True)
-    async def mute(self, ctx, member: discord.Member, minutes: int, *, reason=None):
-       reason = reason or "No reason provided"
-       muted_role = discord.utils.get(ctx.guild.roles, name="Muted")
-       if muted_role is None:
-        await ctx.send("Muted role not found. Please create a role named 'Muted' and set the appropriate permissions.")
-        return
-
-       try:
-        await member.add_roles(
-            muted_role,
-            reason=reason
-        )
-        await ctx.send(f"{member} has been muted for {minutes} minutes. Reason : {reason}")
-        await asyncio.sleep(minutes * 60)
-        await member.remove_roles(muted_role)
-        await ctx.send(f"{member.mention} has been automatically unmuted")
-
-       except discord.Forbidden:
-        await ctx.send(f"I cannot mute {member.mention}. Their role may be higher than mine.")   
-
-
-
-
-    @commands.command(name="unmute", help="Unmute a member in the server.")
+    @commands.command()
     @commands.has_permissions(moderate_members=True)
-    async def unmute(self, ctx, member: discord.Member):
-        await member.timeout(None)
-        await member.remove_roles(muted_role)
-        await ctx.send(f"{member} has been unmuted.")
 
+    async def mute(self, ctx, member: discord.Member, minutes: int, *, reason="No reason provided"):
+
+       await member.timeout(
+          timedelta(minutes=minutes),
+          reason=reason
+    )
+
+       embed = discord.Embed(
+          title="🔇 Member Timed Out",
+          description=f"{member.mention} has been muted.",
+          color=0x5865F2
+    )
+
+       embed.add_field(
+           name="⏰ Duration",
+           value=f"{minutes} minutes",
+           inline=True
+    )
+
+       embed.add_field(
+          name="📝 Reason",
+          value=reason,
+          inline=False
+    )
+
+       embed.set_thumbnail(url=member.display_avatar.url)
+
+       embed.set_footer(
+          text=f"Muted by {ctx.author}",
+          icon_url=ctx.author.display_avatar.url
+    )
+
+       await ctx.send(embed=embed) 
+
+    @commands.command()
+    @commands.has_permissions(moderate_members=True)
+
+    async def unmute(self, ctx, member: discord.Member):
+
+        await member.timeout(None)
+
+        embed = discord.Embed(
+          title="🔊 Member Unmuted",
+          description=f"{member.mention} can speak again.",
+          color=0x57F287
+    )
+
+        await ctx.send(embed=embed)
 
 
     @commands.command(name="Purge", help="Deletes specific number of messages from the channel.")
