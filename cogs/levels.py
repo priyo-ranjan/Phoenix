@@ -51,6 +51,65 @@ class Levels(commands.Cog):
         with open("levels.json", "w") as f:
             json.dump(users, f, indent = 4)
 
+    @commands.command()
+
+    async def rank(self, ctx, member: discord.Member = None): 
+
+       if member is None:
+          member = ctx.author
+
+       with open("levels.json", "r") as f:
+          users = json.load(f)
+
+       user_id = str(member.id)
+
+       if user_id not in users:
+
+          embed = discord.Embed(
+            description="This user has no XP yet.",
+            color=0xff0000
+        )
+
+          await ctx.send(embed=embed)
+          return
+
+       xp = users[user_id]["xp"]
+       level = users[user_id]["level"]
+
+       next_level_xp = level * 100
+
+       embed = discord.Embed(
+          title="🏆 Rank Card",
+          color=0x5865F2
+    )
+
+       embed.set_thumbnail(url=member.display_avatar.url)
+
+       embed.add_field(
+          name="👤 User",
+          value=member.mention,
+          inline=False
+    )
+
+       embed.add_field(
+          name="⭐ Level",
+          value=level,
+          inline=True
+    )
+
+       embed.add_field(
+          name="✨ XP",
+          value=f"{xp}/{next_level_xp}",
+          inline=True
+    )
+
+       embed.set_footer(
+          text="Keep chatting to level up 🚀"
+    )
+
+       await ctx.send(embed=embed)
+
+
 async def setup(bot):
     await bot.add_cog(Levels(bot))  
 
