@@ -12,8 +12,12 @@ class Welcome(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        channel = self.bot.get_channel(1499404085651312865)
-        await channel.send(f"{member.display_name} has left the server. We're sorry to see you go!")
+       print(f"{member} has left the server.")
+       channel = self.bot.get_channel(1499404085651312865)
+       print(channel)
 
+       if channel:
+        await channel.send(f"{member.display_name} has left the server.")
+  
 async def setup(bot):
     await bot.add_cog(Welcome(bot))
