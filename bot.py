@@ -1,6 +1,11 @@
 import discord
 import random
+import os
+from dotenv import load_dotenv
 from discord.ext import commands
+
+load_dotenv()
+TOKEN = os.getenv("TOKEN")
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -32,5 +37,6 @@ async def roast(ctx):
       "Bro has negative FPS in real life"]
     await ctx.send(random.choice(roasts))
 
-bot.run("MTQ5OTI1MzYxMzYzNjA5NjExMQ.GuiRP6.66Lm0J4cKB8RBPjvippjKdCiO88A0orhLoDDo4")
+bot.run(TOKEN)
+
 
