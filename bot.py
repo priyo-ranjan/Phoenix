@@ -18,6 +18,7 @@ async def on_ready():
     await bot.load_extension("cogs.fun")
     await bot.load_extension("cogs.moderation")
     await bot.load_extension("cogs.welcome")
+    await bot.load_extension("cogs.ai")
     print(f"{bot.user} is online!")
 
 bot.run(TOKEN)
