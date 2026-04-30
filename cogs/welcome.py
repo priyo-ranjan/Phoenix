@@ -21,7 +21,7 @@ class Welcome(commands.Cog):
            embed = discord.Embed(
               title="💔 Member Left",
               description=f"### {member.mention} left the server.",
-              color=0x2b2d31)
+              color=0x1e1f22)
 
            embed.set_thumbnail(url=member.avatar.url)
 
