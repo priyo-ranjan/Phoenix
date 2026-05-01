@@ -22,7 +22,7 @@ class Help(commands.Cog):
 
       embed.add_field(
         name="📈 Leveling",
-        value="!rank",
+        value="!rank\n!rank @user",
         inline=False
     )
       embed.add_field(
