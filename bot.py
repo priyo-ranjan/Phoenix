@@ -21,13 +21,7 @@ bot = commands.Bot(
 
 @bot.event
 async def on_ready():
-    nodes = [
-        wavelink.Node(
-            uri="http://node1.lavalink.trumpo.dev:80",
-            password="trumpo"
-        )
-    ]
-    await wavelink.Pool.connect(client=bot, nodes=nodes)
+
     await bot.load_extension("cogs.commands")
     await bot.load_extension("cogs.fun")
     await bot.load_extension("cogs.moderation")
