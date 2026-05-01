@@ -12,15 +12,8 @@ class Music(commands.Cog):
             'noplaylist': True,
             'quiet': True,
             'no_warnings': True,
-            'default_search': 'ytsearch',
-            'source_address': '0.0.0.0',
-            'cookiefile': 'cookies.txt',
-            'extractor_args': {
-                'youtube': {
-                    'player_client': ['android', 'ios'],
-                    'skip': ['webpage']
-                }
-            }
+            'default_search': 'scsearch',
+            'source_address': '0.0.0.0'
         }
         
         self.FFMPEG_OPTIONS = {
@@ -41,8 +34,11 @@ class Music(commands.Cog):
 
         async with ctx.typing():
             try:
+                # This now searches SoundCloud instead of YouTube
+                search_query = url if url.startswith('http') else f"scsearch:{url}"
+                
                 with yt_dlp.YoutubeDL(self.YDL_OPTIONS) as ydl:
-                    info = ydl.extract_info(f"ytsearch:{url}", download=False)
+                    info = ydl.extract_info(search_query, download=False)
                     if 'entries' in info:
                         info = info['entries'][0]
                     url2 = info['url']
@@ -50,7 +46,7 @@ class Music(commands.Cog):
                 
                 source = await discord.FFmpegOpusAudio.from_probe(url2, **self.FFMPEG_OPTIONS)
                 ctx.voice_client.play(source)
-                await ctx.send(f"Now playing: {title}")
+                await ctx.send(f"Now playing (SoundCloud): {title}")
             except Exception as e:
                 await ctx.send(f"Error: {e}")
 
