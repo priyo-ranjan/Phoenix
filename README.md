@@ -31,11 +31,11 @@ Phoenix combines moderation, AI interaction, leveling systems, and stylish embed
 - `!ai <prompt>`
 
 ### 🎧 MUSIC
-- `!play
-- `!pause
-- `!resume
-- `!skip
-- `!stop
+- `!play`
+- `!pause`
+- `!resume`
+- `!skip`
+- `!stop`
 
 
 ### 📈 Leveling
