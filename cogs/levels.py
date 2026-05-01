@@ -4,81 +4,82 @@ import json
 import os
 
 if os.path.exists("/data"):
-    LEVELS_PATH = "/data/levels.json"
+    PATH = "/data/levels.json"
 else:
-    LEVELS_PATH = "levels.json"
+    PATH = "levels.json"
 
 class Levels(commands.Cog):
-    def init(self, bot):
+    def __init__(self, bot):
         self.bot = bot
+        self.announce_channel_id = 1499481612067278958
 
-    def save_levels(self, data):
-        with open(LEVELS_PATH, "w") as f:
-            json.dump(data, f, indent=4)
-
-    def load_levels(self):
+    def get_data(self):
         try:
-            if not os.path.exists(LEVELS_PATH):
+            if not os.path.exists(PATH):
                 return {}
-            with open(LEVELS_PATH, "r") as f:
+            with open(PATH, "r") as f:
                 return json.load(f)
-        except (FileNotFoundError, json.JSONDecodeError):
+        except:
             return {}
+
+    def save_data(self, data):
+        with open(PATH, "w") as f:
+            json.dump(data, f, indent=4)
 
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author.bot or message.content.startswith("!"):
             return
 
-        users = self.load_levels()
+        data = self.get_data()
         user_id = str(message.author.id)
 
-        if user_id not in users:
-            users[user_id] = {"xp": 0, "level": 1}
+        if user_id not in data:
+            data[user_id] = {"xp": 0, "level": 1}
 
-        users[user_id]["xp"] += 5
-        xp_needed = users[user_id]["level"] * 100
-        
-        if users[user_id]["xp"] >= xp_needed:
-            users[user_id]["level"] += 1
-            users[user_id]["xp"] = 0
+        data[user_id]["xp"] += 8
+        lvl = data[user_id]["level"]
+        xp_needed = lvl * 150
+
+        if data[user_id]["xp"] >= xp_needed:
+            data[user_id]["level"] += 1
+            data[user_id]["xp"] = 0
             
-            target_channel = self.bot.get_channel(1499481612067278958)
-            if not target_channel:
-                target_channel = message.channel
+            channel = self.bot.get_channel(self.announce_channel_id)
+            if channel:
+                embed = discord.Embed(
+                    title="✨ Level Up!",
+                    description=f"{message.author.mention} just reached **Level {lvl + 1}**!",
+                    color=0xbb86fc
+                )
+                embed.set_thumbnail(url=message.author.display_avatar.url)
+                embed.set_footer(text="Keep chatting to climb higher!")
+                await channel.send(embed=embed)
 
-            embed = discord.Embed(
-                title="✨ LEVEL UP! ✨",
-                description=f"Great job {message.author.mention}! You've reached a new peak.",
-                color=0xBD93F9 
-            )
-            embed.set_thumbnail(url=message.author.display_avatar.url)
-            embed.add_field(name="New Level", value=f"🏆 {users[user_id]['level']}", inline=True)
-            embed.add_field(name="Total XP", value="💎 Milestone Reached", inline=True)
-            embed.set_footer(text="Keep chatting to unlock higher ranks!")
-            
-            await target_channel.send(content=message.author.mention, embed=embed)
+        self.save_data(data)
 
-        self.save_levels(users)
-
-    @commands.command()
+    @commands.command(name="rank")
     async def rank(self, ctx, member: discord.Member = None):
         member = member or ctx.author
-        users = self.load_levels()
+        data = self.get_data()
         user_id = str(member.id)
 
-        if user_id not in users:
-            await ctx.send(f"{member.display_name} hasn't earned any XP yet.")
+        if user_id not in data:
+            await ctx.send("No stats found for this user.")
             return
 
-        xp = users[user_id]["xp"]
-        lvl = users[user_id]["level"]
-        needed = lvl * 100
+        xp = data[user_id]["xp"]
+        lvl = data[user_id]["level"]
+        needed = lvl * 150
 
-        embed = discord.Embed(title=f"📊 {member.name}'s Rank", color=0xBD93F9)
-        embed.add_field(name="Level", value=lvl, inline=True)
-        embed.add_field(name="XP", value=f"{xp}/{needed}", inline=True)
-        embed.set_thumbnail(url=member.display_avatar.url)
+        embed = discord.Embed(color=0x03dac6)
+        embed.set_author(name=f"{member.name}'s Progression", icon_url=member.display_avatar.url)
+        embed.add_field(name="🏆 Level", value=f"**{lvl}**", inline=True)
+        embed.add_field(name="🧠 Experience", value=f"**{xp} / {needed}**", inline=True)
+        
+        progress = int((xp / needed) * 10)
+        bar = "▰" * progress + "▱" * (10 - progress)
+        embed.add_field(name="📊 Progress Bar", value=f"`{bar}`", inline=False)
         
         await ctx.send(embed=embed)
 
