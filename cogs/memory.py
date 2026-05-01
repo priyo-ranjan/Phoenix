@@ -1,15 +1,19 @@
 import discord
 from discord.ext import commands
 import json
+import os
+JSON_PATH = "/app/data/memory.json" if os.path.exists("/app") else "memory.json"
 
 class Memory(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command()
     async def remember(self, ctx, member: discord.Member, *, memory):
-
-      with open("memory.json", "r") as f:
-        memories = json.load(f)
+      try:
+         with open(JSON_PATH, "r") as f:
+              memories = json.load(f)
+      except(FileNotFoundError, json.JSONDecodeError):
+        memories = {}
 
       user_id = str(member.id)
 
@@ -18,7 +22,7 @@ class Memory(commands.Cog):
 
       memories[user_id].append(memory)
 
-      with open("memory.json", "w") as f:
+      with open(JSON_PATH, "w") as f:
         json.dump(memories, f, indent=4)
 
       embed = discord.Embed(
@@ -30,8 +34,12 @@ class Memory(commands.Cog):
 
     @commands.command()
     async def memory(self, ctx, member: discord.Member):
-        with open("memory.json", "r") as f:
-          memories = json.load(f)
+        try:
+            with open(JSON_PATH, "r") as f:
+                memories = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            await ctx.send("No memories found.")
+            return
 
         user_id = str(member.id)
 
