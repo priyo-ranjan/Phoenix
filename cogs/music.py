@@ -4,6 +4,7 @@ import yt_dlp
 import asyncio
 import subprocess
 import shutil
+import os
 
 class Music(commands.Cog):
     def __init__(self, bot):
@@ -11,16 +12,37 @@ class Music(commands.Cog):
         self.queue = []
         self.current = None
         self.is_playing = False
+        self.ffmpeg_path = self._find_ffmpeg()
         
-        # yt-dlp options for SoundCloud (no ffmpeg needed)
+        # yt-dlp options for direct audio URL extraction
         self.ydl_options = {
-            'format': 'bestaudio/best',
+            'format': 'bestaudio[ext=m4a]/bestaudio[ext=webm]/bestaudio/best',
             'noplaylist': True,
             'default_search': 'scsearch',
-            'quiet': False,
-            'no_warnings': False,
+            'quiet': True,
+            'no_warnings': True,
             'socket_timeout': 30,
+            'extract_flat': False,
+            'skip_download': True,
         }
+    
+    def _find_ffmpeg(self):
+        """Try to find ffmpeg in common locations"""
+        # Check common paths
+        possible_paths = [
+            'ffmpeg',
+            '/usr/bin/ffmpeg',
+            '/usr/local/bin/ffmpeg',
+            'C:\\ffmpeg\\bin\\ffmpeg.exe',
+            shutil.which('ffmpeg'),
+        ]
+        
+        for path in possible_paths:
+            if path and shutil.which(path if path == 'ffmpeg' else path) is not None:
+                return path
+        
+        # Return fallback - will use libopus if available
+        return 'ffmpeg'
 
     @commands.command(name='play', help='Play a song from SoundCloud')
     async def play(self, ctx, *, search):
