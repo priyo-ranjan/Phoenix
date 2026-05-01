@@ -4,7 +4,7 @@ import yt_dlp
 import asyncio
 
 ytdl_format_options = {
-    'format': 'bestaudio',
+    'format': 'bestaudio[ext=m4a]/bestaudio/best',
     'noplaylist': True,
     'quiet': True,
     'default_search': 'ytsearch',
@@ -41,7 +41,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         if 'entries' in data:
             data = data['entries'][0]
 
-        filename = data['url'] if stream else ytdl.prepare_filename(data)
+        filename = data['url'] 
 
         return cls(
             discord.FFmpegPCMAudio(filename, executable="ffmpeg", **ffmpeg_options),
