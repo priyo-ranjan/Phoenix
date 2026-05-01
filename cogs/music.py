@@ -7,7 +7,20 @@ class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         
-        self.YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist': 'True'}
+        self.YDL_OPTIONS = {
+            'format': 'bestaudio/best',
+            'noplaylist': True,
+            'quiet': True,
+            'no_warnings': True,
+            'default_search': 'ytsearch',
+            'source_address': '0.0.0.0',
+            'extractor_args': {
+                'youtube': {
+                    'player_client': ['android', 'ios'],
+                    'skip': ['webpage']
+                }
+            }
+        }
         
         self.FFMPEG_OPTIONS = {
             'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
@@ -16,7 +29,6 @@ class Music(commands.Cog):
 
     @commands.command()
     async def play(self, ctx, *, url):
-        """Joins voice and plays from a YouTube URL"""
         if ctx.author.voice is None:
             return await ctx.send("You need to be in a voice channel!")
         
@@ -27,21 +39,22 @@ class Music(commands.Cog):
             await ctx.voice_client.move_to(voice_channel)
 
         async with ctx.typing():
-            with yt_dlp.YoutubeDL(self.YDL_OPTIONS) as ydl:
-                info = ydl.extract_info(f"ytsearch:{url}", download=False)
-                if 'entries' in info:
-                    info = info['entries'][0]
-                url2 = info['url']
-                title = info['title']
+            try:
+                with yt_dlp.YoutubeDL(self.YDL_OPTIONS) as ydl:
+                    info = ydl.extract_info(f"ytsearch:{url}", download=False)
+                    if 'entries' in info:
+                        info = info['entries'][0]
+                    url2 = info['url']
+                    title = info['title']
                 
                 source = await discord.FFmpegOpusAudio.from_probe(url2, **self.FFMPEG_OPTIONS)
                 ctx.voice_client.play(source)
-                
-        await ctx.send(f"Now playing: {title}")
+                await ctx.send(f"Now playing: {title}")
+            except Exception as e:
+                await ctx.send(f"Error: {e}")
 
     @commands.command()
     async def stop(self, ctx):
-        """Stops music and leaves the channel"""
         if ctx.voice_client:
             await ctx.voice_client.disconnect()
             await ctx.send("Disconnected.")
@@ -50,7 +63,6 @@ class Music(commands.Cog):
 
     @commands.command()
     async def pause(self, ctx):
-        """Pauses the music currently playing"""
         if ctx.voice_client and ctx.voice_client.is_playing():
             ctx.voice_client.pause()
             await ctx.send("Paused ⏸️")
@@ -59,7 +71,6 @@ class Music(commands.Cog):
 
     @commands.command()
     async def resume(self, ctx):
-        """Resumes the paused music"""
         if ctx.voice_client and ctx.voice_client.is_paused():
             ctx.voice_client.resume()
             await ctx.send("Resumed ▶️")
@@ -68,7 +79,6 @@ class Music(commands.Cog):
 
     @commands.command()
     async def skip(self, ctx):
-        """Skips the current song"""
         if ctx.voice_client and (ctx.voice_client.is_playing() or ctx.voice_client.is_paused()):
             ctx.voice_client.stop()
             await ctx.send("Skipped ⏭️")
@@ -77,7 +87,6 @@ class Music(commands.Cog):
 
     @commands.command()
     async def disconnect(self, ctx):
-        """Stops everything and leaves the channel"""
         if ctx.voice_client:
             await ctx.voice_client.disconnect()
             await ctx.send("Leaving the voice channel. 👋")
