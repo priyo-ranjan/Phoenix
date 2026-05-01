@@ -2,6 +2,8 @@ import discord
 import os
 from dotenv import load_dotenv
 from discord.ext import commands
+import wavelink
+
 
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
@@ -19,7 +21,13 @@ bot = commands.Bot(
 
 @bot.event
 async def on_ready():
-
+    nodes = [
+        wavelink.Node(
+            uri="http://lava-v4.ajieblogs.eu.org:80",
+            password="htttps://dsc.gg/ajidevserver"
+        )
+    ]
+    await wavelink.Pool.connect(client=bot, nodes=nodes)
     await bot.load_extension("cogs.commands")
     await bot.load_extension("cogs.fun")
     await bot.load_extension("cogs.moderation")
@@ -30,6 +38,7 @@ async def on_ready():
     await bot.load_extension("cogs.memory")
     await bot.load_extension("cogs.help")
     await bot.load_extension("cogs.leader")
+    await bot.load_extension("cogs.music")
 
     print(f"{bot.user} is online!")
 
