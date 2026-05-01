@@ -4,10 +4,9 @@ import yt_dlp
 import asyncio
 
 ytdl_format_options = {
-    'format': 'bestaudio/best',
+    'format': 'bestaudio',
     'noplaylist': True,
     'quiet': True,
-    'extract_flat': False,
     'default_search': 'ytsearch',
     'source address': '0.0.0.0',
     'cookiefile': 'cookies.txt'
