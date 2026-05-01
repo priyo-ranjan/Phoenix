@@ -23,8 +23,8 @@ bot = commands.Bot(
 async def on_ready():
     nodes = [
         wavelink.Node(
-            uri="http://lava-v4.ajieblogs.eu.org:80",
-            password="htttps://dsc.gg/ajidevserver"
+            uri="http://lavalink4.serentia.com:80",
+            password="youshallnotpass"
         )
     ]
     await wavelink.Pool.connect(client=bot, nodes=nodes)
