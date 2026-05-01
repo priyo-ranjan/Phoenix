@@ -29,7 +29,6 @@ async def on_ready():
     await bot.load_extension("cogs.rep")
     await bot.load_extension("cogs.memory")
     await bot.load_extension("cogs.help")
-    await bot.load_extension("cogs.music")
     await bot.load_extension("cogs.leader")
 
     print(f"{bot.user} is online!")
