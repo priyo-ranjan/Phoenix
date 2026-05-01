@@ -7,7 +7,10 @@ ytdl_format_options = {
     'format': 'bestaudio/best',
     'noplaylist': True,
     'quiet': True,
+    'extract_flat': False,
     'default_search': 'ytsearch',
+    'source address': '0.0.0.0',
+    'cookiefile': 'cookies.txt'
 }
 
 ffmpeg_options = {
