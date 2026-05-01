@@ -33,7 +33,7 @@ class Help(commands.Cog):
  
       embed.add_field(
         name="💎 Reputation",
-        value="!rep @user\n!repinfo @user",
+        value="!rep @user\n!reps @user",
         inline=False
     )
 

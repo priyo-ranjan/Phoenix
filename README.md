@@ -41,6 +41,10 @@ Phoenix combines moderation, AI interaction, leveling systems, and stylish embed
 ### 📈 Leveling
 - `!rank`
 
+### 🤖 Reputation
+- `!rep @user`
+- `!reps @user`
+
 ### 🛡️ Moderation
 - `!kick`
 - `!mute`
