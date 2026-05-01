@@ -7,7 +7,7 @@ ytdl_format_options = {
     'format': 'bestaudio[ext=m4a]/bestaudio/best',
     'noplaylist': True,
     'quiet': True,
-    'default_search': 'ytsearch',
+    'default_search': 'scsearch',
     'source address': '0.0.0.0',
     'cookiefile': 'cookies.txt'
 }
