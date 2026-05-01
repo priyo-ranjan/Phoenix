@@ -48,7 +48,7 @@ class Levels(commands.Cog):
                                    
                 await level_channel.send(embed=embed)
 
-    with open("levels.json", "w") as f:
+        with open("levels.json", "w") as f:
             json.dump(users, f, indent = 4)
 
     @commands.command()
