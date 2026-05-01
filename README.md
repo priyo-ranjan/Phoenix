@@ -30,6 +30,14 @@ Phoenix combines moderation, AI interaction, leveling systems, and stylish embed
 ### 🤖 AI
 - `!ai <prompt>`
 
+### 🎧 MUSIC
+- `!play
+- `!pause
+- `!resume
+- `!skip
+- `!stop
+
+
 ### 📈 Leveling
 - `!rank`
 
