@@ -10,7 +10,12 @@ intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
 
-bot = commands.Bot(command_prefix="!", intents = intents, case_insensitive=True)
+bot = commands.Bot(
+    command_prefix="!",
+     intents = intents,
+      case_insensitive=True,
+      help_command=None
+      )
 
 @bot.event
 async def on_ready():
@@ -23,6 +28,7 @@ async def on_ready():
     await bot.load_extension("cogs.levels") 
     await bot.load_extension("cogs.rep")
     await bot.load_extension("cogs.memory")
+    await bot.load_extension("cogs.help")
 
     print(f"{bot.user} is online!")
 
