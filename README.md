@@ -45,7 +45,7 @@ Phoenix combines moderation, AI interaction, leveling systems, and stylish embed
 - `!kick`
 - `!mute`
 - `!unmute`
-- `!ban`s
+- `!ban`
 
 ---
 
