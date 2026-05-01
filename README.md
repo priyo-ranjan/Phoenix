@@ -1,8 +1,8 @@
-# 🌌 DC-BOT
+# 🌌 PHOENIX
 
 > A modern aesthetic Discord bot built with Python & discord.py.
 
-DC-BOT combines moderation, AI interaction, leveling systems, and stylish embeds into one customizable Discord experience.
+Phoenix combines moderation, AI interaction, leveling systems, and stylish embeds into one customizable Discord experience.
 
 ---
 
