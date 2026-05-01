@@ -48,5 +48,41 @@ class Music(commands.Cog):
         else:
             await ctx.send("I'm not in a voice channel.")
 
+    @commands.command()
+    async def pause(self, ctx):
+        """Pauses the music currently playing"""
+        if ctx.voice_client and ctx.voice_client.is_playing():
+            ctx.voice_client.pause()
+            await ctx.send("Paused ⏸️")
+        else:
+            await ctx.send("Nothing is playing right now.")
+
+    @commands.command()
+    async def resume(self, ctx):
+        """Resumes the paused music"""
+        if ctx.voice_client and ctx.voice_client.is_paused():
+            ctx.voice_client.resume()
+            await ctx.send("Resumed ▶️")
+        else:
+            await ctx.send("The music isn't paused.")
+
+    @commands.command()
+    async def skip(self, ctx):
+        """Skips the current song"""
+        if ctx.voice_client and (ctx.voice_client.is_playing() or ctx.voice_client.is_paused()):
+            ctx.voice_client.stop()
+            await ctx.send("Skipped ⏭️")
+        else:
+            await ctx.send("Nothing is playing to skip.")
+
+    @commands.command()
+    async def disconnect(self, ctx):
+        """Stops everything and leaves the channel"""
+        if ctx.voice_client:
+            await ctx.voice_client.disconnect()
+            await ctx.send("Leaving the voice channel. 👋")
+        else:
+            await ctx.send("I'm not in a voice channel.")
+
 async def setup(bot):
     await bot.add_cog(Music(bot))
