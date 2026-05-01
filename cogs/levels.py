@@ -42,7 +42,22 @@ class Levels(commands.Cog):
         if users[user_id]["xp"] >= xp_needed:
             users[user_id]["level"] += 1
             users[user_id]["xp"] = 0
-            await message.channel.send(f"🎉 Congrats {message.author.mention}! You reached Level {users[user_id]['level']}!")
+            
+            target_channel = self.bot.get_channel(1499481612067278958)
+            if not target_channel:
+                target_channel = message.channel
+
+            embed = discord.Embed(
+                title="✨ LEVEL UP! ✨",
+                description=f"Great job {message.author.mention}! You've reached a new peak.",
+                color=0xBD93F9 
+            )
+            embed.set_thumbnail(url=message.author.display_avatar.url)
+            embed.add_field(name="New Level", value=f"🏆 {users[user_id]['level']}", inline=True)
+            embed.add_field(name="Total XP", value="💎 Milestone Reached", inline=True)
+            embed.set_footer(text="Keep chatting to unlock higher ranks!")
+            
+            await target_channel.send(content=message.author.mention, embed=embed)
 
         self.save_levels(users)
 
@@ -60,7 +75,7 @@ class Levels(commands.Cog):
         lvl = users[user_id]["level"]
         needed = lvl * 100
 
-        embed = discord.Embed(title=f"📊 {member.name}'s Rank", color=0x00FF00)
+        embed = discord.Embed(title=f"📊 {member.name}'s Rank", color=0xBD93F9)
         embed.add_field(name="Level", value=lvl, inline=True)
         embed.add_field(name="XP", value=f"{xp}/{needed}", inline=True)
         embed.set_thumbnail(url=member.display_avatar.url)
