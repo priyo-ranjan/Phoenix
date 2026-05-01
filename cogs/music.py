@@ -70,7 +70,7 @@ class Music(commands.Cog):
 
             player = await YTDLSource.from_url(
                 search,
-                loop=self.bot.loop,
+                loop=asyncio.get_event_loop(),
                 stream=True
             )
 
