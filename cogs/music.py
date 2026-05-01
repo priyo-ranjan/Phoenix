@@ -44,7 +44,7 @@ class Music(commands.Cog):
                     url2 = info['url']
                     title = info['title']
                 
-                source = await discord.FFmpegOpusAudio.from_probe(url2, **self.FFMPEG_OPTIONS)
+                source = await discord.FFmpegOpusAudio.from_probe(url2, executable="ffmpeg", **self.FFMPEG_OPTIONS)
                 ctx.voice_client.play(source)
                 await ctx.send(f"Now playing (SoundCloud): {title}")
             except Exception as e:

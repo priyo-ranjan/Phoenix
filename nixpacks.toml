@@ -1,2 +1,6 @@
 [phases.setup]
 aptPkgs = ["ffmpeg"]
+
+[phases.build]
+cmds = ["pip install -r requirements.txt"]
+
