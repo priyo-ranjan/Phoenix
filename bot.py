@@ -21,6 +21,7 @@ async def on_ready():
     await bot.load_extension("cogs.welcome")
     await bot.load_extension("cogs.ai")
     await bot.load_extension("cogs.levels") 
+    await bot.load_extension("cogs.rep")
 
     print(f"{bot.user} is online!")
 
