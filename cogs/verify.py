@@ -74,7 +74,7 @@ class Verify(commands.Cog):
                 "```yaml\n"
                 "Identity Confirmed.\n"
                 "Verification Complete.\n"
-                "Nexus Access Granted.\n"
+                "Acess to The Nexus Granted.\n"
             "```\n"
 
                 "✨ Thanks for joining our futuristic community.\n"
