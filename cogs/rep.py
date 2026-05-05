@@ -1,30 +1,11 @@
 import discord
 from discord.ext import commands
-import json
-import os
 import time
-
-if os.path.exists("/data"):
-    PATH = "/data/rep.json"
-else:
-    PATH = "rep.json"
+from database import add_rep, get_rep
 
 class Reputation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-    def get_all_data(self):
-        try:
-            if not os.path.exists(PATH):
-                return {"points": {}, "cooldowns": {}}
-            with open(PATH, "r") as f:
-                return json.load(f)
-        except:
-            return {"points": {}, "cooldowns": {}}
-
-    def save_all_data(self, data):
-        with open(PATH, "w") as f:
-            json.dump(data, f, indent=4)
 
     @commands.command(name="rep")
     async def rep(self, ctx, member: discord.Member):
@@ -36,12 +17,12 @@ class Reputation(commands.Cog):
             await ctx.send("❌ You cannot give reputation to a bot!")
             return
 
-        data = self.get_all_data()
-        author_id = str(ctx.author.id)
-        target_id = str(member.id)
         current_time = time.time()
+        author_id = str(ctx.author.id)
+        if not hasattr(self, "cooldowns"):
+            self.cooldowns = {}
+        last_rep_time = self.cooldowns.get(author_id, 0)
 
-        last_rep_time = data["cooldowns"].get(author_id, 0)
         cooldown_seconds = 86400 # 24 hours
 
         if current_time - last_rep_time < cooldown_seconds:
@@ -51,13 +32,8 @@ class Reputation(commands.Cog):
             await ctx.send(f"⏳ You can give rep again in **{hours}h {minutes}m**.")
             return
 
-        if target_id not in data["points"]:
-            data["points"][target_id] = 0
-        
-        data["points"][target_id] += 1
-        data["cooldowns"][author_id] = current_time
-        
-        self.save_all_data(data)
+        await add_rep(member.id)
+        self.cooldowns[author_id] = current_time
 
         embed = discord.Embed(
             description=f"⭐ {ctx.author.mention} has given a reputation point to {member.mention}!",
@@ -68,11 +44,8 @@ class Reputation(commands.Cog):
     @commands.command(name="reps")
     async def reps(self, ctx, member: discord.Member = None):
         member = member or ctx.author
-        data = self.get_all_data()
-        user_id = str(member.id)
         
-        points = data["points"].get(user_id, 0)
-
+        points = await get_rep(member.id)
         embed = discord.Embed(title="🏆 Reputation Stats", color=0xFFD700)
         embed.set_thumbnail(url=member.display_avatar.url)
         embed.add_field(name="User", value=member.mention, inline=True)
