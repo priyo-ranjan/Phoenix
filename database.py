@@ -15,7 +15,7 @@ async def setup_database():
         await db.execute("""CREATE TABLE IF NOT EXISTS memories(
         user_id INTEGER,
         key TEXT,
-        value TEXT,
+        value TEXT
         )
         """)
         await db.commit()
