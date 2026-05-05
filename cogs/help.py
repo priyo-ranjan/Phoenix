@@ -20,7 +20,7 @@ class Help(commands.Cog):
         inline=False
     )
       embed.add_field(
-        name="🧠 Fun",
+        name="🥳 Fun",
         value="!roast\n!say\n!ping\n!hello",
         inline=False
     )
