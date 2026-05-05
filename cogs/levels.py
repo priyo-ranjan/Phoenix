@@ -2,48 +2,30 @@ import discord
 from discord.ext import commands
 import json
 import os
+from database import add_xp, get_user_data
 
-if os.path.exists("/data"):
-    PATH = "/data/levels.json"
-else:
-    PATH = "levels.json"
 
 class Levels(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.announce_channel_id = 1499481612067278958
 
-    def get_data(self):
-        try:
-            if not os.path.exists(PATH):
-                return {}
-            with open(PATH, "r") as f:
-                return json.load(f)
-        except:
-            return {}
-
-    def save_data(self, data):
-        with open(PATH, "w") as f:
-            json.dump(data, f, indent=4)
-
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author.bot or message.content.startswith("!"):
             return
 
-        data = self.get_data()
-        user_id = str(message.author.id)
+        await add_xp(message.author.id, 8)
+        data = await get_user_data(message.author.id)
+        xp = data[0]
+        lvl = data[1]
 
-        if user_id not in data:
-            data[user_id] = {"xp": 0, "level": 1}
+        xp_needed = lvl * 150   
 
-        data[user_id]["xp"] += 8
-        lvl = data[user_id]["level"]
-        xp_needed = lvl * 150
+        if xp >= xp_needed:
 
-        if data[user_id]["xp"] >= xp_needed:
-            data[user_id]["level"] += 1
-            data[user_id]["xp"] = 0
+            from database import level_up
+            await level_up(message.author.id)
             
             channel = self.bot.get_channel(self.announce_channel_id)
             if channel:
@@ -56,20 +38,18 @@ class Levels(commands.Cog):
                 embed.set_footer(text="Keep chatting to climb higher!")
                 await channel.send(embed=embed)
 
-        self.save_data(data)
 
     @commands.command(name="rank")
     async def rank(self, ctx, member: discord.Member = None):
         member = member or ctx.author
-        data = self.get_data()
-        user_id = str(member.id)
-
-        if user_id not in data:
+        data = await get_user_data(member.id)
+        
+        if data is None:
             await ctx.send("No stats found for this user.")
             return
 
-        xp = data[user_id]["xp"]
-        lvl = data[user_id]["level"]
+        xp = data[0]
+        lvl = data[1]
         needed = lvl * 150
 
         embed = discord.Embed(color=0x03dac6)
