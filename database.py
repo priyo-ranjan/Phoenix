@@ -12,6 +12,12 @@ async def setup_database():
         user_id INTEGER PRIMARY KEY,
         rep INTEGER DEFAULT 0)
         """)    
+        await db.execute("""CREATE TABLE IF NOT EXISTS memory(
+        user_id INTEGER,
+        key TEXT,
+        value TEXT,
+        )
+        """)
         await db.commit()
 
 async def add_xp(user_id, amount):
@@ -100,6 +106,41 @@ async def get_top_levels(limit=5):
         """, (limit,))
 
         return await cursor.fetchall()
+
+async def add_memory(user_id, key, value):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        await db.execute("""
+        INSERT OR REPLACE INTO memories (user_id, key, value)
+        VALUES (?, ?, ?)
+        """, (user_id, key, value))
+
+        await db.commit()
+
+async def get_memory(user_id, key):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute("""
+        SELECT value FROM memories
+        WHERE user_id = ? AND key = ?
+        """, (user_id, key))
+
+        data = await cursor.fetchone()
+
+        if data is None:
+            return None
+
+        return data[0]
+
+async def delete_memory(user_id, key):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        await db.execute("""
+        DELETE FROM memories
+        WHERE user_id = ? AND key = ?
+        """, (user_id, key))
+
+        await db.commit()
 
 
 

@@ -1,77 +1,188 @@
 import discord
 from discord.ext import commands
-import json
-import os
 
-if os.path.exists("/data"):
-    JSON_PATH = "/data/memory.json"
-else:
-    JSON_PATH = "memory.json"
+from database import add_memory, get_memory, delete_memory
+
 
 class Memory(commands.Cog):
+
     def init(self, bot):
         self.bot = bot
 
-    @commands.command()
-    async def remember(self, ctx, member: discord.Member, *, memory):
-        """Saves a memory for a specific user"""
-        
-        try:
-            if not os.path.exists(JSON_PATH):
-                memories = {}
-            else:
-                with open(JSON_PATH, "r") as f:
-                    memories = json.load(f)
-        except (FileNotFoundError, json.JSONDecodeError):
-            memories = {}
 
-        user_id = str(member.id)
-        if user_id not in memories:
-            memories[user_id] = []
-        
-        memories[user_id].append(memory)
+    @commands.command(name="remember")
+    async def remember(self, ctx, key=None, *, value=None):
 
-        try:
-            with open(JSON_PATH, "w") as f:
-                json.dump(memories, f, indent=4)
-        except Exception as e:
-            await ctx.send(f"⚠️ Error saving to volume: {e}")
-            return
+        if key is None or value is None:
+            embed = discord.Embed(
+                title="🧠 Memory System",
+                description=(
+                    "Store something permanently in Phoenix's memory.\n\n"
+                    "Usage:\n"
+                    "!remember <key> <value>\n\n"
+                    "Example:\n"
+                    "!remember favorite_game Wuthering Waves"
+                ),
+                color=0x00ffff
+            )
+
+            embed.set_footer(
+                text=f"Requested by {ctx.author.name}",
+                icon_url=ctx.author.display_avatar.url
+            )
+
+            return await ctx.send(embed=embed)
+
+        key = key.lower()
+
+        await add_memory(ctx.author.id, key, value)
 
         embed = discord.Embed(
-            description=f"🧠 Memory saved for {member.mention}",
-            color=0x5865F2
+            title="🧠 Memory Saved",
+            description=(
+                f"Successfully stored memory for {ctx.author.mention}\n\n"
+                f"🔑 Key: {key}\n"
+                f"💭 Value: {value}"
+            ),
+            color=0x00ffcc
         )
+
+        embed.set_thumbnail(url=ctx.author.display_avatar.url)
+
+        embed.set_footer(
+            text="Phoenix Memory System",
+            icon_url=ctx.guild.icon.url if ctx.guild.icon else None
+        )
+
         await ctx.send(embed=embed)
 
-    @commands.command()
-    async def memory(self, ctx, member: discord.Member):
-        """Retrieves all memories for a specific user"""
-        
-        try:
-            if not os.path.exists(JSON_PATH):
-                await ctx.send("No memories have been created yet.")
-                return
-                
-            with open(JSON_PATH, "r") as f:
-                memories = json.load(f)
-        except (FileNotFoundError, json.JSONDecodeError):
-            await ctx.send("No memories found.")
-            return
 
-        user_id = str(member.id)
-        if user_id not in memories or not memories[user_id]:
-            await ctx.send(f"No memories found for {member.display_name}.")
-            return
+    @commands.command(name="memory")
+    async def memory(self, ctx, key=None):
 
-        memory_list = "\n".join([f"• {m}" for m in memories[user_id]])
-        
+        if key is None:
+
+            embed = discord.Embed(
+                title="🧠 Memory Lookup",
+                description=(
+                    "Usage:\n"
+                    "!memory <key>\n\n"
+                    "Example:\n"
+                    "!memory favorite_game"
+                ),
+                color=0x00ffff
+            )
+
+            embed.set_footer(
+                text=f"Requested by {ctx.author.name}",
+                icon_url=ctx.author.display_avatar.url
+            )
+
+            return await ctx.send(embed=embed)
+
+        key = key.lower()
+
+        value = await get_memory(ctx.author.id, key)
+
+        if value is None:
+
+            embed = discord.Embed(
+                title="❌ Memory Not Found",
+                description=(
+                    f"No memory stored for key:\n"
+                    f"{key}"
+                ),
+                color=0xff4d4d
+            )
+
+            embed.set_thumbnail(url=ctx.author.display_avatar.url)
+
+            return await ctx.send(embed=embed)
+
         embed = discord.Embed(
-            title=f"🧠 Memories of {member.name}",
-            description=memory_list,
-            color=0x5865F2
+            title="🧠 Memory Retrieved",
+            color=0x00ffff
         )
+
+        embed.add_field(
+            name="🔑 Key",
+            value=f"{key}",
+            inline=False
+        )
+
+        embed.add_field(
+            name="💭 Stored Value",
+            value=value,
+            inline=False
+        )
+
+        embed.set_thumbnail(url=ctx.author.display_avatar.url)
+
+        embed.set_footer(
+            text=f"Requested by {ctx.author.name}",
+            icon_url=ctx.author.display_avatar.url
+        )
+
         await ctx.send(embed=embed)
+
+
+    @commands.command(name="forget")
+    async def forget(self, ctx, key=None):
+
+        if key is None:
+
+            embed = discord.Embed(
+                title="🗑️ Forget Memory",
+                description=(
+                    "Usage:\n"
+                    "!forget <key>\n\n"
+                    "Example:\n"
+                    "!forget favorite_game"
+                ),
+                color=0xffcc00
+            )
+
+            embed.set_footer(
+                text=f"Requested by {ctx.author.name}",
+                icon_url=ctx.author.display_avatar.url
+            )
+
+            return await ctx.send(embed=embed)
+
+        key = key.lower()
+
+        value = await get_memory(ctx.author.id, key)
+
+        if value is None:
+
+            embed = discord.Embed(
+                title="❌ Memory Not Found",
+                description=f"There is no saved memory for {key}",
+                color=0xff4d4d
+            )
+
+            return await ctx.send(embed=embed)
+
+        await delete_memory(ctx.author.id, key)
+
+        embed = discord.Embed(
+            title="🗑️ Memory Deleted",
+            description=(
+                f"Phoenix has forgotten:\n\n"
+                f"🔑 {key}"
+            ),
+            color=0xff5555
+        )
+
+        embed.set_thumbnail(url=ctx.author.display_avatar.url)
+
+        embed.set_footer(
+            text="Memory successfully removed",
+            icon_url=ctx.author.display_avatar.url
+        )
+
+        await ctx.send(embed=embed)
+
 
 async def setup(bot):
     await bot.add_cog(Memory(bot))
