@@ -17,6 +17,14 @@ class Moderation(commands.Cog):
                 await ctx.send(f"I cannot kick {member.mention}. Their role may be higher than mine.")
         except discord.HTTPException:
                     await ctx.send("Something went wrong while trying to kick the member.")
+    @kick.error
+    async def kick_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send("You don't have permission to use this command.")
+        elif isinstance(error, commands.BadArgument):
+            await ctx.send("Please mention a valid member to kick.")
+        else:
+            await ctx.send("An error occurred while trying to kick the member.")
         
 
 
@@ -32,6 +40,14 @@ class Moderation(commands.Cog):
                 await ctx.send(f"I cannot ban {member.mention}. Their role may be higher than mine.")
         except discord.HTTPException:
                     await ctx.send("Something went wrong while trying to ban the member.")
+    @ban.error
+    async def ban_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send("You don't have permission to use this command.")
+        elif isinstance(error, commands.BadArgument):
+            await ctx.send("Please mention a valid member to ban.")
+        else:
+            await ctx.send("An error occurred while trying to ban the member.")
 
 
 
