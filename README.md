@@ -32,6 +32,7 @@ Phoenix combines moderation, AI interaction, leveling systems, and stylish embed
 
 ### 📈 Leveling
 - `!rank @user`
+- `!top`
 
 ### Memory 
 - `!memory`
