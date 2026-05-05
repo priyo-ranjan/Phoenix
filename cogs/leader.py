@@ -8,7 +8,7 @@ class Leaderboard(commands.Cog):
 
     @commands.command(name="top")
     async def top(self, ctx):
-        top_levels = await get_top_levels
+        top_levels = await get_top_levels()
         top_rep = await get_top_rep()
 
         level_list = ""
