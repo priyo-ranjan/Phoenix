@@ -7,7 +7,7 @@ from database import get_all_memories
 
 class Memory(commands.Cog):
 
-    def init(self, bot):
+    def __init__(self, bot):
         self.bot = bot
 
     @commands.command(name="memories")
