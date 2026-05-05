@@ -1,5 +1,6 @@
 import aiosqlite
-DB_NAME = "/data/database.db"
+import os
+DB_NAME = os.getenv("DB_NAME", "database.db")
 
 async def setup_database():
     async with aiosqlite.connect(DB_NAME) as db:
@@ -35,10 +36,15 @@ async def add_xp(user_id, amount):
             )
          else:
             xp, level = data
-            new_xp = xp + amount
+            xp += amount
+            required_xp = 150 * level
+            while xp >= required_xp:
+                xp -= required_xp
+                level += 1
+                required_xp = level * 150
             await db.execute(
-                "UPDATE levels SET xp = ? WHERE user_id = ?",
-                (new_xp, user_id)
+                "UPDATE levels SET xp = ?, level = ? WHERE user_id = ?",
+                (xp, level, user_id)
             )
          await db.commit()
 
