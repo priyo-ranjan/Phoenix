@@ -19,6 +19,12 @@ class Help(commands.Cog):
         value="!ai <prompt>",
         inline=False
     )
+      embed.add_field(
+        name="🧠 Fun",
+        value="!roast\n!say\n!ping\n",
+        inline=False
+    )
+
 
       embed.add_field(
         name="📈 Leveling",
@@ -40,7 +46,7 @@ class Help(commands.Cog):
 
       embed.add_field(
         name="🛡 Moderation",
-        value="!kick\n!mute\n!unmute",
+        value="!kick\n!mute\n!unmute\n!ban\n!purge <number>",
         inline=False
     )
 
