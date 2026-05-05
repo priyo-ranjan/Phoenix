@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 from database import add_memory, get_memory, delete_memory
+from database import get_all_memories
 
 
 class Memory(commands.Cog):
@@ -9,6 +10,31 @@ class Memory(commands.Cog):
     def init(self, bot):
         self.bot = bot
 
+    @commands.command(name="memories")
+    async def memories(self, ctx):
+      memories = await get_all_memories(ctx.author.id)
+
+      embed = discord.Embed(
+        title="🧠 Your Memories",
+        color=0x00ffff
+    )
+
+      if not memories:
+        embed.description = "No memories saved yet."
+      else:
+        text = ""
+        for key, value in memories:
+            text += f"🔑 {key} → {value}\n"
+
+        embed.description = text
+
+    embed.set_thumbnail(url=ctx.author.display_avatar.url)
+    embed.set_footer(
+        text=f"Requested by {ctx.author.name}",
+        icon_url=ctx.author.display_avatar.url
+    )
+
+    await ctx.send(embed=embed)
 
     @commands.command(name="remember")
     async def remember(self, ctx, key=None, *, value=None):

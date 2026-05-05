@@ -142,5 +142,14 @@ async def delete_memory(user_id, key):
 
         await db.commit()
 
+async def get_all_memories(user_id):
+    async with aiosqlite.connect(DB_NAME) as db:
+        cursor = await db.execute("""
+        SELECT key, value FROM memories
+        WHERE user_id = ?
+        """, (user_id,))
+
+        return await cursor.fetchall()
+
 
 
