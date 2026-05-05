@@ -25,11 +25,6 @@ class Help(commands.Cog):
         value="!rank\n!rank @user",
         inline=False
     )
-      embed.add_field(
-        name="🎵 Music",
-        value="!play <song>\n!pause\n!resume\n!skip\n!stop",
-        inline=False
-    )
  
       embed.add_field(
         name="💎 Reputation",
@@ -39,7 +34,7 @@ class Help(commands.Cog):
 
       embed.add_field(
         name="🧠 Memory",
-        value="!remember @user <memory>\n!memory @user",
+        value="!remember <key> <memory>\n!memories @user\n!forget <key>",
         inline=False
     )
 
