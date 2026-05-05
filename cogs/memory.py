@@ -26,8 +26,7 @@ class Memory(commands.Cog):
         for key, value in memories:
             text += f"🔑 {key} → {value}\n"
 
-        embed.description = text
-
+    embed.description = text
     embed.set_thumbnail(url=ctx.author.display_avatar.url)
     embed.set_footer(
         text=f"Requested by {ctx.author.name}",
