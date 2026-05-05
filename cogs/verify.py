@@ -18,7 +18,7 @@ class Verify(commands.Cog):
             embed = discord.Embed(
                 title="❌ Wrong Channel",
                 description=(
-                    "You can only use ~verify "
+                    "You can only use !verify "
                     "inside the verification channel."
                 ),
                 color=0xff0000
@@ -78,7 +78,7 @@ class Verify(commands.Cog):
             "```\n"
 
                 "✨ Thanks for joining our futuristic community.\n"
-                "Use ~help to explore Phoenix commands."
+                "Use !help to explore Phoenix commands."
         ),
         color=0x7b2cbf
     )
@@ -98,9 +98,9 @@ class Verify(commands.Cog):
             dm_embed.add_field(
               name="🚀 Getting Started",
               value=(
-                "~help → View commands\n"
-                "~rank → Check level\n"
-                "~server → Server info"
+                "!help → View commands\n"
+                "!rank → Check level\n"
+                "!server → Server info"
         ),
               inline=False
     )
