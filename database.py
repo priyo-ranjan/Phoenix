@@ -89,5 +89,17 @@ async def get_top_rep(limit=10):
 
         return await cursor.fetchall()
 
+async def get_top_levels(limit=5):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute("""
+        SELECT user_id, xp, level
+        FROM levels
+        ORDER BY level DESC, xp DESC
+        LIMIT ?
+        """, (limit,))
+
+        return await cursor.fetchall()
+
 
 

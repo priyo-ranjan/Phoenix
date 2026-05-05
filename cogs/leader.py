@@ -1,46 +1,25 @@
 import discord
 from discord.ext import commands
-import json
-import os
-
-if os.path.exists("/data"):
-    LEVELS_PATH = "/data/levels.json"
-    REP_PATH = "/data/rep.json"
-else:
-    LEVELS_PATH = "levels.json"
-    REP_PATH = "rep.json"
+from database import get_top_rep, get_top_levels
 
 class Leaderboard(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    def load_json(self, path):
-        try:
-            if not os.path.exists(path):
-                return {}
-            with open(path, "r") as f:
-                return json.load(f)
-        except:
-            return {}
-
     @commands.command(name="top")
     async def top(self, ctx):
-        levels_data = self.load_json(LEVELS_PATH)
-        rep_data = self.load_json(REP_PATH).get("points", {})
+        top_levels = await get_top_levels
+        top_rep = await get_top_rep()
 
-        sorted_levels = sorted(levels_data.items(), key=lambda x: (x[1]['level'], x[1]['xp']), reverse=True)[:5]
-        
         level_list = ""
-        for i, (user_id, stats) in enumerate(sorted_levels, 1):
-            user = self.bot.get_user(int(user_id))
+        for i, (user_id, xp, level) in enumerate(top_levels, 1):
+            user = self.bot.get_user(user_id)
             name = user.name if user else f"User {user_id}"
-            level_list += f"**{i}.** {name} • Lvl {stats['level']}\n"
+            level_list += f"**{i}.** {name} • Level {level}\n"
 
-        sorted_rep = sorted(rep_data.items(), key=lambda x: x[1], reverse=True)[:5]
-        
         rep_list = ""
-        for i, (user_id, points) in enumerate(sorted_rep, 1):
-            user = self.bot.get_user(int(user_id))
+        for i, (user_id, points) in enumerate(top_rep, 1):
+            user = self.bot.get_user(user_id)
             name = user.name if user else f"User {user_id}"
             rep_list += f"**{i}.** {name} • {points} ⭐\n"
 
