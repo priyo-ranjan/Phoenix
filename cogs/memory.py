@@ -11,29 +11,31 @@ class Memory(commands.Cog):
         self.bot = bot
 
     @commands.command(name="memories")
-    async def memories(self, ctx):
-      memories = await get_all_memories(ctx.author.id)
+    async def memories(self, ctx, member : discord.Member = None):
+        if member is None:
+            member = ctx.author
+        memories = await get_all_memories(member.id)
 
-      embed = discord.Embed(
-        title="🧠 Your Memories",
-        color=0x00ffff
-    )
+        embed = discord.Embed(
+            title="🧠 Your Memories",
+            color=0x00ffff
+        )
 
-      if not memories:
-        embed.description = "No memories saved yet."
-      else:
-        text = ""
-        for key, value in memories:
-            text += f"🔑 {key} → {value}\n"
+        if not memories:
+            embed.description = "No memories saved yet."
+        else:
+            text = ""
+            for key, value in memories:
+                text += f"🔑 {key} → {value}\n"
 
-        embed.description = text
-      embed.set_thumbnail(url=ctx.author.display_avatar.url)
-      embed.set_footer(
-        text=f"Requested by {ctx.author.name}",
-        icon_url=ctx.author.display_avatar.url
-    )
+            embed.description = text
+        embed.set_thumbnail(url=member.display_avatar.url)
+        embed.set_footer(
+            text=f"Requested by {member.name}",
+            icon_url=member.display_avatar.url
+        )
 
-      await ctx.send(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(name="remember")
     async def remember(self, ctx, key=None, *, value=None):
