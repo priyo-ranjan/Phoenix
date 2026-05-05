@@ -66,7 +66,62 @@ class Verify(commands.Cog):
 
         # give role
         await ctx.author.add_roles(role)
+        async with ctx.typing():
+         try:
+            dm_embed = discord.Embed(
+              title="🌌 Welcome to The Nexus",
+              description=(
+                "```yaml\n"
+                "Identity Confirmed.\n"
+                "Verification Complete.\n"
+                "Nexus Access Granted.\n"
+            "```\n"
 
+                "✨ Thanks for joining our futuristic community.\n"
+                "Use ~help to explore Phoenix commands."
+        ),
+        color=0x7b2cbf
+    )
+
+            dm_embed.add_field(
+               name="🤖 Features",
+               value=(
+                "• AI Chat\n"
+                "• Levels System\n"
+                "• Memory System\n"
+                "• Moderation\n"
+                "• Fun Commands"
+        ),
+               inline=False
+    )
+
+            dm_embed.add_field(
+              name="🚀 Getting Started",
+              value=(
+                "~help → View commands\n"
+                "~rank → Check level\n"
+                "~server → Server info"
+        ),
+              inline=False
+    )
+
+            dm_embed.set_thumbnail(
+                url=ctx.guild.icon.url
+    )
+
+            dm_embed.set_image(
+                url="https://cdn.discordapp.com/attachments/1499252105947386088/1501296262870339624/aS5qcGc.png?ex=69fb8e99&is=69fa3d19&hm=0e71f729e7cba410fdba908d4002a36e3c3436c36af3e5a4bbe7f3d6388db447&"
+    )
+
+            dm_embed.set_footer(
+                text="Powered by Phoenix",
+                icon_url=ctx.guild.icon.url
+    )
+
+            await ctx.author.send(embed=dm_embed)
+
+         except discord.Forbidden:
+             pass
         embed = discord.Embed(
             title="🌌 Verification Successful",
             description=(
