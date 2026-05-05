@@ -12,7 +12,6 @@ class Verify(commands.Cog):
     @commands.command(name="verify")
     async def verify(self, ctx):
 
-        # wrong channel
         if ctx.channel.id != VERIFY_CHANNEL_ID:
 
             embed = discord.Embed(
@@ -34,7 +33,6 @@ class Verify(commands.Cog):
 
         role = discord.utils.get(ctx.guild.roles, name=VERIFY_ROLE_NAME)
 
-        # role not found
         if role is None:
 
             embed = discord.Embed(
@@ -47,7 +45,6 @@ class Verify(commands.Cog):
 
             return
 
-        # already verified
         if role in ctx.author.roles:
 
             embed = discord.Embed(
@@ -64,7 +61,6 @@ class Verify(commands.Cog):
 
             return
 
-        # give role
         await ctx.author.add_roles(role)
         async with ctx.typing():
          try:
@@ -141,11 +137,7 @@ class Verify(commands.Cog):
         )
 
         msg = await ctx.send(embed=embed)
-
-        # delete verify command
         await ctx.message.delete()
-
-        # auto delete embed after 5 sec
         await msg.delete(delay=5)
 
 
