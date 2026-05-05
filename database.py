@@ -12,7 +12,7 @@ async def setup_database():
         user_id INTEGER PRIMARY KEY,
         rep INTEGER DEFAULT 0)
         """)    
-        await db.execute("""CREATE TABLE IF NOT EXISTS memory(
+        await db.execute("""CREATE TABLE IF NOT EXISTS memories(
         user_id INTEGER,
         key TEXT,
         value TEXT,
