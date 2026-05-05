@@ -23,7 +23,7 @@ class Fun(commands.Cog):
 
     @commands.command()
     async def hello(self, ctx):
-        await ctx.send("Hello!")
+        await ctx.send("hello!")
 
 async def setup(bot):
     await bot.add_cog(Fun(bot))
