@@ -21,7 +21,7 @@ class Help(commands.Cog):
     )
       embed.add_field(
         name="🧠 Fun",
-        value="!roast\n!say\n!ping\n",
+        value="!roast\n!say\n!ping\n!hello",
         inline=False
     )
 

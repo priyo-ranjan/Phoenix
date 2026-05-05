@@ -40,6 +40,12 @@ Phoenix combines moderation, AI interaction, leveling systems, and stylish embed
 - `!remember <key> <value>`
 - `!forget <key>`
 
+### FUN
+- `!roast`
+- `!say`
+- `!hello`
+- `!ping`
+
 ### 🤖 Reputation
 - `!rep @user`
 - `!reps @user`
@@ -49,6 +55,7 @@ Phoenix combines moderation, AI interaction, leveling systems, and stylish embed
 - `!mute`
 - `!unmute`
 - `!ban`
+- `!purge`
 
 ---
 
