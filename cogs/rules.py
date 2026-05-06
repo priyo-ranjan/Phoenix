@@ -1,165 +1,84 @@
 import discord
 from discord.ext import commands
 
-
 class RulesView(discord.ui.View):
-    def __init__(self, author):
-        super().init(timeout=180)
-        self.author = author
+    """The interactive button view for the rules pages."""
+    def __init__(self):
+        # timeout=None is required for persistent buttons
+        super().__init__(timeout=None)
         self.page = 0
+        self.embeds = self._create_embeds()
 
-        self.embeds = [
-            self.page_one(),
-            self.page_two(),
-            self.page_three()
-        ]
-
-    def page_one(self):
-        embed = discord.Embed(
-            title="📜 The Nexus Rules • Page 1/3",
-            description=(
-                "```yaml\n"
-                "Welcome to The Nexus.\n"
-                "Please follow all rules below.\n"
-                "```"
-            ),
-            color=0x7b2cbf
+    def _create_embeds(self):
+        """Helper method to define your rules pages."""
+        color = 0xbb86fc
+        
+        # PAGE 1: Core Rules
+        e1 = discord.Embed(
+            title="✦ PHOENIX SERVER RULES",
+            description="Welcome to the server.\nKeep the vibe clean, chill, and respectful.",
+            color=color
         )
+        e1.add_field(name="⚡ Respect Everyone", value="No harassment, racism, or toxic behavior.", inline=False)
+        e1.add_field(name="🎭 No Drama", value="Avoid unnecessary arguments and attention-seeking.", inline=False)
+        e1.add_field(name="🚫 No Spam", value="Do not flood chats, spam emojis, or abuse mentions.", inline=False)
+        e1.set_footer(text="Page 1 / 3 • Phoenix Rules System")
 
-        embed.add_field(
-            name="1️⃣ Respect Everyone",
-            value="No harassment, hate speech, bullying, or personal attacks.",
-            inline=False
+        # PAGE 2: Guidelines
+        e2 = discord.Embed(
+            title="✦ COMMUNITY GUIDELINES",
+            description="This server is built for good vibes and quality conversations.",
+            color=color
         )
+        e2.add_field(name="📢 Keep Channels Clean", value="Use channels for their intended purpose.", inline=False)
+        e2.add_field(name="🔞 No NSFW Content", value="Explicit or disturbing content is strictly forbidden.", inline=False)
+        e2.add_field(name="🛡️ No Scams", value="Advertising scams, malware, or phishing = instant ban.", inline=False)
+        e2.set_footer(text="Page 2 / 3 • Phoenix Rules System")
 
-        embed.add_field(
-            name="2️⃣ No Spam",
-            value="Avoid message spam, emoji spam, or unnecessary pinging.",
-            inline=False
+        # PAGE 3: Final Notes
+        e3 = discord.Embed(
+            title="✦ FINAL NOTES",
+            description="Help us maintain the aesthetic and energy of the server.",
+            color=color
         )
+        e3.add_field(name="👑 Staff Decisions", value="Respect moderator decisions and avoid back-seat modding.", inline=False)
+        e3.add_field(name="🌌 Enjoy Your Stay", value="Make friends, have fun, and grow with the community.", inline=False)
+        e3.add_field(name="🔥 Phoenix Philosophy", value="Rise together. Shine forever.", inline=False)
+        e3.set_footer(text="Page 3 / 3 • Phoenix Rules System")
 
-        embed.add_field(
-            name="3️⃣ Keep It Civil",
-            value="Arguments are fine. Toxicity is not.",
-            inline=False
-        )
+        return [e1, e2, e3]
 
-        embed.set_footer(text="Phoenix Rules System")
-
-        return embed
-
-    def page_two(self):
-        embed = discord.Embed(
-            title="📜 The Nexus Rules • Page 2/3",
-            color=0x7b2cbf
-        )
-
-        embed.add_field(
-            name="4️⃣ No NSFW Content",
-            value="NSFW, gore, or disturbing content is prohibited.",
-            inline=False
-        )
-
-        embed.add_field(
-            name="5️⃣ No Advertising",
-            value="Do not promote servers, social media, or services without permission.",
-            inline=False
-        )
-
-        embed.add_field(
-            name="6️⃣ Use Correct Channels",
-            value="Keep discussions in their appropriate channels.",
-            inline=False
-        )
-
-        embed.set_footer(text="Phoenix Rules System")
-
-        return embed
-
-    def page_three(self):
-        embed = discord.Embed(
-            title="📜 The Nexus Rules • Page 3/3",
-            color=0x7b2cbf
-        )
-
-        embed.add_field(
-            name="7️⃣ Follow Discord ToS",
-            value="All users must follow Discord's Terms of Service.",
-            inline=False
-        )
-
-        embed.add_field(
-            name="8️⃣ Staff Decisions",
-            value="Moderators and admins have the final say in server matters.",
-            inline=False
-        )
-
-        embed.add_field(
-            name="9️⃣ Have Fun",
-            value="Enjoy your stay and help build a positive community.",
-            inline=False
-        )
-
-        embed.set_image(
-            url="https://images.unsplash.com/photo-1519681393784-d120267933ba"
-        )
-
-        embed.set_footer(text="Welcome to The Nexus 🌌")
-
-        return embed
-
-    @discord.ui.button(label="⬅ Previous", style=discord.ButtonStyle.secondary)
+    @discord.ui.button(label="⬅ Previous", style=discord.ButtonStyle.secondary, custom_id="rules:prev")
     async def previous_page(self, interaction: discord.Interaction, button: discord.ui.Button):
+        self.page = (self.page - 1) % len(self.embeds)
+        await interaction.response.edit_message(embed=self.embeds[self.page], view=self)
 
-        if interaction.user != self.author:
-            return await interaction.response.send_message(
-                "❌ You cannot control someone else's rules menu.",
-                ephemeral=True
-            )
-
-        self.page -= 1
-
-        if self.page < 0:
-            self.page = len(self.embeds) - 1
-
-        await interaction.response.edit_message(
-            embed=self.embeds[self.page],
-            view=self
-        )
-
-    @discord.ui.button(label="Next ➡", style=discord.ButtonStyle.primary)
+    @discord.ui.button(label="Next ➜", style=discord.ButtonStyle.primary, custom_id="rules:next")
     async def next_page(self, interaction: discord.Interaction, button: discord.ui.Button):
-
-        if interaction.user != self.author:
-            return await interaction.response.send_message(
-                "❌ You cannot control someone else's rules menu.",
-                ephemeral=True
-            )
-
-        self.page += 1
-
-        if self.page >= len(self.embeds):
-            self.page = 0
-
-        await interaction.response.edit_message(
-            embed=self.embeds[self.page],
-            view=self
-        )
+        self.page = (self.page + 1) % len(self.embeds)
+        await interaction.response.edit_message(embed=self.embeds[self.page], view=self)
 
 class Rules(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        # This registers the view so buttons work after bot restarts
+        self.bot.add_view(RulesView())
 
-    @commands.command()
+    @commands.command(name="rules")
     @commands.has_permissions(administrator=True)
     async def rules(self, ctx):
-
+        """Deploys the multi-page rules embed."""
+        # Deletes your "!rules" command to keep the channel clean
+        await ctx.message.delete()
+        
         view = RulesView()
+        await ctx.send(embed=view.embeds[0], view=view)
 
-        await ctx.send(
-            embed=view.embeds[0],
-            view=view
-        )
+    @rules.error
+    async def rules_error(self, ctx, error):
+        """Handles cases where non-admins try to use the command."""
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send("❌ Only **Phoenix Administrators** can deploy the rules.", delete_after=5)
 
 async def setup(bot):
     await bot.add_cog(Rules(bot))
