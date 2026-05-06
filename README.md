@@ -77,4 +77,5 @@ Phoenix combines moderation, AI interaction, leveling systems, and stylish embed
 
 ## 👨‍💻 Developer
 
-Built by **Priyo Ranjan** while learning backend development & Discord bot architecture.
+Built and maintained by **Priyo Ranjan**.
+Phoenix is an actively evolving Discord bot focused on modern aesthetics, utility, and AI-powered interaction.
