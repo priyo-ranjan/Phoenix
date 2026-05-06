@@ -24,7 +24,7 @@ class RulesView(discord.ui.View):
             ),
             color=color
         )
-        e1.set_image(url="https://i.imgur.com/your_banner_here.png") # Placeholder for an aesthetic banner
+        e1.set_image(url="https://cdn.discordapp.com/attachments/1499252105947386088/1501639529029701833/ay1xeC5qcGc.png?ex=69fcce4a&is=69fb7cca&hm=d1701d63b78300c6d26a65000366545526f7ebf5643ccf2fcf6ef6a65f0cad92&") # Placeholder for an aesthetic banner
         e1.set_footer(text="Section: Core Conduct • Page 1 of 3")
 
         # --- PAGE 2: THE GUIDELINES ---
