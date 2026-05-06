@@ -13,14 +13,14 @@ class SetupVerify(commands.Cog):
             description=(
                "Welcome to The Nexus.\n"
                 "Access to the server is restricted until verification.\n\n"
-                "Press the command below to unlock the community."
+                "Enter the command below to unlock the community."
             ),
             color=0xbb86fc
         )
 
         embed.add_field(
             name="🔓 Verification Command",
-            value="`!verify```",
+            value="!verify",
             inline=False
         )
         embed.add_field(
