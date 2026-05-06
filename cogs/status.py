@@ -18,7 +18,7 @@ class Status(commands.Cog):
 
     def cog_unload(self):
         self.rotate_status.cancel()
-    @tasks.loop(hours=2)
+    @tasks.loop(minutes=10)
     async def rotate_status(self):
         status_type, text = random.choice(self.statuses)
 
