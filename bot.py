@@ -40,6 +40,7 @@ async def on_ready():
     await bot.load_extension("cogs.server")
     await bot.load_extension("cogs.verify")
     await bot.load_extension("cogs.rules")
+    await bot.load_extension("cogs.status")
 
     print(f"{bot.user} is online!")
 
