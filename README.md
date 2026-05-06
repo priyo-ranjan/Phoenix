@@ -7,6 +7,15 @@
 <p align="center">
   A futuristic aesthetic Discord bot powered by AI, moderation, leveling, and advanced systems.
 </p>
+<p align="center">
+
+![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python)
+
+![discord.py](https://img.shields.io/badge/discord.py-2.x-5865F2?style=for-the-badge&logo=discord)
+
+![Railway](https://img.shields.io/badge/Hosted_on-Railway-black?style=for-the-badge)
+
+</p>
 
 
 # 🌌 PHOENIX
