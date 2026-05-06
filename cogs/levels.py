@@ -14,29 +14,26 @@ class Levels(commands.Cog):
     async def on_message(self, message):
         if message.author.bot or message.content.startswith("!"):
             return
-
+        before = await get_user_data(message.author.id)
+        if before is None:
+            old_level = 1
+        else:
+            old_level = before[1]
+        
         await add_xp(message.author.id, 8)
-        data = await get_user_data(message.author.id)
-        xp = data[0]
-        lvl = data[1]
-
-        xp_needed = lvl * 150   
-
-        if xp >= xp_needed:
-
-            from database import level_up
-            await level_up(message.author.id)
-            
+        after = await get_user_data(message.author.id)
+        new_level = after[1]
+        if new_level > old_level:
             channel = self.bot.get_channel(self.announce_channel_id)
             if channel:
                 embed = discord.Embed(
-                    title="✨ Level Up!",
-                    description=f"{message.author.mention} just reached **Level {lvl + 1}**!",
-                    color=0xbb86fc
+                    title = "✨ Level Up!",
+                    description = f"{message.author.mention} just reached **Level {new_level}**!",
+                    color = 0xbb86fc
                 )
-                embed.set_thumbnail(url=message.author.display_avatar.url)
-                embed.set_footer(text="Keep chatting to climb higher!")
-                await channel.send(embed=embed)
+        embed.set_thumbnail(url=message.author.display_avatar.url)
+        embed.set_footer(text="Keep chatting to climb higher!")
+        await channel.send(embed=embed)
 
 
     @commands.command(name="rank")
