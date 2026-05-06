@@ -154,7 +154,7 @@ class Rules(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def rules(self, ctx):
 
-        view = RulesView(ctx.author)
+        view = RulesView()
 
         await ctx.send(
             embed=view.embeds[0],
