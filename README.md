@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/priyo-ranjan/Phoenix/main/assets/banner.jpg" width="100%">
+  <img src="https://github.com/priyo-ranjan/Phoenix/blob/main/assets/banner.jpg?raw=true">
 </p>
 
 <h1 align="center">🌌 PHOENIX</h1>
