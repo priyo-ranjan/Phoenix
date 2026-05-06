@@ -53,40 +53,52 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(moderate_members=True)
-
     async def mute(self, ctx, member: discord.Member, minutes: int, *, reason="No reason provided"):
+        try:
+            await member.timeout(
+                timedelta(minutes=minutes),
+                reason=reason
+            )
 
-       await member.timeout(
-          timedelta(minutes=minutes),
-          reason=reason
-    )
+            embed = discord.Embed(
+                title="🔇 Member Timed Out",
+                description=f"{member.mention} has been muted.",
+                color=0x5865F2
+            )
 
-       embed = discord.Embed(
-          title="🔇 Member Timed Out",
-          description=f"{member.mention} has been muted.",
-          color=0x5865F2
-    )
+            embed.add_field(
+                name="⏰ Duration",
+                value=f"{minutes} minutes",
+                inline=True
+            )
 
-       embed.add_field(
-           name="⏰ Duration",
-           value=f"{minutes} minutes",
-           inline=True
-    )
+            embed.add_field(
+                name="📝 Reason",
+                value=reason,
+                inline=False
+            )
 
-       embed.add_field(
-          name="📝 Reason",
-          value=reason,
-          inline=False
-    )
+            embed.set_thumbnail(url=member.display_avatar.url)
 
-       embed.set_thumbnail(url=member.display_avatar.url)
+            embed.set_footer(
+                text=f"Muted by {ctx.author}",
+                icon_url=ctx.author.display_avatar.url
+            )
 
-       embed.set_footer(
-          text=f"Muted by {ctx.author}",
-          icon_url=ctx.author.display_avatar.url
-    )
+            await ctx.send(embed=embed)
+        except discord.Forbidden:
+            await ctx.send(f"I cannot mute {member.mention}. Their role may be higher than mine.")
+        except discord.HTTPException:
+            await ctx.send("Something went wrong while trying to mute the member.")
 
-       await ctx.send(embed=embed) 
+    @mute.error
+    async def mute_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send("You don't have permission to use this command.")
+        elif isinstance(error, commands.BadArgument):
+            await ctx.send("Please mention a valid member to mute.")
+        else:
+            await ctx.send("An error occurred while trying to mute the member.") 
 
     @commands.command()
     @commands.has_permissions(moderate_members=True)
@@ -107,9 +119,23 @@ class Moderation(commands.Cog):
     @commands.command(name="Purge", help="Deletes specific number of messages from the channel.")
     @commands.has_permissions(manage_messages=True)
     async def purge(self, ctx, amount: int):
-        await ctx.channel.purge(limit=amount + 1)
-        msg = await ctx.send(f"Deleted {amount} messages.")
-        await msg.delete(delay = 0)
+        try:
+            await ctx.channel.purge(limit=amount + 1)
+            msg = await ctx.send(f"Deleted {amount} messages.")
+            await msg.delete(delay=0)
+        except discord.Forbidden:
+            await ctx.send("I don't have permission to delete messages in this channel.")
+        except discord.HTTPException:
+            await ctx.send("Something went wrong while trying to delete the messages.")
+
+    @purge.error
+    async def purge_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send("You don't have permission to use this command.")
+        elif isinstance(error, commands.BadArgument):
+            await ctx.send("Please specify a valid number of messages to delete.")
+        else:
+            await ctx.send("An error occurred while trying to delete the messages.") 
 
 
 
