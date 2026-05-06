@@ -1,3 +1,14 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/priyo-ranjan/Phoenix/main/assets/banner.png.jpg" width="100%">
+</p>
+
+<h1 align="center">🌌 PHOENIX</h1>
+
+<p align="center">
+  A futuristic aesthetic Discord bot powered by AI, moderation, leveling, and advanced systems.
+</p>
+
+
 # 🌌 PHOENIX
 
 > A modern aesthetic Discord bot built with Python & discord.py.
