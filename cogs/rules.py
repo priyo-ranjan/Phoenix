@@ -42,7 +42,7 @@ class RulesView(discord.ui.View):
             color=color
         )
         # OPTIONAL: You can set a different image for Page 2 here
-        # e2.set_image(url="YOUR_IMAGE_URL_HERE")
+        e2.set_image(url="https://cdn.discordapp.com/attachments/1499252105947386088/1501646409185624375/aGQtZHAuanBn.png?ex=69fcd4b3&is=69fb8333&hm=03ee1c9c4fe75699cc3e0532337df853167a449ddb55e6b1b53a6705597d4fa6&")
         e2.set_footer(text="Page 2 of 3")
         pages.append(e2)
 
@@ -60,7 +60,7 @@ class RulesView(discord.ui.View):
             color=color
         )
         # OPTIONAL: You can set a different image for Page 3 here
-        # e3.set_image(url="YOUR_IMAGE_URL_HERE")
+        e3.set_image(url="https://cdn.discordapp.com/attachments/1499252105947386088/1501645566042443846/cGc.png?ex=69fcd3ea&is=69fb826a&hm=45cba7bb56634b8704243d7c59da18e95e64ecbd7f80983b9c843ef92c35188b&")
         e3.set_footer(text="Page 3 of 3")
         pages.append(e3)
 
