@@ -3,7 +3,7 @@ from discord.ext import commands
 
 
 class RulesView(discord.ui.View):
-    def init(self, author):
+    def __init__(self, author):
         super().init(timeout=180)
         self.author = author
         self.page = 0
