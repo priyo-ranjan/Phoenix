@@ -7,6 +7,8 @@ from database import (
     update_daily,
     add_xp,
     get_coins,
+    add_coins,
+    add_rep
 )
 import random
 
@@ -55,6 +57,27 @@ def generate_daily_coins():
         rarity = "Legendary"
     return coins, rarity
 
+def generate_bonus_reward():
+    bonus_roll = random.randint(1, 100)
+
+    if bonus_roll <= 65:
+        reward_type = "coins"
+        amount = random.randint(50, 200)
+
+    elif bonus_roll <= 85:
+        reward_type = "rep"
+        amount = 1
+
+    elif bonus_roll <= 97:
+        reward_type = "crate"
+        amount = 1
+
+    else:
+        reward_type = "gems"
+        amount = random.randint(1, 3)
+
+    return reward_type, amount
+
 class Daily(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -67,7 +90,7 @@ class Daily(commands.Cog):
         if data:
             last_claim = datetime.fromisoformat(data[0])
             now = datetime.utcnow()
-            cooldown = timedelta(hours=24)
+            cooldown = timedelta(seconds=5)
             remaining = cooldown - (now - last_claim)
 
             if remaining.total_seconds() > 0:
@@ -89,8 +112,29 @@ class Daily(commands.Cog):
 
         xp_reward, rarity = generate_daily_xp()
         coin_reward, coin_rarity = generate_daily_coins()
+        bonus_type, bonus_amount = generate_bonus_reward()
+
         await add_xp(ctx.author.id, xp_reward)
         await add_coins(ctx.author.id, coin_reward)
+        if bonus_type == "coins":
+            await add_coins(ctx.author.id, bonus_amount)
+        elif bonus_type == "rep":
+            await add_rep(ctx.author.id, bonus_amount)
+        elif bonus_type == "crate":
+            pass
+        elif bonus_type == "gems":
+            pass
+
+        bonus_text = ""
+        if bonus_type == "coins":
+            bonus_text = f"💰 Bonus Coins: +{bonus_amount}"
+        elif bonus_type == "rep":
+            bonus_text = f"⭐ Bonus Rep: +{bonus_amount}"
+        elif bonus_type == "crate":
+            bonus_text = f"📦 Bonus Crate: {bonus_amount}"
+        elif bonus_type == "gems":
+            bonus_text = f"💎 Bonus Gems: {bonus_amount}"
+
 
         now = datetime.utcnow().isoformat()
         await update_daily(
@@ -104,8 +148,10 @@ class Daily(commands.Cog):
                 f"🌟 XP Reward: **{xp_reward} XP**\n"
                 f"🏆 XP Rarity: **{rarity}**"
 
-                f"🪙 Coin Reward: **{coin_reward} XP**\n"
-                f"💰 Coin Rarity: **{coin_rarity}**"
+                f"🪙 Coin Reward: **{coin_reward}**\n"
+                f"💰 Coin Rarity: **{coin_rarity}**\n\n"
+
+                f"{bonus_text}"
             ),
             color=0xbb86fc
         )
@@ -132,7 +178,9 @@ class Daily(commands.Cog):
         embed.set_footer(
             text="Phoenix Daily System ~ Rise Together. Shine Forever"
         )
+        embed.timestamp = datetime.utcnow()
         await ctx.send(embed=embed)
+
 
     @commands.command(aliases=["bal"])
     async def balance(self, ctx, member: discord.Member = None):
@@ -149,6 +197,7 @@ class Daily(commands.Cog):
         embed.set_footer(
             text="Phoenix Economy System ~ Rise Together. Shine Forever"
         )
+        embed.timestamp = datetime.utcnow()
         await ctx.send(embed=embed)
 
 async def setup(bot):
