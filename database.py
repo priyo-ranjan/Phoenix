@@ -19,6 +19,12 @@ async def setup_database():
         value TEXT
         )
         """)
+        await db.execute("""CREATE TABLE IF NOT EXISTS daily_rewards(
+        user_id INTEGER PRIMARY KEY,
+        last_claim TEXT
+        )
+       """)
+
         await db.commit()
 
 async def add_xp(user_id, amount):
@@ -157,5 +163,36 @@ async def get_all_memories(user_id):
 
         return await cursor.fetchall()
 
+# DAILY REWARDS
+
+async def get_last_daily(user_id):
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute(
+            "SELECT last_claim FROM daily_rewards WHERE user_id = ?",
+            (user_id,)
+        )
+
+        data = await cursor.fetchone()
+
+        return data
+
+
+async def update_daily(user_id, timestamp):
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        await db.execute(
+            """
+            INSERT INTO daily_rewards (user_id, last_claim)
+            VALUES (?, ?)
+            ON CONFLICT(user_id)
+            DO UPDATE SET last_claim = excluded.last_claim
+            """,
+            (user_id, timestamp)
+        )
+
+        await db.commit()
 
 

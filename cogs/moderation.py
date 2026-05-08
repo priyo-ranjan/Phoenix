@@ -27,8 +27,6 @@ class Moderation(commands.Cog):
             await ctx.send("An error occurred while trying to kick the member.")
         
 
-
-
     @commands.command(name="ban", help="Ban a member from the server.")
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member: discord.Member, *, reason=None):

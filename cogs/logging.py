@@ -1,5 +1,3 @@
-# logging.py
-
 import discord
 from discord.ext import commands
 
@@ -8,11 +6,8 @@ class Logging(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-        # PUT YOUR CHANNEL IDs HERE
         self.member_log_channel = 1501684136920879104
 
-
-    # MEMBER JOIN
     @commands.Cog.listener()
     async def on_member_join(self, member):
 
@@ -53,8 +48,6 @@ class Logging(commands.Cog):
 
         await channel.send(embed=embed)
 
-
-    # MEMBER LEAVE
     @commands.Cog.listener()
     async def on_member_remove(self, member):
 

@@ -1,0 +1,112 @@
+import discord
+from discord.ext import commands
+from datetime import datetime, timedelta
+
+from database import (
+    get_last_daily,
+    update_daily,
+    add_xp
+)
+import random
+
+def generate_daily_xp():
+    roll = random.randit(1, 100)
+
+    if roll <= 70:
+        xp = random.randit(15,35)
+        rarity = "Common"
+
+    elif roll <=92:
+        xp = random.randit(36,60)
+        rarity = "Uncommon"
+
+    elif roll <= 98:
+        xp = random.randit(61,70)
+        rarity = "Rare"
+
+    elif roll <= 99:
+        xp = random.randit(71,80)
+        rarity = "Epic"
+
+    else:
+        xp = random.randit(81,90)
+        rarity = "Legendary"
+
+    return xp, rarity
+
+class Daily(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.command()
+    async def daily(self,ctx):
+        user_id = ctx.author.id
+        data = await get_last_daily(user_id)
+
+        if data:
+            last_claim = datetime.fromisoformat(data[0])
+            now = datetime.utcnow()
+            cooldown = timedelta(hours=24)
+            remaining = cooldown - (now - last_claim)
+
+            if remaining.total_seconds() > 0:
+               hours = int(remaining.total_seconds() // 3600)
+               minutes = int((remaining.total_Seconds() % 3600) // 60)
+
+               embed = discord.Embed(
+                title="⏳ Daily Already Claimed",
+                description=(
+                f"You have already claimed your daily reward.\n\n"
+                f"Try again in **{hours}hrs {minutes}mins**."
+               ),
+               color = 0xff5555
+               )
+               embed.set_footer(
+                text="Phoenix Daily System"
+               )
+               return await ctx.send(embed=embed)
+
+        xp_reward, rarity = generate_daily_xp()
+        await add_xp(ctx.author.id, xp_reward)
+
+        now = datetime.utcnow().isoformat()
+        await update_daily(
+            ctx.author.id,
+            now
+        )
+        embed = discord.Embed(
+            title="🎁 PHOENIX | DAILY REWARD",
+            description=(
+                f"{ctx.author.mention} claimed their daily reward.\n\n"
+                f"🌟 Reward: **{xp_reward} XP**\n"
+                f"🏆 Rarity: **{rarity}**"
+            ),
+            color=0xbb86fc
+        )
+        if rarity == "Legendary":
+           embed.add_field(
+             name="🌌 JACKPOT",
+             value="An absurdly rare reward has appeared.",
+             inline=False
+        )
+
+        elif rarity == "Epic":
+           embed.add_field(
+            name="🔥 ULTRA RARE",
+            value="Phoenix has blessed you today.",
+            inline=False
+        )
+
+        elif rarity == "Rare":
+           embed.add_field(
+            name="💠 Rare Pull",
+            value="Luck seems to be on your side.",
+            inline=False
+        )
+        embed.set_footer(
+            text="Phoenix Daily System ~ Rise Together. Shine Forever"
+        )
+        await ctx.send(embed=embed)
+
+    async def setup(bot):
+        await bot.add_cog(Daily(bot))
