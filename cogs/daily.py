@@ -90,7 +90,7 @@ class Daily(commands.Cog):
         if data:
             last_claim = datetime.fromisoformat(data[0])
             now = datetime.utcnow()
-            cooldown = timedelta(seconds=5)
+            cooldown = timedelta(hours=24)
             remaining = cooldown - (now - last_claim)
 
             if remaining.total_seconds() > 0:
@@ -146,7 +146,7 @@ class Daily(commands.Cog):
             description=(
                 f"{ctx.author.mention} claimed their daily reward.\n\n"
                 f"🌟 XP Reward: **{xp_reward} XP**\n"
-                f"🏆 XP Rarity: **{rarity}**\n"
+                f"🏆 XP Rarity: **{rarity}**\n"                                          
 
                 f"🪙 Coin Reward: **{coin_reward}**\n"
                 f"💰 Coin Rarity: **{coin_rarity}**\n\n"
