@@ -51,6 +51,8 @@ async def setup_database():
 
         await db.commit()
 
+# XP STUFF 
+
 async def add_xp(user_id, amount):
     async with aiosqlite.connect(DB_NAME) as db:
          cursor = await db.execute(
@@ -86,6 +88,8 @@ async def get_user_data(user_id):
         )
         return await cursor.fetchone()
 
+# REPUTATION 
+
 async def add_rep(user_id, amount=1):
     async with aiosqlite.connect(DB_NAME) as db:
 
@@ -102,7 +106,6 @@ async def add_rep(user_id, amount=1):
 
         await db.commit()
 
-
 async def get_rep(user_id):
     async with aiosqlite.connect(DB_NAME) as db:
 
@@ -117,6 +120,7 @@ async def get_rep(user_id):
             return 0
 
         return data[0]
+
 async def get_last_rep(user_id):
     async with aiosqlite.connect(DB_NAME) as db:
 
@@ -138,6 +142,8 @@ async def update_rep_cooldown(user_id, timestamp):
             (user_id, timestamp)
         )
         await db.commit()
+
+# LEADERBOARD
 
 async def get_top_rep(limit=10):
     async with aiosqlite.connect(DB_NAME) as db:
@@ -162,6 +168,8 @@ async def get_top_levels(limit=5):
         """, (limit,))
 
         return await cursor.fetchall()
+
+# MEMORY
 
 async def add_memory(user_id, key, value):
     async with aiosqlite.connect(DB_NAME) as db:
@@ -207,7 +215,7 @@ async def get_all_memories(user_id):
 
         return await cursor.fetchall()
 
-# DAILY REWARDS
+# DAILY
 
 async def get_last_daily(user_id):
 
@@ -221,7 +229,6 @@ async def get_last_daily(user_id):
         data = await cursor.fetchone()
 
         return data
-
 
 async def update_daily(user_id, timestamp):
 
@@ -290,7 +297,6 @@ async def get_gems(user_id):
 
         return data[0]
 
-
 async def add_gems(user_id, amount):
     async with aiosqlite.connect(DB_NAME) as db:
         await db.execute("""INSERT OR IGNORE INTO users(user_id, coins, gems, crates) VALUES(?, 0, 0, 0)""", 
@@ -301,7 +307,6 @@ async def add_gems(user_id, amount):
             (amount, str(user_id))
         )
         await db.commit()
-
 
 async def get_crates(user_id):
     async with aiosqlite.connect(DB_NAME) as db:
@@ -324,7 +329,6 @@ async def get_crates(user_id):
 
         return data[0]
 
-
 async def add_crates(user_id, amount):
     async with aiosqlite.connect(DB_NAME) as db:
 
@@ -339,3 +343,69 @@ async def add_crates(user_id, amount):
         )
 
         await db.commit()
+
+# REMOVE
+
+async def remove_coins(user_id, amount):
+    async with aiosqlite.connect(DB_NAME) as db:
+        await db.execute(
+            "UPDATE users SET coins = coins - ? WHERE user_id = ?",
+            (amount, str(user_id))
+        )
+        await db.commit()
+
+async def remove_gems(user_id, amount):
+    async with aiosqlite.connect(DB_NAME) as db:
+        await db.execute(
+            "UPDATE users SET gems = gems - ? WHERE user_id = ?",
+            (amount, str(user_id))
+        )
+        await db.commit()
+
+async def remove_crates(user_id, amount):
+    async with aiosqlite.connect(DB_NAME) as db:
+        await db.execute(
+            "UPDATE users SET crates = crates - ? WHERE user_id = ?",
+            (amount, str(user_id))
+        )
+        await db.commit()
+
+# HAS-ENOUGH
+
+async def has_enough_coins(user_id, amount):
+    coins = await get_coins(user_id)
+    return coins >= amount
+
+async def has_enough_gems(user_id, amount):
+    gems = await get_gems(user_id)
+    return gems >= amount
+
+async def has_enough_crates(user_id, amount):
+    crates = await get_crates(user_id)
+    return crates >= amount
+
+# TRANSFERS 
+
+async def transfer_coins(from_user, to_user, amount):
+    if not await has_enough_coins(from_user, amount):
+        return False
+    await remove_coins(from_user, amount)
+    await add_coins(to_user, amount)
+    return True
+
+async def transfer_gems(from_user, to_user, amount):
+    if not await has_enough_gems(from_user, amount):
+        return False
+    await remove_gems(from_user, amount)
+    await add_gems(to_user, amount)
+    return True
+
+async def transfer_crates(from_user, to_user, amount):
+    if not await has_enough_crates(from_user, amount):
+        return False
+    await remove_crates(from_user, amount)
+    await add_crates(to_user, amount)
+    return True
+  
+
+

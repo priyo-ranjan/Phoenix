@@ -9,9 +9,6 @@ import asyncio
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
 
-load_dotenv()
-TOKEN = os.getenv("TOKEN")
-
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
@@ -44,6 +41,7 @@ async def on_ready():
     await bot.load_extension("cogs.setupverify")
     await bot.load_extension("cogs.logging")
     await bot.load_extension("cogs.daily")
+    await bot.load_extension("cogs.trade")
     print(f"{bot.user} is online!")
 
 bot.run(TOKEN)
