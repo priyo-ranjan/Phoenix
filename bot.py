@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 from discord.ext import commands
 from database import setup_database
-
+import asyncio
 
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
@@ -44,7 +44,6 @@ async def on_ready():
     await bot.load_extension("cogs.setupverify")
     await bot.load_extension("cogs.logging")
     await bot.load_extension("cogs.daily")
-
     print(f"{bot.user} is online!")
 
 bot.run(TOKEN)
