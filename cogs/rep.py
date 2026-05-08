@@ -1,7 +1,8 @@
 import discord
 from discord.ext import commands
 import time
-from database import add_rep, get_rep
+from database import add_rep, get_rep, get_last_rep, update_rep_cooldown
+from datetime import datetime, timedelta
 
 class Reputation(commands.Cog):
     def __init__(self, bot):
@@ -19,22 +20,27 @@ class Reputation(commands.Cog):
 
         current_time = time.time()
         author_id = str(ctx.author.id)
-        if not hasattr(self, "cooldowns"):
-            self.cooldowns = {}
-        last_rep_time = self.cooldowns.get(author_id, 0)
+        data = await get_last_rep(author_id)
 
-        cooldown_seconds = 86400 # 24 hours
+        if data:
+            last_rep_time = datetime.fromisoformat(data[0])
+            now = datetime.utcnow()
 
-        if current_time - last_rep_time < cooldown_seconds:
-            remaining = int((last_rep_time + cooldown_seconds) - current_time)
-            hours = remaining // 3600
-            minutes = (remaining % 3600) // 60
-            await ctx.send(f"⏳ You can give rep again in **{hours}h {minutes}m**.")
-            return
+            cooldown = timedelta(hours=24)
+            remaining = cooldown - (now - last_rep_time)
+
+            if remaining.total_seconds() > 0:
+                hours = int(remaining.total_seconds() // 3600)
+                minutes = int((remaining.total_seconds() % 3600) // 60)
+
+                await ctx.send(
+            f"⏳ You can give rep again in {hours}h {minutes}m."
+        )
+                return
 
         await add_rep(member.id)
-        self.cooldowns[author_id] = current_time
-
+        now = datetime.utcnow().isoformat()
+        await update_rep_cooldown(author_id, now)
         embed = discord.Embed(
             description=f"⭐ {ctx.author.mention} has given a reputation point to {member.mention}!",
             color=0xFFD700

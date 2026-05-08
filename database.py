@@ -103,7 +103,27 @@ async def get_rep(user_id):
             return 0
 
         return data[0]
+async def get_last_rep(user_id):
+    async with aiosqlite.connect(DB_NAME) as db:
 
+        cursor = await db.execute(
+            """SELECT last_rep FROM rep_cooldowns WHERE user_id = ?""",
+            (user_id,)
+        )
+        data = await cursor.fetchone()
+        return data
+
+async def update_rep_cooldown(user_id, timestamp):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        await db.execute(
+            """
+            INSERT OR REPLACE INTO rep_cooldowns(user_id, last_rep)
+            VALUES (?, ?)
+            """,
+            (user_id, timestamp)
+        )
+        await db.commit()
 
 async def get_top_rep(limit=10):
     async with aiosqlite.connect(DB_NAME) as db:
