@@ -10,26 +10,26 @@ from database import (
 import random
 
 def generate_daily_xp():
-    roll = random.randit(1, 100)
+    roll = random.randint(1, 100)
 
     if roll <= 70:
-        xp = random.randit(15,35)
+        xp = random.randint(15,35)
         rarity = "Common"
 
     elif roll <=92:
-        xp = random.randit(36,60)
+        xp = random.randint(36,60)
         rarity = "Uncommon"
 
     elif roll <= 98:
-        xp = random.randit(61,70)
+        xp = random.randint(61,70)
         rarity = "Rare"
 
     elif roll <= 99:
-        xp = random.randit(71,80)
+        xp = random.randint(71,80)
         rarity = "Epic"
 
     else:
-        xp = random.randit(81,90)
+        xp = random.randint(81,90)
         rarity = "Legendary"
 
     return xp, rarity
