@@ -139,10 +139,10 @@ class Daily(commands.Cog):
         member = member or ctx.author
         coins = await get_coins(member.id)
         embed = discord.Embed(
-            text="💰 PHOENIX | BALANCE", 
+            title="💰 PHOENIX | BALANCE",
             description=(
-                f"User: {member.mention}\n\n"
-                f"Coins: **{coins}**"
+                f"👤 User: {member.mention}\n\n"
+                f"🪙 Coins: **{coins}**"
             ),
             color=0xbb86fc
         )
