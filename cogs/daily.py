@@ -108,5 +108,5 @@ class Daily(commands.Cog):
         )
         await ctx.send(embed=embed)
 
-    async def setup(bot):
-        await bot.add_cog(Daily(bot))
+async def setup(bot):
+     await bot.add_cog(Daily(bot))
