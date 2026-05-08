@@ -51,7 +51,7 @@ class Daily(commands.Cog):
 
             if remaining.total_seconds() > 0:
                hours = int(remaining.total_seconds() // 3600)
-               minutes = int((remaining.total_Seconds() % 3600) // 60)
+               minutes = int((remaining.total_seconds() % 3600) // 60)
 
                embed = discord.Embed(
                 title="⏳ Daily Already Claimed",
