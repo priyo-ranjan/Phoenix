@@ -24,6 +24,11 @@ async def setup_database():
         last_claim TEXT
         )
        """)
+        await db.execute("""CREATE TABLE IF NOT EXISTS users(
+        user_id INTEGER PRIMARY KEY,
+        coins INTEGER DEFAULT 0
+        )
+       """)
 
         await db.commit()
 
@@ -195,4 +200,36 @@ async def update_daily(user_id, timestamp):
 
         await db.commit()
 
+async def add_coins(user_id, amount):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        await db.execute("""
+        INSERT OR IGNORE INTO users(user_id, coins)
+        VALUES(?, 0)
+        """, (user_id,))
+
+        await db.execute("""
+        UPDATE users
+        SET coins = coins + ?
+        WHERE user_id = ?
+        """, (amount, user_id))
+
+        await db.commit()
+
+async def get_coins(user_id):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        await db.execute("""
+        INSERT OR IGNORE INTO users(user_id, coins)
+        VALUES(?, 0)
+        """, (user_id,))
+
+        cursor = await db.execute("""
+        SELECT coins FROM users
+        WHERE user_id = ?
+        """, (user_id,))
+
+        data = await cursor.fetchone()
+
+        return data[0]
 

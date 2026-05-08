@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from database import (
     get_last_daily,
     update_daily,
-    add_xp
+    add_xp,
 )
 import random
 
@@ -33,6 +33,26 @@ def generate_daily_xp():
         rarity = "Legendary"
 
     return xp, rarity
+
+def generate_daily_coins():
+    roll = random.randint(1, 100)
+
+    if roll <= 70:
+        coins = random.randint(20, 40)
+        rarity = "Common"
+    elif roll <= 92:
+        coins = random.randint(41, 70)
+        rarity = "Uncommon"
+    elif roll <= 98:
+        coins = random.randint(71, 120)
+        rarity = "Rare"
+    elif roll <= 99:
+        coins = random.randint(121, 180)
+        rarity = "Epic"
+    else:
+        coins = random.randint(181, 250)
+        rarity = "Legendary"
+    return coins, rarity
 
 class Daily(commands.Cog):
     def __init__(self, bot):
@@ -67,7 +87,9 @@ class Daily(commands.Cog):
                return await ctx.send(embed=embed)
 
         xp_reward, rarity = generate_daily_xp()
+        coin_reward, coin_rarity = generate_daily_coins()
         await add_xp(ctx.author.id, xp_reward)
+        await add_coins(ctx.author.id, coin_reward)
 
         now = datetime.utcnow().isoformat()
         await update_daily(
