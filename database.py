@@ -36,14 +36,14 @@ async def setup_database():
         crates INTEGER DEFAULT 0
         )
        """)
-       try:
-        await db.execute("ALTER TABLE users ADD COLUMN gems INTEGER DEFAULT 0")
-       except:
-        pass
-       try:
-        await db.execute("ALTER TABLE users ADD COLUMN gems INTEGER DEFAULT 0")
-       except:
-        pass
+        try:
+            await db.execute("ALTER TABLE users ADD COLUMN gems INTEGER DEFAULT 0")
+        except:
+            pass
+        try:
+            await db.execute("ALTER TABLE users ADD COLUMN gems INTEGER DEFAULT 0")
+        except:
+            pass
 
         await db.commit()
 
