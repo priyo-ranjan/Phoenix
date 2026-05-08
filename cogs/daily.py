@@ -6,6 +6,7 @@ from database import (
     get_last_daily,
     update_daily,
     add_xp,
+    get_coins,
 )
 import random
 
@@ -100,26 +101,29 @@ class Daily(commands.Cog):
             title="🎁 PHOENIX | DAILY REWARD",
             description=(
                 f"{ctx.author.mention} claimed their daily reward.\n\n"
-                f"🌟 Reward: **{xp_reward} XP**\n"
-                f"🏆 Rarity: **{rarity}**"
+                f"🌟 XP Reward: **{xp_reward} XP**\n"
+                f"🏆 XP Rarity: **{rarity}**"
+
+                f"🪙 Coin Reward: **{coin_reward} XP**\n"
+                f"💰 Coin Rarity: **{coin_rarity}**"
             ),
             color=0xbb86fc
         )
-        if rarity == "Legendary":
+        if rarity == "Legendary" or coin_rarity == "Legendary":
            embed.add_field(
              name="🌌 JACKPOT",
              value="An absurdly rare reward has appeared.",
              inline=False
         )
 
-        elif rarity == "Epic":
+        elif rarity == "Epic" or coin_rarity == "Epic":
            embed.add_field(
             name="🔥 ULTRA RARE",
             value="Phoenix has blessed you today.",
             inline=False
         )
 
-        elif rarity == "Rare":
+        elif rarity == "Rare" or coin_rarity == "Rare":
            embed.add_field(
             name="💠 Rare Pull",
             value="Luck seems to be on your side.",
@@ -127,6 +131,23 @@ class Daily(commands.Cog):
         )
         embed.set_footer(
             text="Phoenix Daily System ~ Rise Together. Shine Forever"
+        )
+        await ctx.send(embed=embed)
+
+    @commands.command(aliases=["bal"])
+    async def balance(self, ctx, member: discord.Member = None):
+        member = member or ctx.author
+        coins = await get_coins(member.id)
+        embed = discord.Embed(
+            text="💰 PHOENIX | BALANCE", 
+            description=(
+                f"User: {member.mention}\n\n"
+                f"Coins: **{coins}**"
+            ),
+            color=0xbb86fc
+        )
+        embed.set_footer(
+            text="Phoenix Economy System ~ Rise Together. Shine Forever"
         )
         await ctx.send(embed=embed)
 
