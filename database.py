@@ -24,6 +24,11 @@ async def setup_database():
         last_claim TEXT
         )
        """)
+        await db.execute("""CREATE TABLE IF NOT EXISTS rep_cooldowns(
+        user_id INTEGER PRIMARY KEY,
+        last_rep TEXT
+        )
+       """)
         await db.execute("""CREATE TABLE IF NOT EXISTS users(
         user_id INTEGER PRIMARY KEY,
         coins INTEGER DEFAULT 0
