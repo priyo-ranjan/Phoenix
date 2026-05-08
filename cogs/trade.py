@@ -1,11 +1,11 @@
 import discord
 from discord.ext import commands
-active_trades = {}
 from database import (
     has_enough_coins,
     has_enough_gems,
     has_enough_crates
 )
+active_trades = {}
 
 class Trade(commands.Cog):
     def __init__(self, bot):
@@ -40,8 +40,8 @@ class Trade(commands.Cog):
         await ctx.send(
             f"{member.mention}, trade request started with {ctx.author.mention}"
         )
-    @commands.command()
-    async def add(self, ctx, amount:int, item:str):
+    @commands.command(name="offer")
+    async def offer(self, ctx, amount:int, item:str):
         if ctx.author.id not in active_trades:
             return await ctx.send("You are not in a trade.")
         item = item.lower()
