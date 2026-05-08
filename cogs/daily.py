@@ -146,7 +146,7 @@ class Daily(commands.Cog):
             description=(
                 f"{ctx.author.mention} claimed their daily reward.\n\n"
                 f"🌟 XP Reward: **{xp_reward} XP**\n"
-                f"🏆 XP Rarity: **{rarity}**"
+                f"🏆 XP Rarity: **{rarity}**\n"
 
                 f"🪙 Coin Reward: **{coin_reward}**\n"
                 f"💰 Coin Rarity: **{coin_rarity}**\n\n"
