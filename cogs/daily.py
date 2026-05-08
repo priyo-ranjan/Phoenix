@@ -196,8 +196,8 @@ class Daily(commands.Cog):
             title="💰 PHOENIX | BALANCE",
             description=(
                 f"👤 User: {member.mention}\n\n"
-                f"🪙 Coins: **{coins}**"
-                f"💎 Gems: **{gems}**"
+                f"🪙 Coins: **{coins}**\n"
+                f"💎 Gems: **{gems}**\n"
                 f"📦 Crates: **{crates}**"
             ),
             color=0xbb86fc
