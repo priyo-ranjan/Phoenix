@@ -36,14 +36,6 @@ async def setup_database():
         crates INTEGER DEFAULT 0
         )
        """)
-        try:
-            await db.execute("ALTER TABLE users ADD COLUMN gems INTEGER DEFAULT 0")
-        except:
-            pass
-        try:
-            await db.execute("ALTER TABLE users ADD COLUMN gems INTEGER DEFAULT 0")
-        except:
-            pass
 
         await db.commit()
 
@@ -269,7 +261,7 @@ async def get_coins(user_id):
         return data[0]
 
 async def get_gems(user_id):
-    async with aiosqlite.connect(DB_NAME)as db:
+    async with aiosqlite.connect(DB_NAME) as db:
         cursor = await db.execute(
             "SELECT gems FROM users WHERE user_id = ?",
             (str(user_id),)
