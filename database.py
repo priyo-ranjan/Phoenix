@@ -269,7 +269,7 @@ async def get_coins(user_id):
         return data[0]
 
 async def get_gems(user_id):
-    async with aiosqlite.connect("database.db") as db:
+    async with aiosqlite.connect(DB_NAME)as db:
         cursor = await db.execute(
             "SELECT gems FROM users WHERE user_id = ?",
             (str(user_id),)
@@ -288,11 +288,10 @@ async def get_gems(user_id):
 
 
 async def add_gems(user_id, amount):
-    async with aiosqlite.connect("database.db") as db:
-        await db.execute("""
-INSERT OR IGNORE INTO users(user_id, coins, gems, crates)
-VALUES(?, 0, 0, 0)
-""", (user_id,))
+    async with aiosqlite.connect(DB_NAME) as db:
+        await db.execute("""INSERT OR IGNORE INTO users(user_id, coins, gems, crates) VALUES(?, 0, 0, 0)""", 
+        (user_id,)
+        )
         await db.execute(
             "UPDATE users SET gems = gems + ? WHERE user_id = ?",
             (amount, str(user_id))
@@ -320,11 +319,10 @@ async def get_crates(user_id):
 
 
 async def add_crates(user_id, amount):
-    async with aiosqlite.connect("database.db") as db:
-        await db.execute("""
-INSERT OR IGNORE INTO users(user_id, coins, gems, crates)
-VALUES(?, 0, 0, 0)
-""", (user_id,))
+    async with aiosqlite.connect(DB_NAME) as db:
+        await db.execute("""INSERT OR IGNORE INTO users(user_id, coins, gems, crates) VALUES(?, 0, 0, 0)""", 
+        (user_id,)
+        )
         await db.execute(
             "UPDATE users SET crates = crates + ? WHERE user_id = ?",
             (amount, str(user_id))
