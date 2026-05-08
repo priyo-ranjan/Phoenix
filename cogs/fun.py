@@ -16,7 +16,7 @@ class Fun(commands.Cog):
             "Bro fights mosquitoes and loses",
             "You got 999 pings in real life",
             "Even Windows Updates faster than your brain",
-            "NPC Behaviour detected",
+            "lmao NPC behaviour detected",
             "Bro has negative FPS in real life"
         ]
         await ctx.send(random.choice(roasts))
