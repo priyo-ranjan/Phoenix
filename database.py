@@ -292,7 +292,7 @@ async def add_gems(user_id, amount):
 
 
 async def get_crates(user_id):
-    async with aiosqlite.connect("database.db") as db:
+    async with aiosqlite.connect(DB_NAME) as db:
         cursor = await db.execute(
             "SELECT crates FROM users WHERE user_id = ?",
             (str(user_id),)
