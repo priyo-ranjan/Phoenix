@@ -258,3 +258,57 @@ async def get_coins(user_id):
 
         return data[0]
 
+async def get_gems(user_id):
+    async with aiosqlite.connect("database.db") as db:
+        cursor = await db.execute(
+            "SELECT gems FROM economy WHERE user_id = ?",
+            (str(user_id),)
+        )
+        data = await cursor.fetchone()
+
+        if data is None:
+            await db.execute(
+                "INSERT INTO economy (user_id, coins, gems, crates) VALUES (?, 0, 0, 0)",
+                (str(user_id),)
+            )
+            await db.commit()
+            return 0
+
+        return data[0]
+
+
+async def add_gems(user_id, amount):
+    async with aiosqlite.connect("database.db") as db:
+        await db.execute(
+            "UPDATE economy SET gems = gems + ? WHERE user_id = ?",
+            (amount, str(user_id))
+        )
+        await db.commit()
+
+
+async def get_crates(user_id):
+    async with aiosqlite.connect("database.db") as db:
+        cursor = await db.execute(
+            "SELECT crates FROM economy WHERE user_id = ?",
+            (str(user_id),)
+        )
+        data = await cursor.fetchone()
+
+        if data is None:
+            await db.execute(
+                "INSERT INTO economy (user_id, coins, gems, crates) VALUES (?, 0, 0, 0)",
+                (str(user_id),)
+            )
+            await db.commit()
+            return 0
+
+        return data[0]
+
+
+async def add_crates(user_id, amount):
+    async with aiosqlite.connect("database.db") as db:
+        await db.execute(
+            "UPDATE economy SET crates = crates + ? WHERE user_id = ?",
+            (amount, str(user_id))
+        )
+        await db.commit()

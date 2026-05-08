@@ -8,7 +8,11 @@ from database import (
     add_xp,
     get_coins,
     add_coins,
-    add_rep
+    add_rep,
+    get_gems,
+    add_gems,
+    get_crates,
+    add_crates,
 )
 import random
 
@@ -121,9 +125,9 @@ class Daily(commands.Cog):
         elif bonus_type == "rep":
             await add_rep(ctx.author.id, bonus_amount)
         elif bonus_type == "crate":
-            pass
+            await add_crates(ctx.author.id, bonus_amount)
         elif bonus_type == "gems":
-            pass
+            await add_gems(ctx.author.id, bonus_amount)
 
         bonus_text = ""
         if bonus_type == "coins":
@@ -186,11 +190,15 @@ class Daily(commands.Cog):
     async def balance(self, ctx, member: discord.Member = None):
         member = member or ctx.author
         coins = await get_coins(member.id)
+        gems = await get_gems(member.id)
+        crates = await get_crates(member.id)
         embed = discord.Embed(
             title="💰 PHOENIX | BALANCE",
             description=(
                 f"👤 User: {member.mention}\n\n"
                 f"🪙 Coins: **{coins}**"
+                f"💎 Gems: **{gems}**"
+                f"📦 Crates: **{crates}**"
             ),
             color=0xbb86fc
         )
