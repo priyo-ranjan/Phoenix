@@ -168,7 +168,8 @@ class Trade(commands.Cog):
         del active_trades[ctx.author.id]
         if partner_id in active_trades:
             del active_trades[partner_id]
-        await ctx.send("Trade cancelled between {ctx.author.mention} and {partner_id}")
+        await ctx.send(
+            f"Trade cancelled between {ctx.author.mention} and {partner.mention}")
 
 async def setup(bot):
     await bot.add_cog(Trade(bot)) 
