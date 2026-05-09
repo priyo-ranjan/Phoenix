@@ -3,7 +3,10 @@ from discord.ext import commands
 from database import (
     has_enough_coins,
     has_enough_gems,
-    has_enough_crates
+    has_enough_crates,
+    transfer_coins,
+    transfer_gems,
+    transfer_crates
 )
 active_trades = {}
 
@@ -96,7 +99,45 @@ class Trade(commands.Cog):
         if(
             ctx.author.id in trade["confirmed"]
             and partner_id in partner_trade["confirmed"]
+
         ):
+            if trade["coins"] > 0:
+                await transfer_coins(
+                    ctx.author.id,
+                    partner_id,
+                    trade["coins"]
+                )
+            if partner_trade["coins"] > 0:
+                await transfer_coins(
+                    partner_id,
+                    ctx.author.id,
+                    partner_trade["coins"]
+                )
+            if trade["gems"] > 0:
+                await transfer_gems(
+                    ctx.author.id,
+                    partner_id,
+                    trade["gems"]
+                )
+            if partner_trade["gems"] > 0:
+                await transfer_gems(
+                    partner_id,
+                    ctx.author.id,
+                    partner_trade["gems"]
+                )
+            if trade["crates"] > 0:
+                await transfer_crates(
+                    ctx.author.id,
+                    partner_id,
+                    trade["crates"]
+                )
+            if partner_trade["crates"] > 0:
+                await transfer_crates(
+                    partner_id,
+                    ctx.author.id,
+                    partner_trade["crates"]
+                )
+
             await ctx.send("Trade Completed.")
             del active_trades[ctx.author.id]
             del active_trades[partner_id]
