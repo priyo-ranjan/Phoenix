@@ -68,6 +68,19 @@ class Trade(commands.Cog):
         )
 
     @commands.command()
+    async def remove(self, ctx, item:str):
+        if ctx.author.id not in active_trades:
+            return await ctx.send("You are not in a trade.")
+        item = item.lower()
+
+        if item not in ["coins", "crates", "gems"]:
+            return await ctx.send("Invalit item.")
+        active_trades[ctx.author.id][item] = 0
+        await ctx.send(
+            f"{ctx.author.mention} removed {item} from the trade."
+        )
+        
+    @commands.command()
     async def cancel(self, ctx):
         if ctx.author.id not in active_trades:
             return await ctx.send("You are not in a trade.")
@@ -76,6 +89,6 @@ class Trade(commands.Cog):
         if partner_id in active_trades:
             del active_trades[partner_id]
         await ctx.send("Trade cancelled")
-        
+
 async def setup(bot):
     await bot.add_cog(Trade(bot)) 
