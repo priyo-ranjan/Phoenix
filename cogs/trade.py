@@ -30,7 +30,7 @@ class Trade(commands.Cog):
             "crates": 0,
             "confirmed": False
         }
-        active_traders[member.id] = {
+        active_trades[member.id] = {
             "partner": ctx.author.id,
             "coins": 0,
             "gems": 0,
