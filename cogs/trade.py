@@ -168,6 +168,7 @@ class Trade(commands.Cog):
         del active_trades[ctx.author.id]
         if partner_id in active_trades:
             del active_trades[partner_id]
+        partner = ctx.guild.get_member(partner_id)
         await ctx.send(
             f"Trade cancelled between {ctx.author.mention} and {partner.mention}")
 
