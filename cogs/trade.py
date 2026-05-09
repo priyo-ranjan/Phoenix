@@ -67,6 +67,15 @@ class Trade(commands.Cog):
             f"{ctx.author.mention} added {amount} {item} to the trade."
         )
 
-  
+    @commands.command()
+    async def cancel(self, ctx):
+        if ctx.author.id not in active_trades:
+            return await ctx.send("You are not in a trade.")
+        partner_id = active_trades[ctx.author.id]["partner"]
+        del active_trades[ctx.author.id]
+        if partner_id in active_trades:
+            del active_trades[partner_id]
+        await ctx.send("Trade cancelled")
+        
 async def setup(bot):
     await bot.add_cog(Trade(bot)) 
