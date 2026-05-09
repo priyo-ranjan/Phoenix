@@ -28,14 +28,14 @@ class Trade(commands.Cog):
             "coins": 0,
             "gems": 0,
             "crates": 0,
-            "confirmed": False
+            "confirmed": []
         }
         active_trades[member.id] = {
             "partner": ctx.author.id,
             "coins": 0,
             "gems": 0,
             "crates": 0,
-            "confirmed": False
+            "confirmed": []
         }
         await ctx.send(
             f"{member.mention}, trade request started with {ctx.author.mention}"
@@ -79,7 +79,26 @@ class Trade(commands.Cog):
         await ctx.send(
             f"{ctx.author.mention} removed {item} from the trade."
         )
-        
+    
+    @commands.command()
+    async def confirm(self, ctx):
+        if ctx.author.id not in active_trades:
+            return await ctx.send("You are not in a trade.")
+        trade = active_trades[ctx.author.id]
+        partner_id = trade["partner"]
+
+        if ctx.author.id not in trade["confirmed"]:
+            trade["confirmed"].append(ctx.author.id)
+        await ctx.send(
+            f"{ctx.author.mention} confirmed the trade."
+        )
+        partner_trade = active_trades[partner_id]
+        if(
+            ctx.author.id in trade["confirmed"]
+            and partner_id in partner_trade["confirmed"]
+        ):
+            await ctx.send("Trade Completed.")
+
     @commands.command()
     async def cancel(self, ctx):
         if ctx.author.id not in active_trades:
