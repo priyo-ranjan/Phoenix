@@ -98,6 +98,8 @@ class Trade(commands.Cog):
             and partner_id in partner_trade["confirmed"]
         ):
             await ctx.send("Trade Completed.")
+            del active_trades[ctx.author.id]
+            del active_trades[partner_id]
 
     @commands.command()
     async def cancel(self, ctx):
