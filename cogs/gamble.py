@@ -43,18 +43,28 @@ class Gamble(commands.Cog):
         await remove_coins(ctx.author.id, amount)
 
         result = generate_flip_result()
+        fakeout = random.randint(1, 100) <= 20
 
         message = await ctx.send(
-        "Flipping the coin..."
+        "🪙 Flipping the coin..."
     )
-        await asncio.sleep(2)
-        
+        await asyncio.sleep(2)
+            
         if result == "win":
+            if fakeout:
+              await message.edit(
+                content=f"💀 You lost `{amount}` coins...")
+              await asyncio.sleep(2)
+              await message.edit(
+                content="🔥 PHOENIX BLESSING ACTIVATED"
+            )
+              await asyncio.sleep(1)
             winnings = amount * 2
             await add_coins(
                 ctx.author.id,
                 winnings
             )
+            
             embed = discord.Embed(
               title="🎲 Coin Flip",
               description=(
