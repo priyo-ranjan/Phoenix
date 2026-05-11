@@ -48,8 +48,16 @@ class Gamble(commands.Cog):
 
             return await ctx.send(f"You lost {amount} coins")
 
+    @commands.command()
+    @commands.is_owner()
+    async def givecoins(self, ctx, member : discord.Member, amount: int):
+        if amount <= 0:
+            return await ctx.send("Amount must be positive.")
+        await add_coins(member.id, amount)
+        await ctx.send(f"Gave {amount} coins to {member.mention}."
+        )
 async def setup(bot):
-    await bot.add_Cog(Gamble(bot))
+    await bot.add_cog(Gamble(bot))
 
 
 
