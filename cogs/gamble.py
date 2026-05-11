@@ -58,7 +58,7 @@ class Gamble(commands.Cog):
             embed.set_footer(
               text= f"{ctx.author.name} is feeling lucky 🍀"
         )
-            await ctx.send(embed=embed)
+            return await ctx.send(embed=embed)
 
         else:
             embed = discord.Embed(
@@ -73,7 +73,7 @@ class Gamble(commands.Cog):
             embed.set_footer(
               text= f"Better luck next time, {ctx.author.name}"
         )
-            await ctx.send(embed=embed)
+            return await ctx.send(embed=embed)
             
 
     @commands.command()
