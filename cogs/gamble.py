@@ -64,8 +64,11 @@ class Gamble(commands.Cog):
                 await asyncio.sleep(2)
                 await message.edit(content="🔥 PHOENIX BLESSING ACTIVATED")
                 await asyncio.sleep(1)
-
-            data["win_streak"] += 1
+           
+            if amount >= 100:
+              data["win_streak"] += 1
+            else:
+              data["win_streak"] = 0
             data["loss_streak"] = 0
             data["total_wins"] += 1
 
@@ -78,6 +81,7 @@ class Gamble(commands.Cog):
                     f"💰 Bet: {amount} coins\n"
                     f"🌟 Result: **WIN**\n"
                     f"🪙 Received: `{winnings}` coins"
+                    f"🔥 Streak: `{data['win_streak']}\n"
                 ),
                 color=discord.Color.green()
             )
