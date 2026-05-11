@@ -45,19 +45,18 @@ class Gamble(commands.Cog):
         result = generate_flip_result()
         fakeout = random.randint(1, 100) <= 20
 
-        message = await ctx.send(
-        "🪙 Flipping the coin..."
-    )
+        message = await ctx.send("🪙 Flipping the coin...")
         await asyncio.sleep(2)
             
         if result == "win":
             if fakeout:
               await message.edit(
-                content=f"💀 You lost `{amount}` coins...")
+                content=f"💀 You lost `{amount}` coins..."
+                )
               await asyncio.sleep(2)
               await message.edit(
                 content="🔥 PHOENIX BLESSING ACTIVATED"
-            )
+                )
               await asyncio.sleep(1)
             winnings = amount * 2
             await add_coins(
@@ -70,7 +69,7 @@ class Gamble(commands.Cog):
               description=(
                 f"💰 Bet: `{amount}` coins\n"
                 f"🌟 Result: **WIN**\n"
-                f"🪙 Received: `{WINNINGS}` coins"
+                f"🪙 Received: `{winnings}` coins"
             ),
               color = discord.Color.green()
         )
