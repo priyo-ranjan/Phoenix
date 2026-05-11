@@ -7,13 +7,19 @@ from database import (
     remove_coins
 )
 import random
+import asyncio
 
 def generate_flip_result():
+    message = await ctx.send(
+        "Flipping the coin..."
+    )
+    await asncio.sleep(2)
     roll = random.randint(1, 100)
     if roll <= 48:
         return "win"
     else:
         return "loss"
+    
 
 class Gamble(commands.Cog):
     def __init__(self,bot):
@@ -58,7 +64,10 @@ class Gamble(commands.Cog):
             embed.set_footer(
               text= f"{ctx.author.name} is feeling lucky 🍀"
         )
-            return await ctx.send(embed=embed)
+            return await message.edit(
+                content=None,
+                embed=embed
+            )
 
         else:
             embed = discord.Embed(
@@ -73,7 +82,10 @@ class Gamble(commands.Cog):
             embed.set_footer(
               text= f"Better luck next time, {ctx.author.name}"
         )
-            return await ctx.send(embed=embed)
+            return await message.edit(
+                content=None,
+                embed=embed
+            )
             
 
     @commands.command()
