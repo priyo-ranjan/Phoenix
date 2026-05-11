@@ -47,7 +47,7 @@ class Gamble(commands.Cog):
             )
             return await ctx.send(f"You won the flip and received {winnings} coins")
         else:
-            return await ctx.send(f"You lost {amount} coins")
+            return await ctx.send(f"You bet and lost {amount} coins.")
 
     @commands.command()
     @commands.is_owner()
