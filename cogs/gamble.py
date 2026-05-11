@@ -36,6 +36,7 @@ class Gamble(commands.Cog):
             return await ctx.send("Bet must be positive.")
         if not await has_enough_coins(ctx.author.id, amount):
             return await ctx.send("You do not have enough coins.")
+        
 
         await remove_coins(ctx.author.id, amount)
         result = generate_flip_result()
@@ -45,9 +46,35 @@ class Gamble(commands.Cog):
                 ctx.author.id,
                 winnings
             )
-            return await ctx.send(f"You won the flip and received {winnings} coins")
+            embed = discord.Embed(
+              title="🎲 Coin Flip",
+              description=(
+                f"💰 Bet: `{amount}` coins\n"
+                f"🌟 Result: **WIN**\n"
+                f"🪙 Received: `{WINNINGS}` coins"
+            ),
+              color = discord.Color.green()
+        )
+            embed.set_footer(
+              text= f"{ctx.author.name} is feeling lucky 🍀"
+        )
+            await ctx.send(embed=embed)
+
         else:
-            return await ctx.send(f"You bet and lost {amount} coins.")
+            embed = discord.Embed(
+              title="🎲 Coin Flip",
+              description=(
+                f"💰 Bet: `{amount}` coins\n"
+                f"💀 Result: **LOSS**\n"
+                f"🪙 Received: `{amount}` coins"
+            ),
+              color = discord.Color.red()
+        )
+            embed.set_footer(
+              text= f"Better luck next time, {ctx.author.name}"
+        )
+            await ctx.send(embed=embed)
+            
 
     @commands.command()
     @commands.is_owner()
