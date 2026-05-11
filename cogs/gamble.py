@@ -87,7 +87,7 @@ class Gamble(commands.Cog):
               description=(
                 f"💰 Bet: `{amount}` coins\n"
                 f"💀 Result: **LOSS**\n"
-                f"🪙 Received: `{amount}` coins"
+                f"🪙 LOST: `{amount}` coins"
             ),
               color = discord.Color.red()
         )
