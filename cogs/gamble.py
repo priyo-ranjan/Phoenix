@@ -10,10 +10,6 @@ import random
 import asyncio
 
 def generate_flip_result():
-    message = await ctx.send(
-        "Flipping the coin..."
-    )
-    await asncio.sleep(2)
     roll = random.randint(1, 100)
     if roll <= 48:
         return "win"
@@ -45,7 +41,14 @@ class Gamble(commands.Cog):
         
 
         await remove_coins(ctx.author.id, amount)
+
         result = generate_flip_result()
+
+        message = await ctx.send(
+        "Flipping the coin..."
+    )
+        await asncio.sleep(2)
+        
         if result == "win":
             winnings = amount * 2
             await add_coins(
