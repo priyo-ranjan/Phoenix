@@ -12,8 +12,8 @@ def generate_flip_result():
     roll = random.randint(1, 100)
     if roll <= 48:
         return "win"
-
-    return "loss"
+    else:
+        return "loss"
 
 class Gamble(commands.Cog):
     def __init__(self,bot):
@@ -46,7 +46,7 @@ class Gamble(commands.Cog):
                 winnings
             )
             return await ctx.send(f"You won the flip and received {winnings} coins")
-
+        else:
             return await ctx.send(f"You lost {amount} coins")
 
     @commands.command()
