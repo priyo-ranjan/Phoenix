@@ -72,7 +72,15 @@ class Gamble(commands.Cog):
             data["loss_streak"] = 0
             data["total_wins"] += 1
 
-            winnings = amount * 2
+            multiplier = 2
+            if data["win_streak"] >= 3:
+                multiplier = 2.2
+            if data["win_streak"] >= 5:
+                multiplier = 2.5
+            if data["win_streak"] >= 8:
+                multiplier = 3
+
+            winnings = int(amount * multiplier)
             await add_coins(ctx.author.id, winnings)
 
             embed = discord.Embed(
