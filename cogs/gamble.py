@@ -67,8 +67,7 @@ class Gamble(commands.Cog):
            
             if amount >= 100:
               data["win_streak"] += 1
-            else:
-              data["win_streak"] = 0
+            
             data["loss_streak"] = 0
             data["total_wins"] += 1
 
