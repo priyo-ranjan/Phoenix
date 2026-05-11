@@ -105,6 +105,7 @@ class Gamble(commands.Cog):
 
             return await message.edit(content=None, embed=embed)
         else:
+            previous_streak = data["win_streak"]
             data["loss_streak"] += 1
             data["win_streak"] = 0
             data["total_losses"] += 1
@@ -115,6 +116,7 @@ class Gamble(commands.Cog):
                     f"💰 Bet: {amount} coins\n"
                     f"❌ Result: **LOSS**\n"
                     f"📉 Lost: `{amount}` coins"
+                    f"💔 Streak Lost: {previous_streak}\n"
                 ),
                 color=discord.Color.red()
             )
