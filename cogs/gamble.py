@@ -96,8 +96,8 @@ class Gamble(commands.Cog):
                 description=(
                     f"💰 Bet: {amount} coins\n"
                     f"🌟 Result: **WIN**\n"
-                    f"🪙 Received: `{winnings}` coins"
-                    f"🔥 Streak: `{data['win_streak']}\n"
+                    f"🪙 Received: `{winnings}` coins\n"
+                    f"🔥 Streak: `{data['win_streak']}`\n"
                 ),
                 color=discord.Color.green()
             )
@@ -115,7 +115,7 @@ class Gamble(commands.Cog):
                 description=(
                     f"💰 Bet: {amount} coins\n"
                     f"❌ Result: **LOSS**\n"
-                    f"📉 Lost: `{amount}` coins"
+                    f"📉 Lost: `{amount}` coins\n"
                     f"💔 Streak Lost: {previous_streak}\n"
                 ),
                 color=discord.Color.red()
