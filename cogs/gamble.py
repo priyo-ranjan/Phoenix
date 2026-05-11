@@ -8,6 +8,8 @@ from database import (
 )
 import random
 import asyncio
+gambling_stats = {}
+
 
 def generate_flip_result():
     roll = random.randint(1, 100)
@@ -15,6 +17,17 @@ def generate_flip_result():
         return "win"
     else:
         return "loss"
+
+def get_gambling_data(user_id):
+        if user_id not in gambling_stats:
+            gambling_stats[user_id] = {
+                "win_streak": 0,
+                "loss_streak": 0,
+                "total_wins": 0,
+                "total_loses": 0
+            }
+        return gambling_stats[user_id]
+
     
 
 class Gamble(commands.Cog):
@@ -43,6 +56,7 @@ class Gamble(commands.Cog):
         await remove_coins(ctx.author.id, amount)
 
         result = generate_flip_result()
+        data = get_gambling_data(ctx.author.id)
         fakeout = random.randint(1, 100) <= 20
 
         message = await ctx.send("🪙 Flipping the coin...")
@@ -63,6 +77,9 @@ class Gamble(commands.Cog):
                 ctx.author.id,
                 winnings
             )
+            data["win_streak"] += 1
+            data["loss_streak"] = 0
+            data["total_wins"] += 1
             
             embed = discord.Embed(
               title="🎲 Coin Flip",
@@ -82,6 +99,11 @@ class Gamble(commands.Cog):
             )
 
         else:
+
+            data["loss_streal"] += 1
+            data["win_streak"] = 0
+            data["total_losses"] += 1
+            
             embed = discord.Embed(
               title="🎲 Coin Flip",
               description=(
