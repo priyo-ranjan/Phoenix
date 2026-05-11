@@ -42,6 +42,7 @@ async def on_ready():
     await bot.load_extension("cogs.logging")
     await bot.load_extension("cogs.daily")
     await bot.load_extension("cogs.trade")
+    await bot.load_extension("cogs.gamble")
     print(f"{bot.user} is online!")
 
 bot.run(TOKEN)
