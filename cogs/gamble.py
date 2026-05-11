@@ -7,8 +7,9 @@ from database import (
     remove_coins
 )
 import random
+
 def generate_flip_result():
-    roll = random.randit(1, 100)
+    roll = random.randint(1, 100)
     if roll <= 48:
         return "win"
 
