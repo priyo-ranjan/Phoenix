@@ -83,8 +83,16 @@ class Gamble(commands.Cog):
             winnings = int(amount * multiplier)
             await add_coins(ctx.author.id, winnings)
 
+            title = "🪙 Coin Flip"
+            if data["win_streak"] >= 3:
+                title = "🔥 Hot Streak"
+            if data["win_streak"] >= 5:
+                title = "⚡️ Phoenix Gambler"
+            if data["win_streak"] >= 8:
+                title = "👑 Casino Monster"
+
             embed = discord.Embed(
-                title="🎲 Coin Flip",
+                title=title,
                 description=(
                     f"💰 Bet: {amount} coins\n"
                     f"🌟 Result: **WIN**\n"
