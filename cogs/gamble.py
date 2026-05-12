@@ -153,7 +153,7 @@ class Gamble(commands.Cog):
     @commands.command()
     async def profile(self, ctx):
 
-        coins = get_coins(ctx.author.id)
+        coins = await get_coins(ctx.author.id)
 
         data = get_gambling_data(ctx.author.id)
 
