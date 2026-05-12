@@ -181,7 +181,7 @@ class Gamble(commands.Cog):
                 f"💎 Gems: 0\n"
                 f"📦 Crates: 0"
         ),
-            inline=False
+            inline=True
     )
 
         embed.add_field(
@@ -194,7 +194,7 @@ class Gamble(commands.Cog):
                 f"📈 Win Rate: {winrate}%\n"
                 f"💸 Biggest Win: {data['biggest_win']}"
         ),
-                inline=False
+                inline=True
     )
 
         embed.add_field(
