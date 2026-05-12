@@ -24,9 +24,23 @@ def get_gambling_data(user_id):
             "win_streak": 0,
             "loss_streak": 0,
             "total_wins": 0,
-            "total_losses": 0
+            "total_losses": 0,
+            "highest_streak": 0,
+            "biggest_win": 0
         }
     return gambling_stats[user_id]
+
+def get_rank(total_wins):
+    if total_wins >= 1000:
+        return "👑 Casino King"
+    elif total_wings >= 500:
+        return "🔥 High Roller"
+    elif total_wins >= 100:
+        return "🎲 Gambler"
+    elif total_wings >= 25:
+        return "🪙 Risk Taker"
+    else:
+        return "☘️ Beginner"
 
 class Gamble(commands.Cog):
     def __init__(self, bot):
@@ -67,11 +81,12 @@ class Gamble(commands.Cog):
            
             if amount >= 100:
               data["win_streak"] += 1
-            else:
-              data["win_streak"] = 0
+              if data["win_streak"] > data["highest_streak"]:
+                data["highest_streak"] = data["win_streak"]
+
             data["loss_streak"] = 0
             data["total_wins"] += 1
-
+            
             multiplier = 2
             if data["win_streak"] >= 3:
                 multiplier = 2.2
@@ -81,6 +96,9 @@ class Gamble(commands.Cog):
                 multiplier = 3
 
             winnings = int(amount * multiplier)
+            if winnings > data["biggest_win"]:
+                data["biggest_win"] = winnings
+
             await add_coins(ctx.author.id, winnings)
 
             title = "🪙 Coin Flip"
@@ -131,6 +149,65 @@ class Gamble(commands.Cog):
             return await ctx.send("Amount must be positive.")
         await add_coins(member.id, amount)
         await ctx.send(f"Gave {amount} coins to {member.mention}.")
+
+    @commands.command()
+    async def profile(self, ctx):
+
+        coins = get_coins(ctx.author.id)
+
+        data = get_gambling_data(ctx.author.id)
+
+        total_games = data["total_wins"] + data["total_losses"]
+
+        if total_games == 0:
+            winrate = 0
+        else:
+            winrate = round(
+            (data["total_wins"] / total_games) * 100,
+            1
+        )
+
+        rank = get_rank(data["total_wins"])
+
+        embed = discord.Embed(
+            title="👤 Phoenix Profile",
+            color=discord.Color.purple()
+    )
+
+        embed.add_field(
+            name="💰 Economy",
+            value=(
+                f"🪙 Coins: {coins}\n"
+                f"💎 Gems: 0\n"
+                f"📦 Crates: 0"
+        ),
+            inline=False
+    )
+
+        embed.add_field(
+            name="🎰 Gambling Stats",
+            value=(
+                f"🔥 Current Streak: {data['win_streak']}\n"
+                f"🏆 Highest Streak: {data['highest_streak']}\n"
+                f"🌟 Total Wins: {data['total_wins']}\n"
+                f"💀 Total Losses: {data['total_losses']}\n"
+                f"📈 Win Rate: {winrate}%\n"
+                f"💸 Biggest Win: {data['biggest_win']}"
+        ),
+                inline=False
+    )
+
+        embed.add_field(
+            name="🎖 Rank",
+            value=rank,
+            inline=False
+    )
+
+        embed.set_footer(
+            text="Phoenix Economy System"
+    )
+
+        await ctx.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Gamble(bot))
