@@ -33,11 +33,11 @@ def get_gambling_data(user_id):
 def get_rank(total_wins):
     if total_wins >= 1000:
         return "👑 Casino King"
-    elif total_wings >= 500:
+    elif total_wins >= 500:
         return "🔥 High Roller"
     elif total_wins >= 100:
         return "🎲 Gambler"
-    elif total_wings >= 25:
+    elif total_wins >= 25:
         return "🪙 Risk Taker"
     else:
         return "☘️ Beginner"
