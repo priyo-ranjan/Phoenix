@@ -4,75 +4,15 @@ from database import (
     has_enough_coins,
     get_coins,
     add_coins,
-    remove_coins
+    remove_coins,
+    get_gambling_data,
+    update_gambling_data
 )
 import random
 import asyncio
+import aiosqlite
 
 gambling_stats = {}
-
-async def get_gambling_data(user_id):
-    async with aiosqlite.connect("economy.db") as db:
-        cursor = await db.execute(
-            """
-            SELECT
-            win_streak,
-            loss_streak,
-            highest_streak,
-            total_wins,
-            total_losses,
-            biggest_win
-
-            FROM users
-            WHERE user_id = ?
-            """,
-            (user_id,)
-        )
-        row = await cursor.fetchnone()
-        if row is None:
-            return {
-                "win_streak": 0,
-                "loss_streak": 0,
-                "highest_streak": 0,
-                "total_wins": 0,
-                "total_losses": 0,
-                "biggest_win": 0
-            }
-        return {
-            "win_streak": row[0],
-            "loss_streak": row[1],
-            "highest_streak": row[2],
-            "total_wins": row[3],
-            "total_losses": row[4],
-            "biggest_win": row[5]
-        }
-async def update_gambling_data(user_id, data):
-    async with aiosqlite.connect("economy.db") as db:
-        await db.execute(
-        """
-        UPDATE users
-        SET
-        win_streak = ?,
-        loss_streak = ?,
-        highest_streak = ?,
-        total_wins = ?,
-        total_losses = ?,
-        biggest_win = ?
-
-        WHERE user_id = ?
-        """,
-        (
-            data["win_streak"],
-            data["loss_streak"],
-            data["highest_streak"],
-            data["total_wins"],
-            data["total_losses"],
-            data["biggest_win"],
-            user_id
-              )    
-        )
-
-        await db.commit()
 
 def generate_flip_result():
     roll = random.randint(1, 100)
@@ -80,18 +20,6 @@ def generate_flip_result():
         return "win"
     else:
         return "loss"
-
-def get_gambling_data(user_id):
-    if user_id not in gambling_stats:
-        gambling_stats[user_id] = {
-            "win_streak": 0,
-            "loss_streak": 0,
-            "total_wins": 0,
-            "total_losses": 0,
-            "highest_streak": 0,
-            "biggest_win": 0
-        }
-    return gambling_stats[user_id]
 
 def get_rank(total_wins):
     if total_wins >= 1000:
