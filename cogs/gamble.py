@@ -161,6 +161,8 @@ class Gamble(commands.Cog):
     async def profile(self, ctx):
 
         coins = await get_coins(ctx.author.id)
+        gems = await get_gems(ctx.author.id)
+        crates = await get_crates(ctx.author.id)
 
         data = await get_gambling_data(ctx.author.id)
 
@@ -185,8 +187,8 @@ class Gamble(commands.Cog):
             name="💰 Economy",
             value=(
                 f"🪙 Coins: {coins}\n"
-                f"💎 Gems: 0\n"
-                f"📦 Crates: 0"
+                f"💎 Gems: {gems}\n"
+                f"📦 Crates: {crates}"
         ),
             inline=False
     )
