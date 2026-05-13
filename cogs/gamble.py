@@ -6,7 +6,13 @@ from database import (
     add_coins,
     remove_coins,
     get_gambling_data,
-    update_gambling_data
+    update_gambling_data,
+    get_crates,
+    has_enough_crates,
+    add_crates,
+    remove_crates,
+    add_gems,
+    get_gems
 )
 import random
 import asyncio
@@ -183,7 +189,7 @@ class Gamble(commands.Cog):
                 f"🔥 Current Streak: {data['win_streak']}\n"
                 f"🏆 Highest Streak: {data['highest_streak']}\n"
                 f"🌟 Total Wins: {data['total_wins']}\n"
-                f"💀 Total Losses: {data['total_losses']}\n"
+                f"💎 Total Losses: {data['total_losses']}\n"
                 f"📈 Win Rate: {winrate}%\n"
                 f"💸 Biggest Win: {data['biggest_win']}"
         ),
@@ -201,6 +207,61 @@ class Gamble(commands.Cog):
     )
 
         await ctx.send(embed=embed)
+    @commands.command()
+    async def opencrate(seld, ctx):
+        crates = await get_crates(ctx.author.id)
+        if crates <= 0:
+            return await ctx.send(
+                "📦 You do not have any crates."
+            )
+        await remove_crates(ctx.author.id, 1)
+        message = await ctx.send(
+            "📦 Opening crate..."
+        )
+        await asyncio.sleep(2)
+        roll = random.randint(1, 100)
+        if roll <= 40:
+            reward = random.randint(100, 300)
+            await add_coins(ctx.author.id, reward)
+            embed = discord.Embed(
+                title="💰 Common Reward",
+                description=f"You received {reward} coins.",
+                color = discord.Color.green()
+            )
+        elif roll <= 70:
+            reward = random.randint(400, 800)
+            await add_coins(ctx.author.id, reward)
+            embed = discord.Embed(
+                title="🌟 Rare Reward",
+                description=f"You received {reward} coins.",
+                color = discord.Color.blue()
+            )
+        elif roll <= 90:
+            reward = random.randint(1, 3)
+            await add_gems(ctx.author.id, reward)
+            embed = discord.Embed(
+                title="💎 Gem drop",
+                description=f"You received {gems} gems.",
+                color = discord.Color.purple()
+            )
+        elif roll <= 97:
+            jackpot = random.randint(2000, 5000)
+            await add_coins(ctx.author.id, jackpot)
+            embed = discord.Embed(
+                title="🔥 JACKPOT",
+                description=f"You have won {jackpot} coins!",
+                color = discord.Color.gold()
+            )
+        else:
+            loss = random.randint(100, 500)
+            await remove_coins(ctx.author.id, loss)
+            embed = discord.Embed(
+                title="💀 CURSED CRATE",
+                description=f"The crate stole {loss} coins.",
+                color = discord.Color.red()
+            )
+            await message.edit(content=None, embed=embed)
+
 
 async def setup(bot):
     await bot.add_cog(Gamble(bot))
