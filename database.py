@@ -468,7 +468,7 @@ async def get_gambling_data(user_id):
             """,
             (user_id,)
         )
-        row = await cursor.fetchnone()
+        row = await cursor.fetchone()
         if row is None:
             return {
                 "win_streak": 0,
