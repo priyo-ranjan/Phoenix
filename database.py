@@ -452,7 +452,7 @@ async def transfer_crates(from_user, to_user, amount):
   
 async def get_gambling_data(user_id):
 
-    async with aiosqlite.connect("economy.db") as db:
+    async with aiosqlite.connect(DB_NAME) as db:
         cursor = await db.execute(
             """
             SELECT
@@ -486,9 +486,9 @@ async def get_gambling_data(user_id):
             "total_losses": row[4],
             "biggest_win": row[5]
         }
-        
+
 async def update_gambling_data(user_id, data):
-    async with aiosqlite.connect("economy.db") as db:
+    async with aiosqlite.connect(DB_NAME) as db:
         await db.execute(
         """
         UPDATE users
