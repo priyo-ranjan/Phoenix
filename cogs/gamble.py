@@ -11,6 +11,69 @@ import asyncio
 
 gambling_stats = {}
 
+async def get_gambling_data(user_id):
+    async with aiosqlite.connect("economy.db") as db:
+        cursor = await db.execute(
+            """
+            SELECT
+            win_streak,
+            loss_streak,
+            highest_streak,
+            total_wins,
+            total_losses,
+            biggest_win
+
+            FROM users
+            WHERE user_id = ?
+            """,
+            (user_id,)
+        )
+        row = await cursor.fetchnone()
+        if row is None:
+            return {
+                "win_streak": 0,
+                "loss_streak": 0,
+                "highest_streak": 0,
+                "total_wins": 0,
+                "total_losses": 0,
+                "biggest_win": 0
+            }
+        return {
+            "win_streak": row[0],
+            "loss_streak": row[1],
+            "highest_streak": row[2],
+            "total_wins": row[3],
+            "total_losses": row[4],
+            "biggest_win": row[5]
+        }
+async def update_gambling_data(user_id, data):
+    async with aiosqlite.connect("economy.db") as db:
+        await db.execute(
+        """
+        UPDATE users
+        SET
+        win_streak = ?,
+        loss_streak = ?,
+        highest_streak = ?,
+        total_wins = ?,
+        total_losses = ?,
+        biggest_win = ?
+
+        WHERE user_id = ?
+        """,
+        (
+            data["win_streak"],
+            data["loss_streak"],
+            data["highest_streak"],
+            data["total_wins"],
+            data["total_losses"],
+            data["biggest_win"],
+            user_id
+              )    
+        )
+
+        await db.commit()
+
 def generate_flip_result():
     roll = random.randint(1, 100)
     if roll <= 48:
@@ -66,7 +129,7 @@ class Gamble(commands.Cog):
         await remove_coins(ctx.author.id, amount)
 
         result = generate_flip_result()
-        data = get_gambling_data(ctx.author.id)
+        data = await get_gambling_data(ctx.author.id)
         fakeout = random.randint(1, 100) <= 20
 
         message = await ctx.send("🪙 Flipping the coin...")
@@ -98,6 +161,7 @@ class Gamble(commands.Cog):
             winnings = int(amount * multiplier)
             if winnings > data["biggest_win"]:
                 data["biggest_win"] = winnings
+            await update_gambling_data(ctx.author.id, data)
 
             await add_coins(ctx.author.id, winnings)
 
@@ -127,6 +191,7 @@ class Gamble(commands.Cog):
             data["loss_streak"] += 1
             data["win_streak"] = 0
             data["total_losses"] += 1
+            await update_gambling_data(ctx.author.id, data)
 
             embed = discord.Embed(
                 title="💀 Coin Flip",
@@ -181,7 +246,7 @@ class Gamble(commands.Cog):
                 f"💎 Gems: 0\n"
                 f"📦 Crates: 0"
         ),
-            inline=True
+            inline=False
     )
 
         embed.add_field(
@@ -194,7 +259,7 @@ class Gamble(commands.Cog):
                 f"📈 Win Rate: {winrate}%\n"
                 f"💸 Biggest Win: {data['biggest_win']}"
         ),
-                inline=True
+                inline=False
     )
 
         embed.add_field(

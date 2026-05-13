@@ -29,11 +29,18 @@ async def setup_database():
         last_rep TEXT
         )
        """)
+
         await db.execute("""CREATE TABLE IF NOT EXISTS users(
         user_id INTEGER PRIMARY KEY,
         coins INTEGER DEFAULT 0,
         gems INTEGER DEFAULT 0,
-        crates INTEGER DEFAULT 0
+        crates INTEGER DEFAULT 0,
+        win_streak INTEGER DEFAULT 0,
+        loss_streak INTEGER DEFAULT 0,
+        highest_streak INTEGER DEFAULT 0,
+        total_wins INTEGER DEFAULT 0,
+        total_losses INTEGER DEFAULT 0,
+        biggest_win INTEGER DEFAULT 0
         )
        """)
         try:
@@ -46,6 +53,42 @@ async def setup_database():
             await db.execute(
         "ALTER TABLE users ADD COLUMN gems INTEGER DEFAULT 0"
     )
+        except:
+            pass
+        try:
+            await db.execute(
+        "ALTER TABLE users ADD COLUMN win_streak INTEGER DEFAULT 0"
+            )
+        except:
+            pass
+        try:
+            await db.execute(
+        "ALTER TABLE users ADD COLUMN loss_streak INTEGER DEFAULT 0"
+            )
+        except:
+            pass
+        try:
+            await db.execute(
+        "ALTER TABLE users ADD COLUMN highest_streak INTEGER DEFAULT 0"
+            )
+        except:
+            pass
+        try:
+            await db.execute(
+        "ALTER TABLE users ADD COLUMN total_wins INTEGER DEFAULT 0"
+            )
+        except:
+            pass
+        try:
+            await db.execute(
+        "ALTER TABLE users ADD COLUMN total_losses INTEGER DEFAULT 0"
+            )
+        except:
+            pass
+        try:
+            await db.execute(
+        "ALTER TABLE users ADD COLUMN biggest_win INTEGER DEFAULT 0"
+            )
         except:
             pass
 
