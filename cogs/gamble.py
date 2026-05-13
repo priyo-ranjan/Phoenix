@@ -148,7 +148,7 @@ class Gamble(commands.Cog):
 
         coins = await get_coins(ctx.author.id)
 
-        data = get_gambling_data(ctx.author.id)
+        data = await get_gambling_data(ctx.author.id)
 
         total_games = data["total_wins"] + data["total_losses"]
 
