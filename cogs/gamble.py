@@ -67,7 +67,7 @@ class Gamble(commands.Cog):
             if fakeout:
                 await message.edit(content=f"💀 You lost {amount} coins...")
                 await asyncio.sleep(2)
-                await message.edit(content="🔥 PHOENIX BLESSING ACTIVATED")
+                await message.edit(content="🔥 BLESSING OF PHOENIX ACTIVATED")
                 await asyncio.sleep(1)
            
             if amount >= 100:
