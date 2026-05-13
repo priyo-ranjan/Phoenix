@@ -230,7 +230,7 @@ class Gamble(commands.Cog):
             )
         await remove_crates(ctx.author.id, amount)
         message = await ctx.send(
-            "📦 Opening crate..."
+            "📦 Opening crate(sS)..."
         )
         await asyncio.sleep(2)
 
