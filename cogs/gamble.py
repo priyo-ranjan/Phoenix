@@ -220,7 +220,7 @@ class Gamble(commands.Cog):
 
 
     @commands.command(aliases=["crate", "open"])
-    async def opencrate(seld, ctx, amount: int = 1):
+    async def opencrate(self, ctx, amount: int = 1):
         if amount <= 0:
             return await ctx.send(
                 "📦 Amount must be positive."
@@ -228,7 +228,7 @@ class Gamble(commands.Cog):
         crates = await get_crates(ctx.author.id)
         if crates < amount:
             return await ctx.send(
-                "📦 You only have {crates} crates."
+                f"📦 You only have {crates} crates."
             )
         await remove_crates(ctx.author.id, amount)
         message = await ctx.send(
@@ -242,27 +242,24 @@ class Gamble(commands.Cog):
         jackpots = 0
 
         for _ in range(amount):
-         roll = random.randint(1, 100)
-         if roll <= 40:
-            reward = random.randint(100, 300)
-            total_coins += reward
-          
-         elif roll <= 70:
-            reward = random.randint(400, 800)
-            total_coins += reward
-           
-         elif roll <= 90:
-            gems = random.randint(1, 3)
-            total_gems += gems
-            
-         elif roll <= 97:
-            jackpot = random.randint(2000, 5000)
-            total_coins += jackpot
-            jackpots += 1
-           
-         else:
-            loss = random.randint(100, 500)
-            total_lost += loss
+            roll = random.randint(1, 100)
+            if roll <= 40:
+                reward = random.randint(100, 300)
+                total_coins += reward
+            elif roll <= 70:
+                reward = random.randint(400, 800)
+                total_coins += reward
+            elif roll <= 90:
+                gems = random.randint(1, 2)
+                total_gems += gems
+            elif roll <= 97:
+                jackpot = random.randint(2000, 4000)
+                total_coins += jackpot
+                jackpots += 1
+            else:
+                loss = random.randint(100, 500)
+                total_lost += loss
+
         if total_coins > 0:
             await add_coins(ctx.author.id, total_coins)
         if total_gems > 0:

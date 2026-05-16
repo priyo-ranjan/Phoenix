@@ -31,16 +31,16 @@ class Levels(commands.Cog):
                     description = f"{message.author.mention} just reached **Level {new_level}**!",
                     color = 0xbb86fc
                 )
-        embed.set_thumbnail(url=message.author.display_avatar.url)
-        embed.set_footer(text="Keep chatting to climb higher!")
-        await channel.send(embed=embed)
+                embed.set_thumbnail(url=message.author.display_avatar.url)
+                embed.set_footer(text="Keep chatting to climb higher!")
+                await channel.send(embed=embed)
 
 
     @commands.command(name="rank")
     async def rank(self, ctx, member: discord.Member = None):
         member = member or ctx.author
         data = await get_user_data(member.id)
-        
+
         if data is None:
             await ctx.send("No stats found for this user.")
             return
@@ -53,11 +53,11 @@ class Levels(commands.Cog):
         embed.set_author(name=f"{member.name}'s Progression", icon_url=member.display_avatar.url)
         embed.add_field(name="🏆 Level", value=f"**{lvl}**", inline=True)
         embed.add_field(name="🧠 Experience", value=f"**{xp} / {needed}**", inline=True)
-        
+
         progress = int((xp / needed) * 10)
         bar = "▰" * progress + "▱" * (10 - progress)
         embed.add_field(name="📊 Progress Bar", value=f"`{bar}`", inline=False)
-        
+
         await ctx.send(embed=embed)
 
 async def setup(bot):
