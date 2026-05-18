@@ -75,3 +75,6 @@ class Crates(commands.Cog):
             color=discord.Color.gold()
         )
         return await message.edit(content=None, embed=embed)
+
+async def setup(bot):
+    await bot.add_cog(Crates(bot))

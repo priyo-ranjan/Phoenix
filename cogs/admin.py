@@ -17,3 +17,6 @@ class Admin(commands.Cog):
             return await ctx.send("Amount must be positive.")
         await add_crates(member.id, amount)
         await ctx.send(f"Gave {amount} crates to {member.mention}.")
+
+async def setup(bot):
+    await bot.add_cog(Admin(bot))
