@@ -30,6 +30,15 @@ async def setup_database():
         )
        """)
 
+        await db.execute("""CREATE TABLE IF NOT EXISTS global_data(
+        key TEXT PRIMARY KEY,
+        value INTEGER DEFAULT 0)
+        """)
+
+        await db.execute("""INSERT OR IGNORE INTO global_data(key, value)
+        VALUES('jackpot_pool', 0)
+        """)
+
         await db.execute("""CREATE TABLE IF NOT EXISTS users(
         user_id INTEGER PRIMARY KEY,
         coins INTEGER DEFAULT 0,
@@ -44,6 +53,7 @@ async def setup_database():
         activity_points INTEGER DEFAULT 0
         )
        """)
+
         try:
             await db.execute(
         "ALTER TABLE users ADD COLUMN crates INTEGER DEFAULT 0"
@@ -533,4 +543,43 @@ async def get_activity_points(user_id):
         row = await cursor.fetchone()
         return row[0]
 
+async def is_player_active(user_id):
+    points = await get_activity_points(user_id)
+    return points >= 25
 
+async def add_activity_points(user_id, amount):
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute(
+            """
+            UPDATE users
+            SET activity_points = activity_points + ?
+            WHERE user_id = ?
+            """,
+            (amount, user_id)
+           )
+        await db.commit()
+
+async def get_jackpot_pool():
+    async with aiosqlite.connect(DB_PATH) as db:
+        cursor = await db.execute(
+            """
+            SELECT value
+            FROM global_data
+            WHERE key = ?
+            """,
+            ("jackpot_pool",)
+        )
+        row = await cursor.fetchone()
+        return row[0]
+
+async def add_to_jackpot(amount):
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute(
+            """
+            UPDATE global_data
+            SET value = value + ?
+            WHERE key = ?
+            """,
+            (amount, "jackpot_pool")
+        )
+        await db.commit()

@@ -12,7 +12,8 @@ from database import (
     add_crates,
     remove_crates,
     add_gems,
-    get_gems
+    get_gems,
+    add_activity_points
 )
 import random
 import asyncio
@@ -86,7 +87,7 @@ class Gamble(commands.Cog):
             if winnings > data["biggest_win"]:
                 data["biggest_win"] = winnings
             await update_gambling_data(ctx.author.id, data)
-
+            await add_activity_points(ctx.author.id, 1)
             await add_coins(ctx.author.id, winnings)
 
             title = "🪙 Coin Flip"
