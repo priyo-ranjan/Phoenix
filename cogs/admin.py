@@ -1,6 +1,12 @@
 import discord
 from discord.ext import commands
 
+from database import (
+    add_coins,
+    add_crates,
+    remove_coins,
+    remove_crates
+)
 class Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
