@@ -15,7 +15,8 @@ from database import (
     get_gems,
     add_activity_points,
     add_to_jackpot,
-    get_jackpot_pool
+    get_jackpot_pool,
+    is_player_active
 )
 import random
 import asyncio
@@ -154,7 +155,7 @@ class Gamble(commands.Cog):
 
             return await message.edit(content=None, embed=embed)
 
-            
+
     @commands.command()
     async def jackpot(self, ctx):
 
