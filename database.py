@@ -41,7 +41,7 @@ async def setup_database():
         total_wins INTEGER DEFAULT 0,
         total_losses INTEGER DEFAULT 0,
         biggest_win INTEGER DEFAULT 0,
-        activity_points INTEGER_DEFAULT 0
+        activity_points INTEGER DEFAULT 0
         )
        """)
         try:
@@ -533,5 +533,4 @@ async def get_activity_points(user_id):
         row = await cursor.fetchone()
         return row[0]
 
-        await db.commit()
 
