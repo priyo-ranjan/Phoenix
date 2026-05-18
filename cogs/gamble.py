@@ -14,7 +14,8 @@ from database import (
     add_gems,
     get_gems,
     add_activity_points,
-    add_to_jackpot
+    add_to_jackpot,
+    get_jackpot_pool
 )
 import random
 import asyncio
@@ -91,7 +92,22 @@ class Gamble(commands.Cog):
             await add_activity_points(ctx.author.id, 1)
             jackpot_tax = max(1, int(amount * 0.05))
             await add_to_jackpot(jackpot_tax)
+
+            jackpot_pool = await get_jackpot_pool()
+            jackpot_chance = 5000
+            if data["win_streak"] >= 5:
+                jackpot_chance = 3500
+            if data["win_streak"] >= 8:
+                jackpot_chance = 2000
+            active = await is_player_active(ctx.author.id)
+            if not active:
+                jackpot_chance *= 3
+            won_jackpot = random.randint(1, jackpot_chance) == 1
+
             final_win = winnings - jackpot_tax
+            if won_jackpot and jackpot_pool > 0:
+                final_win += jackpot_pool
+                await reset_jackpot_pool()
             await add_coins(ctx.author.id, final_win)
             await update_gambling_data(ctx.author.id, data)
 
@@ -137,6 +153,28 @@ class Gamble(commands.Cog):
             embed.set_footer(text=f"Better luck next time, {ctx.author.name}")
 
             return await message.edit(content=None, embed=embed)
+    @commands.command()
+    async def jackpot(self, ctx):
+
+        pool = await get_jackpot_pool()
+
+        embed = discord.Embed(
+            title="💰 Phoenix Global Jackpot",
+            description=(
+            f"💸 Current Pool: {pool} coins\n\n"
+            f"🔥 Higher streaks improve jackpot odds\n"
+            f"⚡ Active players are favored\n"
+            f"🎰 Every winning flip contributes to the pool\n\n"
+            f"\"The flames are growing...\""
+        ),
+            color=discord.Color.gold()
+    )
+
+        embed.set_footer(
+            text="Phoenix Economy System"
+    )
+
+        await ctx.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Gamble(bot))

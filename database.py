@@ -583,3 +583,15 @@ async def add_to_jackpot(amount):
             (amount, "jackpot_pool")
         )
         await db.commit()
+
+async def reset_jackpot_pool():
+    async with aiosqlite.connect(DB_NAME) as db:
+        await db.execute(
+            """
+            UPDATE global_data
+            SET value = 0
+            WHERE key = ?
+            """,
+            ("jackpot_pool",)
+        )
+        await db.commit()
