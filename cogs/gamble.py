@@ -153,6 +153,8 @@ class Gamble(commands.Cog):
             embed.set_footer(text=f"Better luck next time, {ctx.author.name}")
 
             return await message.edit(content=None, embed=embed)
+
+            
     @commands.command()
     async def jackpot(self, ctx):
 
