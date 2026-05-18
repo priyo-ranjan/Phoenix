@@ -13,7 +13,8 @@ from database import (
     remove_crates,
     add_gems,
     get_gems,
-    add_activity_points
+    add_activity_points,
+    add_to_jackpot
 )
 import random
 import asyncio
@@ -88,7 +89,10 @@ class Gamble(commands.Cog):
                 data["biggest_win"] = winnings
             await update_gambling_data(ctx.author.id, data)
             await add_activity_points(ctx.author.id, 1)
-            await add_coins(ctx.author.id, winnings)
+            jackpot_tax = int(amount * 0.05)
+            await add_to_jackpot(jackpot_tax)
+            final_win = winnings - jackpot_tax
+            await add_coins(ctx.author.id, final_win)
 
             title = "🪙 Coin Flip"
             if data["win_streak"] >= 3:
@@ -103,7 +107,8 @@ class Gamble(commands.Cog):
                 description=(
                     f"💰 Bet: {amount} coins\n"
                     f"🌟 Result: **WIN**\n"
-                    f"🪙 Received: `{winnings}` coins\n"
+                    f"🪙 Received: `{final_win}` coins\n"
+                    f"🏦 Jackpot Contribution: {jackpot_tax} coins\n"
                     f"🔥 Streak: `{data['win_streak']}`\n"
                 ),
                 color=discord.Color.green()
