@@ -68,9 +68,9 @@ class Gamble(commands.Cog):
                 await message.edit(content="🔥 BLESSING OF PHOENIX ACTIVATED")
                 await asyncio.sleep(1)
            
-            if amount >= 100:
-              data["win_streak"] += 1
-              if data["win_streak"] > data["highest_streak"]:
+            
+            data["win_streak"] += 1
+            if data["win_streak"] > data["highest_streak"]:
                 data["highest_streak"] = data["win_streak"]
 
             data["loss_streak"] = 0
@@ -87,12 +87,13 @@ class Gamble(commands.Cog):
             winnings = int(amount * multiplier)
             if winnings > data["biggest_win"]:
                 data["biggest_win"] = winnings
-            await update_gambling_data(ctx.author.id, data)
+            
             await add_activity_points(ctx.author.id, 1)
-            jackpot_tax = int(amount * 0.05)
+            jackpot_tax = max(1, int(amount * 0.05))
             await add_to_jackpot(jackpot_tax)
             final_win = winnings - jackpot_tax
             await add_coins(ctx.author.id, final_win)
+            await update_gambling_data(ctx.author.id, data)
 
             title = "🪙 Coin Flip"
             if data["win_streak"] >= 3:
