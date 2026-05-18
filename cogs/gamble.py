@@ -16,11 +16,13 @@ from database import (
     add_activity_points,
     add_to_jackpot,
     get_jackpot_pool,
-    is_player_active
+    is_player_active,
+    reset_jackpot_pool
 )
 import random
 import asyncio
 import aiosqlite
+JACKPOT_CHANNEL_ID = 1506028647742570616
 
 gambling_stats = {}
 
@@ -109,6 +111,24 @@ class Gamble(commands.Cog):
             if won_jackpot and jackpot_pool > 0:
                 final_win += jackpot_pool
                 await reset_jackpot_pool()
+                jackpot_channel = self.bot.get_channel(JACKPOT_CHANNEL_ID)
+
+                if jackpot_channel:
+                    jackpot_embed = discord.Embed(
+                        title="🎰 JACKPOT WON!",
+                        description=(
+                            f"👑 {ctx.author.mention} has won the Phoenix Jackpot!\n\n"
+                            f"💰 Jackpot Amount: {jackpot_pool:,} coins\n"
+                            f"🔥 The entire server watched the flames explode."
+            ),
+                        color=discord.Color.gold()
+        )
+
+                    jackpot_embed.set_footer(
+                        text="Phoenix Global Jackpot System"
+        )
+
+                    await jackpot_channel.send(embed=jackpot_embed)
             await add_coins(ctx.author.id, final_win)
             await update_gambling_data(ctx.author.id, data)
 
@@ -124,11 +144,16 @@ class Gamble(commands.Cog):
                 title=title,
                 description=(
                     f"💰 Bet: {amount} coins\n"
-                    f"🌟 Result: **WIN**\n"
-                    f"🪙 Received: `{final_win}` coins\n"
-                    f"🏦 Jackpot Contribution: {jackpot_tax} coins\n"
-                    f"🔥 Streak: `{data['win_streak']}`\n"
-                ),
+                    f"🪙 Result: WIN\n"
+                    + (
+                        f"🎰 JACKPOT WON: +{jackpot_pool:,} coins\n"
+                        if won_jackpot and jackpot_pool > 0
+                        else ""
+    )
+                    + f"🟡 Received: {final_win:,} coins\n"
+                    + f"🏦 Jackpot Contribution: {jackpot_tax} coins\n"
+                    + f"🔥 Streak: {data['win_streak']}\n"
+),
                 color=discord.Color.green()
             )
             embed.set_footer(text=f"{ctx.author.name} is feeling lucky 🍀")
