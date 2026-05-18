@@ -40,7 +40,8 @@ async def setup_database():
         highest_streak INTEGER DEFAULT 0,
         total_wins INTEGER DEFAULT 0,
         total_losses INTEGER DEFAULT 0,
-        biggest_win INTEGER DEFAULT 0
+        biggest_win INTEGER DEFAULT 0,
+        activity_points INTEGER_DEFAULT 0
         )
        """)
         try:
@@ -88,6 +89,12 @@ async def setup_database():
         try:
             await db.execute(
         "ALTER TABLE users ADD COLUMN biggest_win INTEGER DEFAULT 0"
+            )
+        except:
+            pass
+        try:
+            await db.execute(
+        "ALTER TABLE users ADD COLUMN activity_points INTEGER DEFAULT 0"
             )
         except:
             pass
