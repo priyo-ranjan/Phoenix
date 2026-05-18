@@ -520,5 +520,18 @@ async def update_gambling_data(user_id, data):
               )    
         )
 
+async def get_activity_points(user_id):
+    async with aiosqlite.connect(DB_PATH) as db:
+        cursor = await db.execute(
+            """
+            SELECT activity_points
+            FROM users
+            WHERE user_id = ?
+            """,
+            (user_id,)
+        )
+        row = await cursor.fetchone()
+        return row[0]
+
         await db.commit()
 
