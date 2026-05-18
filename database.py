@@ -531,7 +531,7 @@ async def update_gambling_data(user_id, data):
         )
 
 async def get_activity_points(user_id):
-    async with aiosqlite.connect(DB_PATH) as db:
+    async with aiosqlite.connect(DB_NAME) as db:
         cursor = await db.execute(
             """
             SELECT activity_points
@@ -548,7 +548,7 @@ async def is_player_active(user_id):
     return points >= 25
 
 async def add_activity_points(user_id, amount):
-    async with aiosqlite.connect(DB_PATH) as db:
+    async with aiosqlite.connect(DB_NAME) as db:
         await db.execute(
             """
             UPDATE users
@@ -560,7 +560,7 @@ async def add_activity_points(user_id, amount):
         await db.commit()
 
 async def get_jackpot_pool():
-    async with aiosqlite.connect(DB_PATH) as db:
+    async with aiosqlite.connect(DB_NAME) as db:
         cursor = await db.execute(
             """
             SELECT value
@@ -573,7 +573,7 @@ async def get_jackpot_pool():
         return row[0]
 
 async def add_to_jackpot(amount):
-    async with aiosqlite.connect(DB_PATH) as db:
+    async with aiosqlite.connect(DB_NAME) as db:
         await db.execute(
             """
             UPDATE global_data
