@@ -187,8 +187,9 @@ class Daily(commands.Cog):
 
 
     @commands.command(aliases=["bal"])
-    async def balance(self, ctx):
-        member = ctx.author
+    async def balance(self, ctx, member: discord.Member = None):
+        if member and member != ctx.author:
+            return await ctx.send("❌ You can't view another user's balance.")
         coins = await get_coins(ctx.author.id)
         gems = await get_gems(ctx.author.id)
         crates = await get_crates(ctx.author.id)

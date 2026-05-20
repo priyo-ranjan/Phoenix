@@ -23,9 +23,10 @@ class Profile(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def profile(self, ctx):
+    async def profile(self, ctx, member: discord.Member= None):
+        member = member or ctx.author
 
-        data = await get_gambling_data(ctx.author.id)
+        data = await get_gambling_data(member.id)
 
         total_games = data["total_wins"] + data["total_losses"]
 
@@ -38,12 +39,15 @@ class Profile(commands.Cog):
         )
 
         rank = get_rank(data["total_wins"])
-
+        
         embed = discord.Embed(
             title="👤 Phoenix Profile",
             color=discord.Color.purple()
     )
-
+        embed.set_author(
+            name=f"{member.name}'s Profile",
+            icon_url=member.display_avatar.url
+        )
         embed.add_field(
             name="🎰 Gambling Stats",
             value=(
