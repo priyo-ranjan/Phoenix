@@ -1,6 +1,6 @@
 import aiosqlite
 import os
-DB_NAME = os.getenv("DB_NAME", "database.db")
+DB_NAME = os.getenv("DB_NAME", "database")
 
 async def setup_database():
     async with aiosqlite.connect(DB_NAME) as db:
