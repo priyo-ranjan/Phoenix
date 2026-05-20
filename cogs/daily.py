@@ -66,7 +66,7 @@ def generate_bonus_reward():
 
     if bonus_roll <= 65:
         reward_type = "coins"
-        amount = random.randint(50, 200)
+        amount = random.randint(10, 35)
 
     elif bonus_roll <= 85:
         reward_type = "rep"
@@ -78,7 +78,7 @@ def generate_bonus_reward():
 
     else:
         reward_type = "gems"
-        amount = random.randint(1, 3)
+        amount = 1
 
     return reward_type, amount
 
