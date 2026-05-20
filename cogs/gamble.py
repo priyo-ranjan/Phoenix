@@ -33,8 +33,6 @@ def generate_flip_result():
     else:
         return "loss"
 
-
-
 class Gamble(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
