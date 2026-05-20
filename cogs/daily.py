@@ -187,15 +187,15 @@ class Daily(commands.Cog):
 
 
     @commands.command(aliases=["bal"])
-    async def balance(self, ctx, member: discord.Member = None):
-        member = member or ctx.author
-        coins = await get_coins(member.id)
-        gems = await get_gems(member.id)
-        crates = await get_crates(member.id)
+    async def balance(self, ctx):
+        member = ctx.author
+        coins = await get_coins(ctx.author.id)
+        gems = await get_gems(ctx.author.id)
+        crates = await get_crates(ctx.author.id)
         embed = discord.Embed(
             title="💰 PHOENIX | BALANCE",
             description=(
-                f"👤 User: {member.mention}\n\n"
+                f"👤 User: {ctx.author.mention}\n\n"
                 f"🪙 Coins: **{coins}**\n"
                 f"💎 Gems: **{gems}**\n"
                 f"📦 Crates: **{crates}**"
