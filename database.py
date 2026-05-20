@@ -1,6 +1,6 @@
 import aiosqlite
 import os
-DB_NAME = "database_backup"
+DB_NAME = "database.db"
 async def setup_database():
     async with aiosqlite.connect(DB_NAME) as db:
         await db.execute("""CREATE TABLE IF NOT EXISTS levels(
