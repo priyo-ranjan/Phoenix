@@ -3,7 +3,8 @@ from discord.ext import commands
 import asyncio
 import random
 from database import (
-    get_gambling_data
+    get_gambling_data,
+    update_gambling_data
 )
 
 def get_rank(total_wins):

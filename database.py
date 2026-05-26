@@ -528,6 +528,7 @@ async def update_gambling_data(user_id, data):
             user_id
               )    
         )
+        await db.commit()
 
 async def get_activity_points(user_id):
     async with aiosqlite.connect(DB_NAME) as db:
