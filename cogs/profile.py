@@ -69,7 +69,7 @@ class Profile(commands.Cog):
     )
 
         embed.set_footer(
-            text="Phoenix Economy System"
+            text="Phoenix Profile System"
     )
 
         await ctx.send(embed=embed)
