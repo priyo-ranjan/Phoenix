@@ -37,6 +37,12 @@ class Help(commands.Cog):
               value="!flip (amount)\n!jackpot",
               inline=False
           )
+
+      embed.add_field(
+                    name="Economy",
+                    value="!balance or !bal\n!daily\n!opencrate (amount)",
+                    inline=False
+                )
  
       embed.add_field(
         name="💎 Reputation",
