@@ -31,6 +31,12 @@ class Help(commands.Cog):
         value="!rank\n!rank @user",
         inline=False
     )
+
+      embed.add_field(
+              name="🎰 Gambling",
+              value="!flip (amount) \n!jackpot",
+              inline=False
+          )
  
       embed.add_field(
         name="💎 Reputation",
