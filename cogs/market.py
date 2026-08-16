@@ -98,25 +98,25 @@ MARKET_PAGES = [
 
     (
         "🎯 Hunter's Net",
-        "Improves your chances of successfully catching creatures.\n\n"
-        "💰 Price: 1,500 Coins"
+        "Improves your chances of successfully catching creatures.\n"
+        "💰 Price: 1,500 Coins\n\n"
     ),
 
     (
         "✨ Golden Net",
-        "A premium capture tool with greatly increased success rates.\n\n"
+        "A premium capture tool with greatly increased success rates.\n"
         "💰 Price: 10,000 Coins"
     ),
 
     (
         "🧭 Ancient Compass",
-        "Guides hunters toward rare creature spawns.\n\n"
-        "💰 Price: 5,000 Coins"
+        "Guides hunters toward rare creature spawns.\n"
+        "💰 Price: 5,000 Coins\n\n"
     ),
 
     (
         "🔍 Beast Tracker",
-        "Tracks nearby creatures and reveals valuable information.\n\n"
+        "Tracks nearby creatures and reveals valuable information.\n"
         "💰 Price: 15,000 Coins"
     )
 ]
