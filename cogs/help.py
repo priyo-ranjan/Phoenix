@@ -6,116 +6,202 @@ from discord.ui import View, Button
 HELP_PAGES = [
     {
         "title": "🔥 Phoenix Help Center",
-        "description": "Welcome to Phoenix Bot.\nUse the buttons below to browse command categories.",
+        "description": (
+            "**Welcome to Phoenix.**\n"
+            "A multipurpose Discord bot featuring AI, Economy, Gambling, "
+            "Leveling, Trading, Reputation and Moderation systems.\n\n"
+            "Use the buttons below to browse categories."
+        ),
         "fields": [
-            ("🤖 AI", "1 command"),
-            ("🥳 Fun", "4 commands"),
-            ("📈 Leveling", "2 commands"),
-            ("🎰 Gambling", "2 commands"),
-            ("💸 Trading", "5 commands"),
-            ("💰 Economy", "3 commands"),
-            ("💎 Reputation", "2 commands"),
-            ("🧠 Memory", "3 commands"),
-            ("🛡 Moderation", "5 commands")
+            ("🤖 AI", "`1 Command`"),
+            ("🥳 Fun", "`4 Commands`"),
+            ("📈 Leveling", "`2 Commands`"),
+            ("🎰 Gambling", "`2 Commands`"),
+            ("💸 Trading", "`5 Commands`"),
+            ("💰 Economy", "`3 Commands`"),
+            ("💎 Reputation", "`2 Commands`"),
+            ("🧠 Memory", "`3 Commands`"),
+            ("🛡 Moderation", "`5 Commands`")
         ]
     },
 
     {
         "title": "🤖 AI Commands",
-        "description": "AI powered commands.",
+        "description": "Artificial Intelligence Commands",
         "fields": [
-            ("!ai <prompt>", "Ask Phoenix AI anything.")
+            (
+                "① !ai <prompt>",
+                "➜ Ask Phoenix anything using AI."
+            )
         ]
     },
 
     {
         "title": "🥳 Fun Commands",
-        "description": "Fun and entertainment commands.",
+        "description": "Entertainment & Utility Commands",
         "fields": [
-            ("!roast", "Roast a user."),
-            ("!say", "Make Phoenix say something."),
-            ("!ping", "Check bot latency."),
-            ("!hello", "Say hello.")
+            (
+                "① !roast",
+                "➜ Roast a member."
+            ),
+            (
+                "② !say",
+                "➜ Make Phoenix say something."
+            ),
+            (
+                "③ !ping",
+                "➜ View bot latency."
+            ),
+            (
+                "④ !hello",
+                "➜ Receive a greeting."
+            )
         ]
     },
 
     {
         "title": "📈 Leveling Commands",
-        "description": "XP and ranking system.",
+        "description": "XP, Activity & Ranking",
         "fields": [
-            ("!rank", "View your rank."),
-            ("!rank @user", "View another user's rank.")
+            (
+                "① !rank",
+                "➜ View your current rank."
+            ),
+            (
+                "② !rank @user",
+                "➜ View another user's rank."
+            )
         ]
     },
 
     {
         "title": "🎰 Gambling Commands",
-        "description": "Risk it all.",
+        "description": "High Risk. High Reward.",
         "fields": [
-            ("!flip <amount>", "Coinflip your coins."),
-            ("!jackpot", "Try your luck.")
+            (
+                "① !flip <amount>",
+                "➜ Coinflip your wager."
+            ),
+            (
+                "② !jackpot",
+                "➜ Attempt to win the jackpot."
+            )
         ]
     },
 
     {
-            "title": "💸 Trading Commands",
-            "description": "Trade items with other users.",
-            "fields": [
-                ("!trade @user", "Initiate a trade."),
-                ("!accept", "Accept a trade request."),
-                ("!decline", "Decline a trade request."),
-                ("!offer <amount> <item>", "Add coins/gems/crates to the trade."),
-                ("!remove <amount> <item>", "Remove coins/gems/crates from the trade.")
-
-            ]
-        },
+        "title": "💸 Trading Commands",
+        "description": "Trade Coins, Gems & Crates",
+        "fields": [
+            (
+                "① !trade @user",
+                "➜ Start a trade session."
+            ),
+            (
+                "② !accept",
+                "➜ Accept a pending trade."
+            ),
+            (
+                "③ !decline",
+                "➜ Decline a pending trade."
+            ),
+            (
+                "④ !offer <amount> <item>",
+                "➜ Add items to the trade."
+            ),
+            (
+                "⑤ !remove <amount> <item>",
+                "➜ Remove items from the trade."
+            )
+        ]
+    },
 
     {
         "title": "💰 Economy Commands",
-        "description": "Earn and spend coins.",
+        "description": "Manage Your Wealth",
         "fields": [
-            ("!balance / !bal", "Check your balance."),
-            ("!daily", "Claim daily reward."),
-            ("!opencrate <amount>", "Open crates.")
+            (
+                "① !balance / !bal",
+                "➜ Check your wallet."
+            ),
+            (
+                "② !daily",
+                "➜ Claim daily rewards."
+            ),
+            (
+                "③ !opencrate <amount>",
+                "➜ Open crates for rewards."
+            )
         ]
     },
 
     {
         "title": "💎 Reputation Commands",
-        "description": "Community reputation system.",
+        "description": "Community Reputation System",
         "fields": [
-            ("!rep @user", "Give reputation."),
-            ("!reps @user", "Check reputation.")
+            (
+                "① !rep @user",
+                "➜ Give reputation."
+            ),
+            (
+                "② !reps @user",
+                "➜ View reputation."
+            )
         ]
     },
 
     {
         "title": "🧠 Memory Commands",
-        "description": "Store memories.",
+        "description": "Phoenix Memory System",
         "fields": [
-            ("!remember <key> <memory>", "Save memory."),
-            ("!memories @user", "View memories."),
-            ("!forget <key>", "Delete memory.")
+            (
+                "① !remember <key> <memory>",
+                "➜ Save a memory."
+            ),
+            (
+                "② !memories @user",
+                "➜ View saved memories."
+            ),
+            (
+                "③ !forget <key>",
+                "➜ Delete a memory."
+            )
         ]
     },
 
     {
         "title": "🛡 Moderation Commands",
-        "description": "Server management commands.",
+        "description": "Server Management Tools",
         "fields": [
-            ("!kick", "Kick member."),
-            ("!mute", "Mute member."),
-            ("!unmute", "Unmute member."),
-            ("!ban", "Ban member."),
-            ("!purge <amount>", "Delete messages.")
+            (
+                "① !kick",
+                "➜ Kick a member."
+            ),
+            (
+                "② !mute",
+                "➜ Mute a member."
+            ),
+            (
+                "③ !unmute",
+                "➜ Unmute a member."
+            ),
+            (
+                "④ !ban",
+                "➜ Ban a member."
+            ),
+            (
+                "⑤ !purge <amount>",
+                "➜ Bulk delete messages."
+            )
         ]
     }
 ]
 
 
 class HelpView(View):
-    def __init__(self):
-        super().__init__(timeout=120)
+    def __init__(self, bot):
+        super().__init__(timeout=180)
+        self.bot = bot
         self.page = 0
 
     def create_embed(self):
@@ -125,7 +211,7 @@ class HelpView(View):
         embed = discord.Embed(
             title=data["title"],
             description=data["description"],
-            color=discord.Color.orange()
+            color=0xFF6B00
         )
 
         for name, value in data["fields"]:
@@ -135,13 +221,20 @@ class HelpView(View):
                 inline=False
             )
 
+        embed.set_thumbnail(
+            url=self.bot.user.display_avatar.url
+        )
+
         embed.set_footer(
             text=f"Phoenix Bot • Page {self.page + 1}/{len(HELP_PAGES)}"
         )
 
         return embed
 
-    @discord.ui.button(label="◀ Previous", style=discord.ButtonStyle.secondary)
+    @discord.ui.button(
+        label="◀ Previous",
+        style=discord.ButtonStyle.secondary
+    )
     async def previous(self, interaction: discord.Interaction, button: Button):
 
         if self.page > 0:
@@ -152,7 +245,10 @@ class HelpView(View):
             view=self
         )
 
-    @discord.ui.button(label="▶ Next", style=discord.ButtonStyle.primary)
+    @discord.ui.button(
+        label="▶ Next",
+        style=discord.ButtonStyle.primary
+    )
     async def next(self, interaction: discord.Interaction, button: Button):
 
         if self.page < len(HELP_PAGES) - 1:
@@ -172,7 +268,7 @@ class Help(commands.Cog):
     @commands.command()
     async def help(self, ctx):
 
-        view = HelpView()
+        view = HelpView(self.bot)
 
         await ctx.send(
             embed=view.create_embed(),
