@@ -46,6 +46,7 @@ async def on_ready():
     await bot.load_extension("cogs.crates")
     await bot.load_extension("cogs.profile")
     await bot.load_extension("cogs.admin")
+    await bot.load_extension("cogs.market")
     print(f"{bot.user} is online!")
 
 bot.run(TOKEN)
