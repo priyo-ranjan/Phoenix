@@ -8,6 +8,12 @@ async def setup_database():
         xp INTEGER DEFAULT 0,
         level INTEGER DEFAULT 1)
         """)
+        await db.execute("""CREATE TABLE IF NOT EXISTS inventory(
+        user_id INTEGER,
+        item_id, TEXT,
+        quantity INTEGER DEFAULT 0,
+        PRIMARY KEY(user_id, item_id))
+        """)
         await db.execute("""CREATE TABLE IF NOT EXISTS reputation(
         user_id INTEGER PRIMARY KEY,
         rep INTEGER DEFAULT 0)
@@ -603,3 +609,104 @@ async def reset_jackpot_pool():
             ("jackpot_pool",)
         )
         await db.commit()
+
+#   INVENTORY
+
+async def add_item(user_id, item_id, amount=1):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        await db.execute("""
+        INSERT INTO inventory(user_id, item_id, quantity)
+        VALUES (?, ?, ?)
+        ON CONFLICT(user_id, item_id)
+        DO UPDATE SET quantity = quantity + ?
+        """, (user_id, item_id, amount, amount))
+
+        await db.commit()
+
+async def remove_item(user_id, item_id, amount=1):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        await db.execute("""
+        UPDATE inventory
+        SET quantity = quantity - ?
+        WHERE user_id = ? AND item_id = ?
+        """, (amount, user_id, item_id))
+
+        await db.commit()
+
+async def has_item(user_id, item_id, amount=1):
+    async with aiosqlite.connect(DB_NAME) as db:
+        cursor = await db.execute(
+            """
+            SELECT quantity FROM inventory
+            WHERE user_id = ? AND item_id = ?
+            """,
+            (user_id, item_id)
+        )
+        data = await cursor.fetchone()
+        return data and data[0] >= amount
+
+async def get_inventory(user_id):
+
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute("""
+        SELECT item_id, quantity
+        FROM inventory
+        WHERE user_id = ?
+        """, (user_id,))
+
+        return await cursor.fetchall()
+
+async def get_item_count(user_id, item_id):
+    async with aiosqlite.connect(DB_NAME) as db:
+        cursor = await db.execute(
+            """
+            SELECT quantity
+            FROM inventory
+            WHERE user_id = ? AND item_id = ?
+            """,
+            (user_id, item_id)
+        )
+
+        data = await cursor.fetchone()
+        return data[0] if data else 0
+
+async def get_inventory_size(user_id):
+    async with aiosqlite.connect(DB_NAME) as db:
+        cursor = await db.execute(
+            """
+            SELECT COUNT(*)
+            FROM inventory
+            WHERE user_id = ? AND quantity > 0
+            """,
+            (user_id,)
+        )
+
+        data = await cursor.fetchone()
+        return data[0]
+
+async def clear_item(user_id, item_id):
+    async with aiosqlite.connect(DB_NAME) as db:
+        await db.execute(
+            """
+            DELETE FROM inventory
+            WHERE user_id = ? AND item_id = ?
+            """,
+            (user_id, item_id)
+        )
+
+        await db.commit()
+
+async def cleanup_inventory():
+    async with aiosqlite.connect(DB_NAME) as db:
+        await db.execute(
+            """
+            DELETE FROM inventory
+            WHERE quantity <= 0
+            """
+        )
+
+        await db.commit()
+        
