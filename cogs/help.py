@@ -207,6 +207,9 @@ class HelpView(View):
         super().__init__(timeout=180)
         self.bot = bot
         self.page = 0
+    def update_buttons(self):
+      self.previous.disabled = self.page == 0
+      self.next.disabled = self.page == len(HELP_PAGES) - 1
 
     def create_embed(self):
 
@@ -243,7 +246,7 @@ class HelpView(View):
 
         if self.page > 0:
             self.page -= 1
-
+        self.update_buttons()
         await interaction.response.edit_message(
             embed=self.create_embed(),
             view=self
@@ -256,7 +259,7 @@ class HelpView(View):
     async def home(self, interaction: discord.Interaction, button: Button):
 
       self.page = 0
-
+      self.update_buttons()
       await interaction.response.edit_message(
           embed=self.create_embed(),
           view=self
@@ -270,7 +273,7 @@ class HelpView(View):
 
         if self.page < len(HELP_PAGES) - 1:
             self.page += 1
-
+        self.update_buttons()
         await interaction.response.edit_message(
             embed=self.create_embed(),
             view=self
@@ -286,7 +289,7 @@ class Help(commands.Cog):
     async def help(self, ctx):
 
         view = HelpView(self.bot)
-
+        view.update_buttons()
         await ctx.send(
             embed=view.create_embed(),
             view=view
