@@ -54,7 +54,7 @@ MARKET_PAGES = [
         "① 🥚 Common Egg",
         "Contains common creatures perfect for beginners.\n\n"
         "💰 Price: 500 Coins\n"
-        "📦 Stock: ∞"
+        "📦 Stock: ∞\n"
     ),
 
     (
@@ -62,7 +62,7 @@ MARKET_PAGES = [
         "Contains creatures from the Extinct Realm.\n"
         "May hatch Dire Wolves, Dodos, Smilodons and more.\n\n"
         "💰 Price: 2,500 Coins\n"
-        "📦 Stock: 87"
+        "📦 Stock: 87\n"
     ),
 
     (
@@ -70,7 +70,7 @@ MARKET_PAGES = [
         "Contains powerful Dragon Realm creatures.\n"
         "May hatch Wyverns, Drakes and Hydras.\n\n"
         "💰 Price: 5,000 Coins\n"
-        "📦 Stock: 41"
+        "📦 Stock: 41\n"
     ),
 
     (
@@ -78,7 +78,7 @@ MARKET_PAGES = [
         "Contains legendary beings from mythology.\n"
         "May hatch Phoenixes, Griffins and Cerberus.\n\n"
         "💰 Price: 10,000 Coins\n"
-        "📦 Stock: 19"
+        "📦 Stock: 19\n"
     ),
 
     (
