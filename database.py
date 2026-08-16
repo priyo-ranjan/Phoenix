@@ -619,8 +619,11 @@ async def add_item(user_id, item_id, amount=1):
             """
             INSERT INTO inventory(user_id, item_id, quantity)
             VALUES (?, ?, ?)
+
+            ON CONFLICT(user_id, item_id)
+            DO UPDATE SET quantity = quantity + ?
             """,
-            (user_id, item_id, amount)
+            (user_id, item_id, amount, amount)
         )
 
         await db.commit()

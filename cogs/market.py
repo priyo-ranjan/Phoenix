@@ -82,7 +82,6 @@ MARKET_PAGES = [
         "featured": (
             "🐉 **Dragon Egg**\n"
             "~~5,000 Coins~~ → **4,000 Coins**\n"
-            "📦 Stock: **12**"
         )
     },
 
@@ -94,32 +93,28 @@ MARKET_PAGES = [
     (
         "① 🥚 Common Egg",
         "Contains common creatures perfect for beginners.\n"
-        "💰 Price: 500 Coins\n"
-        "📦 Stock: ∞\n\n"
+        "💰 Price: 500 Coins\n\n"
     ),
 
     (
         "② 🦴 Extinct Egg",
         "Contains creatures from the Extinct Realm.\n"
         "May hatch Dire Wolves, Dodos, Smilodons and more.\n"
-        "💰 Price: 2,500 Coins\n"
-        "📦 Stock: 87\n\n"
+        "💰 Price: 2,500 Coins\n\n"
     ),
 
     (
         "③ 🐉 Dragon Egg",
         "Contains powerful Dragon Realm creatures.\n"
         "May hatch Wyverns, Drakes and Hydras.\n"
-        "💰 Price: 5,000 Coins\n"
-        "📦 Stock: 41\n\n"
+        "💰 Price: 5,000 Coins\n\n"
     ),
 
     (
         "④ 🔥 Mythic Egg",
         "Contains legendary beings from mythology.\n"
         "May hatch Phoenixes, Griffins and Cerberus.\n"
-        "💰 Price: 10,000 Coins\n"
-        "📦 Stock: 19\n\n"
+        "💰 Price: 10,000 Coins\n\n"
     ),
 
     (
@@ -127,7 +122,6 @@ MARKET_PAGES = [
         "Contains the rarest creatures in existence.\n"
         "Extremely difficult to obtain.\n"
         "💰 Price: 50,000 Coins\n"
-        "📦 Stock: 3"
     )
 ]
     },
@@ -146,7 +140,7 @@ MARKET_PAGES = [
     (
         "✨ Golden Net",
         "A premium capture tool with greatly increased success rates.\n"
-        "💰 Price: 10,000 Coins"
+        "💰 Price: 10,000 Coins\n\n"
     ),
 
     (
@@ -202,7 +196,7 @@ MARKET_PAGES = [
     (
         "🎟 Rare Spawn Ticket",
         "Increases rare creature spawn rates for a limited time.\n"
-        "💰 Price: 5,000 Coins"
+        "💰 Price: 5,000 Coins\n\n"
     ),
 
     (
