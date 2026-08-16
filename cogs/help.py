@@ -34,7 +34,7 @@ class Help(commands.Cog):
 
       embed.add_field(
               name="🎰 Gambling",
-              value="!flip (amount) \n!jackpot",
+              value="!flip (amount)\n!jackpot",
               inline=False
           )
  
