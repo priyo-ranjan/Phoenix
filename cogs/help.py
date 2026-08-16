@@ -12,6 +12,7 @@ HELP_PAGES = [
             ("🥳 Fun", "4 commands"),
             ("📈 Leveling", "2 commands"),
             ("🎰 Gambling", "2 commands"),
+            ("💸 Trading", "5 commands"),
             ("💰 Economy", "3 commands"),
             ("💎 Reputation", "2 commands"),
             ("🧠 Memory", "3 commands"),
@@ -55,6 +56,19 @@ HELP_PAGES = [
             ("!jackpot", "Try your luck.")
         ]
     },
+
+    {
+            "title": "💸 Trading Commands",
+            "description": "Trade items with other users.",
+            "fields": [
+                ("!trade @user", "Initiate a trade."),
+                ("!accept", "Accept a trade request."),
+                ("!decline", "Decline a trade request."),
+                ("!offer <amount> <item>", "Add coins/gems/crates to the trade."),
+                ("!remove <amount> <item>", "Remove coins/gems/crates from the trade.")
+
+            ]
+        },
 
     {
         "title": "💰 Economy Commands",
