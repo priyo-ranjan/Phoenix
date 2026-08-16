@@ -336,6 +336,14 @@ async def get_coins(user_id):
 
         data = await cursor.fetchone()
 
+        if data is None:
+            await db.execute(
+                "INSERT INTO users(user_id, coins) VALUES (?, 0)",
+                (user_id,)
+            )
+            await db.commit()
+            return 0
+
         return data[0]
 
 async def get_gems(user_id):
