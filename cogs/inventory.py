@@ -33,27 +33,27 @@ INVENTORY_PAGES = [
 
             (
                 "🥚 Common Egg",
-                "Perfect for beginners.\n\nOwned: **x0**"
+                "Perfect for beginners.\nOwned: **x0**\n\n"
             ),
 
             (
                 "🦴 Extinct Egg",
-                "Contains creatures from the Extinct Realm.\n\nOwned: **x0**"
+                "Contains creatures from the Extinct Realm.\nOwned: **x0**\n\n"
             ),
 
             (
                 "🐉 Dragon Egg",
-                "Contains creatures from the Dragon Realm.\n\nOwned: **x0**"
+                "Contains creatures from the Dragon Realm.\nOwned: **x0**\n\n"
             ),
 
             (
                 "🔥 Mythic Egg",
-                "Contains mythical creatures.\n\nOwned: **x0**"
+                "Contains mythical creatures.\nOwned: **x0**\n\n"
             ),
 
             (
                 "🌌 Cosmic Egg",
-                "Contains ultra rare creatures.\n\nOwned: **x0**"
+                "Contains ultra rare creatures.\nOwned: **x0**\n\n"
             )
 
         ]
@@ -66,22 +66,22 @@ INVENTORY_PAGES = [
 
             (
                 "🎯 Hunter's Net",
-                "Improves catch chance.\n\nOwned: **x0**"
+                "Improves catch chance.\nOwned: **x0**\n\n"
             ),
 
             (
                 "✨ Golden Net",
-                "Premium capture tool.\n\nOwned: **x0**"
+                "Premium capture tool.\nOwned: **x0**\n\n"
             ),
 
             (
                 "🧭 Ancient Compass",
-                "Find rare spawns.\n\nOwned: **x0**"
+                "Find rare spawns.\nOwned: **x0**\n\n"
             ),
 
             (
                 "🔍 Beast Tracker",
-                "Track nearby creatures.\n\nOwned: **x0**"
+                "Track nearby creatures.\nOwned: **x0**\n\n"
             )
 
         ]
@@ -94,22 +94,22 @@ INVENTORY_PAGES = [
 
             (
                 "📜 Small XP Scroll",
-                "Grants creature XP.\n\nOwned: **x0**"
+                "Grants creature XP.\nOwned: **x0**\n\n"
             ),
 
             (
                 "📖 Medium XP Scroll",
-                "Grants more creature XP.\n\nOwned: **x0**"
+                "Grants more creature XP.\nOwned: **x0**\n\n"
             ),
 
             (
                 "📚 Large XP Scroll",
-                "Huge XP boost.\n\nOwned: **x0**"
+                "Huge XP boost.\nOwned: **x0**\n\n"
             ),
 
             (
                 "💎 Revive Crystal",
-                "Revive a defeated creature.\n\nOwned: **x0**"
+                "Revive a defeated creature.\nOwned: **x0**\n\n"
             )
 
         ]
@@ -122,17 +122,17 @@ INVENTORY_PAGES = [
 
             (
                 "🎟 Rare Spawn Ticket",
-                "Boost rare spawns.\n\nOwned: **x0**"
+                "Boost rare spawns.\nOwned: **x0**\n\n"
             ),
 
             (
                 "⚡ Double XP Ticket",
-                "Double XP gains.\n\nOwned: **x0**"
+                "Double XP gains.\nOwned: **x0**\n\n"
             ),
 
             (
                 "👹 Boss Raid Ticket",
-                "Access special bosses.\n\nOwned: **x0**"
+                "Access special bosses.\nOwned: **x0**\n\n"
             )
 
         ]
