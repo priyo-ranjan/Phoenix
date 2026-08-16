@@ -81,22 +81,6 @@ class Logging(commands.Cog):
         )
 
         await channel.send(embed=embed)
-        embed = discord.Embed(
-            title="✅ Member Verified",
-            description=f"{member.mention} has entered the Nexus.",
-            color=0x8b5cf6
-)
-
-        embed.add_field(
-            name="👤 User",
-            value=f"{member.name} ({member.id})",
-            inline=False
-)
-
-        embed.set_thumbnail(url=member.display_avatar.url)
-
-        embed.set_footer(text="Phoenix Logging System")
-        await log_channel.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Logging(bot))

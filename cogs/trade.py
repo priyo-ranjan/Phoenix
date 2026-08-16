@@ -41,7 +41,7 @@ class Trade(commands.Cog):
             "confirmed": []
         }
         await ctx.send(
-            f"{member.mention}, trade request started with {ctx.author.mention}"
+            f"{member.mention}, trade request started with {ctx.author.mention}.Type !confirm to confirm the trade or !cancel to cancel the trade."
         )
     @commands.command(name="offer")
     async def offer(self, ctx, amount:int, item:str):
