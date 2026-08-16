@@ -129,26 +129,26 @@ MARKET_PAGES = [
 
     (
         "📜 Small XP Scroll",
-        "Grants a small amount of experience to a creature.\n\n"
-        "💰 Price: 500 Coins"
+        "Grants a small amount of experience to a creature.\n"
+        "💰 Price: 500 Coins\n\n"
     ),
 
     (
         "📖 Medium XP Scroll",
-        "Grants a moderate amount of experience.\n\n"
-        "💰 Price: 2,000 Coins"
+        "Grants a moderate amount of experience.\n"
+        "💰 Price: 2,000 Coins\n\n"
     ),
 
     (
         "📚 Large XP Scroll",
-        "Provides a huge experience boost.\n\n"
-        "💰 Price: 10,000 Coins"
+        "Provides a huge experience boost.\n"
+        "💰 Price: 10,000 Coins\n\n"
     ),
 
     (
         "💎 Revive Crystal",
-        "Revives a defeated creature back to battle-ready condition.\n\n"
-        "💰 Price: 5,000 Coins"
+        "Revives a defeated creature back to battle-ready condition.\n"
+        "💰 Price: 5,000 Coins\n\n"
     )
 ]
     },
@@ -160,26 +160,26 @@ MARKET_PAGES = [
 
     (
         "🎟 Rare Spawn Ticket",
-        "Increases rare creature spawn rates for a limited time.\n\n"
+        "Increases rare creature spawn rates for a limited time.\n"
         "💰 Price: 5,000 Coins"
     ),
 
     (
         "⚡ Double XP Ticket",
-        "Earn double experience from battles and activities.\n\n"
-        "💰 Price: 7,500 Coins"
+        "Earn double experience from battles and activities.\n"
+        "💰 Price: 7,500 Coins\n\n"
     ),
 
     (
         "👹 Boss Raid Ticket",
-        "Allows participation in special boss encounters.\n\n"
-        "💰 Price: 15,000 Coins"
+        "Allows participation in special boss encounters.\n"
+        "💰 Price: 15,000 Coins\n\n"
     ),
 
     (
         "📉 Marketplace Tax Pass",
-        "Reduces future marketplace transaction taxes.\n\n"
-        "💰 Price: 25,000 Coins"
+        "Reduces future marketplace transaction taxes.\n"
+        "💰 Price: 25,000 Coins\n\n"
     )
 ]
     },
@@ -191,26 +191,26 @@ MARKET_PAGES = [
 
     (
         "🔥 Phoenix Aura",
-        "Surround your profile with a fiery Phoenix aura.\n\n"
-        "💎 Price: 25 Gems"
+        "Surround your profile with a fiery Phoenix aura.\n"
+        "💎 Price: 25 Gems\n\n"
     ),
 
     (
         "🐉 Dragon Aura",
-        "A majestic aura inspired by ancient dragons.\n\n"
-        "💎 Price: 50 Gems"
+        "A majestic aura inspired by ancient dragons.\n"
+        "💎 Price: 50 Gems\n\n"
     ),
 
     (
         "🌌 Cosmic Aura",
-        "A rare aura infused with cosmic energy.\n\n"
-        "💎 Price: 100 Gems"
+        "A rare aura infused with cosmic energy.\n"
+        "💎 Price: 100 Gems\n\n"
     ),
 
     (
         "✨ Animated Border",
-        "A premium animated profile border.\n\n"
-        "💎 Price: 250 Gems"
+        "A premium animated profile border.\n"
+        "💎 Price: 250 Gems\n\n"
     )
 ]
     },
@@ -222,32 +222,32 @@ MARKET_PAGES = [
 
     (
         "🥉 Bronze Theme",
-        "A simple but elegant profile appearance.\n\n"
-        "💰 Price: 5,000 Coins"
+        "A simple but elegant profile appearance.\n"
+        "💰 Price: 5,000 Coins\n\n"
     ),
 
     (
         "🏛 Ancient Temple Theme",
-        "Decorate your profile with ancient ruins.\n\n"
-        "💰 Price: 20,000 Coins"
+        "Decorate your profile with ancient ruins.\n"
+        "💰 Price: 20,000 Coins\n\n"
     ),
 
     (
         "🐉 Dragon Kingdom Theme",
-        "A powerful dragon-themed profile design.\n\n"
-        "💰 Price: 50,000 Coins"
+        "A powerful dragon-themed profile design.\n"
+        "💰 Price: 50,000 Coins\n\n"
     ),
 
     (
         "🌋 Volcano Theme",
-        "Inspired by molten lava and fiery mountains.\n\n"
-        "💰 Price: 75,000 Coins"
+        "Inspired by molten lava and fiery mountains.\n"
+        "💰 Price: 75,000 Coins\n\n"
     ),
 
     (
         "🌌 Cosmic Theme",
-        "A legendary profile theme from beyond the stars.\n\n"
-        "💰 Price: 150,000 Coins"
+        "A legendary profile theme from beyond the stars.\n"
+        "💰 Price: 150,000 Coins\n\n"
     )
 ]
     }
