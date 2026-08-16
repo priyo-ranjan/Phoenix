@@ -49,68 +49,207 @@ MARKET_PAGES = [
         "title": "🥚 EGGS",
         "description": "Collect creatures from different realms.",
         "fields": [
-            ("① Common Egg", "💰 **500 Coins**\n📦 Stock: ∞"),
-            ("② Extinct Egg", "💰 **2,500 Coins**\n📦 Stock: 87"),
-            ("③ Dragon Egg", "💰 **5,000 Coins**\n📦 Stock: 41"),
-            ("④ Mythic Egg", "💰 **10,000 Coins**\n📦 Stock: 19"),
-            ("⑤ Cosmic Egg", "💰 **50,000 Coins**\n📦 Stock: 3")
-        ]
+
+    (
+        "① 🥚 Common Egg",
+        "Contains common creatures perfect for beginners.\n\n"
+        "💰 Price: 500 Coins\n"
+        "📦 Stock: ∞"
+    ),
+
+    (
+        "② 🦴 Extinct Egg",
+        "Contains creatures from the Extinct Realm.\n"
+        "May hatch Dire Wolves, Dodos, Smilodons and more.\n\n"
+        "💰 Price: 2,500 Coins\n"
+        "📦 Stock: 87"
+    ),
+
+    (
+        "③ 🐉 Dragon Egg",
+        "Contains powerful Dragon Realm creatures.\n"
+        "May hatch Wyverns, Drakes and Hydras.\n\n"
+        "💰 Price: 5,000 Coins\n"
+        "📦 Stock: 41"
+    ),
+
+    (
+        "④ 🔥 Mythic Egg",
+        "Contains legendary beings from mythology.\n"
+        "May hatch Phoenixes, Griffins and Cerberus.\n\n"
+        "💰 Price: 10,000 Coins\n"
+        "📦 Stock: 19"
+    ),
+
+    (
+        "⑤ 🌌 Cosmic Egg",
+        "Contains the rarest creatures in existence.\n"
+        "Extremely difficult to obtain.\n\n"
+        "💰 Price: 50,000 Coins\n"
+        "📦 Stock: 3"
+    )
+]
     },
 
     {
         "title": "🎒 UTILITIES",
         "description": "Useful tools for creature hunting.",
         "fields": [
-            ("Hunter's Net", "💰 **1,500 Coins**"),
-            ("Golden Net", "💰 **10,000 Coins**"),
-            ("Ancient Compass", "💰 **5,000 Coins**"),
-            ("Beast Tracker", "💰 **15,000 Coins**")
-        ]
+
+    (
+        "🎯 Hunter's Net",
+        "Improves your chances of successfully catching creatures.\n\n"
+        "💰 Price: 1,500 Coins"
+    ),
+
+    (
+        "✨ Golden Net",
+        "A premium capture tool with greatly increased success rates.\n\n"
+        "💰 Price: 10,000 Coins"
+    ),
+
+    (
+        "🧭 Ancient Compass",
+        "Guides hunters toward rare creature spawns.\n\n"
+        "💰 Price: 5,000 Coins"
+    ),
+
+    (
+        "🔍 Beast Tracker",
+        "Tracks nearby creatures and reveals valuable information.\n\n"
+        "💰 Price: 15,000 Coins"
+    )
+]
     },
 
     {
         "title": "📦 CONSUMABLES",
         "description": "Temporary boosts and recovery items.",
         "fields": [
-            ("Small XP Scroll", "💰 **500 Coins**"),
-            ("Medium XP Scroll", "💰 **2,000 Coins**"),
-            ("Large XP Scroll", "💰 **10,000 Coins**"),
-            ("Revive Crystal", "💰 **5,000 Coins**")
-        ]
+
+    (
+        "📜 Small XP Scroll",
+        "Grants a small amount of experience to a creature.\n\n"
+        "💰 Price: 500 Coins"
+    ),
+
+    (
+        "📖 Medium XP Scroll",
+        "Grants a moderate amount of experience.\n\n"
+        "💰 Price: 2,000 Coins"
+    ),
+
+    (
+        "📚 Large XP Scroll",
+        "Provides a huge experience boost.\n\n"
+        "💰 Price: 10,000 Coins"
+    ),
+
+    (
+        "💎 Revive Crystal",
+        "Revives a defeated creature back to battle-ready condition.\n\n"
+        "💰 Price: 5,000 Coins"
+    )
+]
     },
 
     {
         "title": "🎟 TICKETS",
         "description": "Special event and progression tickets.",
         "fields": [
-            ("Rare Spawn Ticket", "💰 **5,000 Coins**"),
-            ("Double XP Ticket", "💰 **7,500 Coins**"),
-            ("Boss Raid Ticket", "💰 **15,000 Coins**"),
-            ("Marketplace Tax Pass", "💰 **25,000 Coins**")
-        ]
+
+    (
+        "🎟 Rare Spawn Ticket",
+        "Increases rare creature spawn rates for a limited time.\n\n"
+        "💰 Price: 5,000 Coins"
+    ),
+
+    (
+        "⚡ Double XP Ticket",
+        "Earn double experience from battles and activities.\n\n"
+        "💰 Price: 7,500 Coins"
+    ),
+
+    (
+        "👹 Boss Raid Ticket",
+        "Allows participation in special boss encounters.\n\n"
+        "💰 Price: 15,000 Coins"
+    ),
+
+    (
+        "📉 Marketplace Tax Pass",
+        "Reduces future marketplace transaction taxes.\n\n"
+        "💰 Price: 25,000 Coins"
+    )
+]
     },
 
     {
         "title": "💎 GEM STORE",
         "description": "Premium rewards purchased using Gems.",
         "fields": [
-            ("Phoenix Aura", "💎 **25 Gems**"),
-            ("Dragon Aura", "💎 **50 Gems**"),
-            ("Cosmic Aura", "💎 **100 Gems**"),
-            ("Animated Border", "💎 **250 Gems**")
-        ]
+
+    (
+        "🔥 Phoenix Aura",
+        "Surround your profile with a fiery Phoenix aura.\n\n"
+        "💎 Price: 25 Gems"
+    ),
+
+    (
+        "🐉 Dragon Aura",
+        "A majestic aura inspired by ancient dragons.\n\n"
+        "💎 Price: 50 Gems"
+    ),
+
+    (
+        "🌌 Cosmic Aura",
+        "A rare aura infused with cosmic energy.\n\n"
+        "💎 Price: 100 Gems"
+    ),
+
+    (
+        "✨ Animated Border",
+        "A premium animated profile border.\n\n"
+        "💎 Price: 250 Gems"
+    )
+]
     },
 
     {
         "title": "✨ COSMETICS",
         "description": "Customize your profile.",
         "fields": [
-            ("Bronze Theme", "💰 **5,000 Coins**"),
-            ("Ancient Temple", "💰 **20,000 Coins**"),
-            ("Dragon Kingdom", "💰 **50,000 Coins**"),
-            ("Volcano Theme", "💰 **75,000 Coins**"),
-            ("Cosmic Theme", "💰 **150,000 Coins**")
-        ]
+
+    (
+        "🥉 Bronze Theme",
+        "A simple but elegant profile appearance.\n\n"
+        "💰 Price: 5,000 Coins"
+    ),
+
+    (
+        "🏛 Ancient Temple Theme",
+        "Decorate your profile with ancient ruins.\n\n"
+        "💰 Price: 20,000 Coins"
+    ),
+
+    (
+        "🐉 Dragon Kingdom Theme",
+        "A powerful dragon-themed profile design.\n\n"
+        "💰 Price: 50,000 Coins"
+    ),
+
+    (
+        "🌋 Volcano Theme",
+        "Inspired by molten lava and fiery mountains.\n\n"
+        "💰 Price: 75,000 Coins"
+    ),
+
+    (
+        "🌌 Cosmic Theme",
+        "A legendary profile theme from beyond the stars.\n\n"
+        "💰 Price: 150,000 Coins"
+    )
+]
     }
 ]
 
