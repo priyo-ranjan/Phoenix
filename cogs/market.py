@@ -1,7 +1,48 @@
 import discord
 from discord.ext import commands
 from discord.ui import View, Button
+import database
 
+ITEM_PRICES = {
+    "common_egg": 500,
+    "extinct_egg": 2500,
+    "dragon_egg": 5000,
+    "mythic_egg": 10000,
+    "cosmic_egg": 50000,
+
+    "hunters_net": 1500,
+    "golden_net": 10000,
+    "ancient_compass": 5000,
+    "beast_tracker": 15000,
+
+    "small_xp_scroll": 500,
+    "medium_xp_scroll": 2000,       
+    "large_xp_scroll": 10000,
+    "revive_crystal": 5000,
+
+    "rare_spawn_ticket": 5000,
+    "double_xp_ticket": 7500,
+    "boss_raid_ticket": 15000,
+    "marketplace_tax_pass": 25000,
+
+    "phoenix_aura": 25,
+    "dragon_aura": 50,
+    "cosmic_aura": 100,
+    "animated_border": 250,
+
+    "bronze_theme": 5000,
+    "ancient_temple_theme": 20000,
+    "dragon_kingdom_theme": 50000,
+    "volcano_theme": 75000,
+    "cosmic_theme": 150000
+}
+
+GEM_ITEMS = {
+    "phoenix_aura",
+    "dragon_aura",
+    "cosmic_aura",
+    "animated_border"
+}
 
 MARKET_PAGES = [
     {
@@ -361,6 +402,92 @@ class Market(commands.Cog):
             embed=view.create_embed(),
             view=view
         )
+    @commands.command(name="buy")
+    async def buy(self, ctx, item_id: str, amount: int = 1):
+
+        item_id = item_id.lower()
+
+        if amount <= 0:
+            return await ctx.send("❌ Amount must be greater than 0.")
+
+        if item_id not in ITEM_PRICES:
+            return await ctx.send(
+                f"❌ Unknown item.\nUse `{ctx.prefix}market` to view available items."
+        )
+
+        price_per_item = ITEM_PRICES[item_id]
+        total_price = price_per_item * amount
+
+    # GEM ITEMS
+        if item_id in GEM_ITEMS:
+
+            if not await database.has_enough_gems(ctx.author.id, total_price):
+                embed = discord.Embed(
+                    title="❌ Purchase Failed",
+                    description=(
+                        f"You need **{total_price:,} Gems**\n"
+                        f"to buy **{amount}x {item_id.replace('_', ' ').title()}**."
+                    ),
+                    color=discord.Color.red()
+                )
+                return await ctx.send(embed=embed)
+
+            await database.remove_gems(ctx.author.id, total_price)
+
+            currency_name = "Gems"
+
+    # COIN ITEMS
+        else:
+
+            if not await database.has_enough_coins(ctx.author.id, total_price):
+                embed = discord.Embed(
+                    title="❌ Purchase Failed",
+                    description=(
+                        f"You need **{total_price:,} Coins**\n"
+                        f"to buy **{amount}x {item_id.replace('_', ' ').title()}**."
+                ),
+                    color=discord.Color.red()
+            )
+                return await ctx.send(embed=embed)
+
+            await database.remove_coins(ctx.author.id, total_price)
+
+            currency_name = "Coins"
+
+        await database.add_item(
+            ctx.author.id,
+            item_id,
+            amount
+    )
+
+        embed = discord.Embed(
+            title="🛒 Purchase Successful",
+            color=discord.Color.green()
+    )
+
+        embed.add_field(
+            name="📦 Item",
+            value=item_id.replace("_", " ").title(),
+            inline=True
+    )
+
+        embed.add_field(
+            name="🔢 Quantity",
+            value=str(amount),
+            inline=True
+    )
+
+        embed.add_field(
+            name=f"💰 Cost ({currency_name})",
+            value=f"{total_price:,}",
+            inline=True
+    )
+
+        embed.set_footer(
+            text=f"Purchased by {ctx.author.display_name}"
+    )
+
+        await ctx.send(embed=embed)
 
 
 async def setup(bot):
