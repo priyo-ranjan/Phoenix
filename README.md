@@ -84,9 +84,7 @@ Phoenix combines moderation, AI interaction, leveling systems, and stylish embed
 - Python
 - discord.py
 - Groq API
-- PostgreSQL
-- GitHub
-
+- SQL
 ---
 
 ## 🌠 Current Status
