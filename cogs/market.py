@@ -52,39 +52,39 @@ MARKET_PAGES = [
 
     (
         "① 🥚 Common Egg",
-        "Contains common creatures perfect for beginners.\n\n"
+        "Contains common creatures perfect for beginners.\n"
         "💰 Price: 500 Coins\n"
-        "📦 Stock: ∞\n"
+        "📦 Stock: ∞\n\n"
     ),
 
     (
         "② 🦴 Extinct Egg",
         "Contains creatures from the Extinct Realm.\n"
-        "May hatch Dire Wolves, Dodos, Smilodons and more.\n\n"
+        "May hatch Dire Wolves, Dodos, Smilodons and more.\n"
         "💰 Price: 2,500 Coins\n"
-        "📦 Stock: 87\n"
+        "📦 Stock: 87\n\n"
     ),
 
     (
         "③ 🐉 Dragon Egg",
         "Contains powerful Dragon Realm creatures.\n"
-        "May hatch Wyverns, Drakes and Hydras.\n\n"
+        "May hatch Wyverns, Drakes and Hydras.\n"
         "💰 Price: 5,000 Coins\n"
-        "📦 Stock: 41\n"
+        "📦 Stock: 41\n\n"
     ),
 
     (
         "④ 🔥 Mythic Egg",
         "Contains legendary beings from mythology.\n"
-        "May hatch Phoenixes, Griffins and Cerberus.\n\n"
+        "May hatch Phoenixes, Griffins and Cerberus.\n"
         "💰 Price: 10,000 Coins\n"
-        "📦 Stock: 19\n"
+        "📦 Stock: 19\n\n"
     ),
 
     (
         "⑤ 🌌 Cosmic Egg",
         "Contains the rarest creatures in existence.\n"
-        "Extremely difficult to obtain.\n\n"
+        "Extremely difficult to obtain.\n"
         "💰 Price: 50,000 Coins\n"
         "📦 Stock: 3"
     )
