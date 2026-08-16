@@ -70,6 +70,10 @@ HELP_PAGES = [
             (
                 "② !rank @user",
                 "➜ View another user's rank."
+            ),
+            (
+                "③ !top",
+                "➜ View the server's top users."
             )
         ]
     },
@@ -245,6 +249,19 @@ class HelpView(View):
             view=self
         )
 
+    @discord.ui.button(
+      label="🏠 Home",
+      style=discord.ButtonStyle.success
+  ) 
+    async def home(self, interaction: discord.Interaction, button: Button):
+
+      self.page = 0
+
+      await interaction.response.edit_message(
+          embed=self.create_embed(),
+          view=self
+    )
+    
     @discord.ui.button(
         label="▶ Next",
         style=discord.ButtonStyle.primary
