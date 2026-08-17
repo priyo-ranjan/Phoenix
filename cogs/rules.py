@@ -9,7 +9,6 @@ class RulesView(discord.ui.View):
         color = 0xbb86fc
         pages = []
 
-        # --- PAGE 1: THE FOUNDATION ---
         e1 = discord.Embed(
             title="✦ PHOENIX | THE FOUNDATION",
             description=(
@@ -23,12 +22,10 @@ class RulesView(discord.ui.View):
             ),
             color=color
         )
-        # SET YOUR IMAGE URL HERE FOR PAGE 1
         e1.set_image(url="https://cdn.discordapp.com/attachments/1499252105947386088/1501639529029701833/ay1xeC5qcGc.png?ex=69fcce4a&is=69fb7cca&hm=d1701d63b78300c6d26a65000366545526f7ebf5643ccf2fcf6ef6a65f0cad92&")
         e1.set_footer(text="Page 1 of 3")
         pages.append(e1)
 
-        # --- PAGE 2: COMMUNITY GUIDELINES ---
         e2 = discord.Embed(
             title="✦ PHOENIX | COMMUNITY GUIDELINES",
             description=(
@@ -41,12 +38,10 @@ class RulesView(discord.ui.View):
             ),
             color=color
         )
-        # OPTIONAL: You can set a different image for Page 2 here
         e2.set_image(url="https://cdn.discordapp.com/attachments/1499252105947386088/1501646409185624375/aGQtZHAuanBn.png?ex=69fcd4b3&is=69fb8333&hm=03ee1c9c4fe75699cc3e0532337df853167a449ddb55e6b1b53a6705597d4fa6&")
         e2.set_footer(text="Page 2 of 3")
         pages.append(e2)
 
-        # --- PAGE 3: THE MANDATE ---
         e3 = discord.Embed(
             title="✦ PHOENIX | THE MANDATE",
             description=(
@@ -59,7 +54,7 @@ class RulesView(discord.ui.View):
             ),
             color=color
         )
-        # OPTIONAL: You can set a different image for Page 3 here
+
         e3.set_image(url="https://cdn.discordapp.com/attachments/1499252105947386088/1501645566042443846/cGc.png?ex=69fcd3ea&is=69fb826a&hm=45cba7bb56634b8704243d7c59da18e95e64ecbd7f80983b9c843ef92c35188b&")
         e3.set_footer(text="Page 3 of 3")
         pages.append(e3)
@@ -89,7 +84,7 @@ class RulesView(discord.ui.View):
 class Rules(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        # Registers view globally for persistence
+       
         self.bot.add_view(RulesView())
 
     @commands.command(name="rules")
