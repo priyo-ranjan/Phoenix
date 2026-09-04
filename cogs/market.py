@@ -387,7 +387,7 @@ class Market(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(aliases=["m"])
     async def market(self, ctx):
 
         view = MarketView()
@@ -396,10 +396,20 @@ class Market(commands.Cog):
             embed=view.create_embed(),
             view=view
         )
-    @commands.command(name="buy")
+    @commands.command(name="buy", aliases=["b"])
     async def buy(self, ctx, item_id: str, amount: int = 1):
 
         item_id = item_id.lower()
+
+        ITEM_ALIASES = {
+        "ce": "common_egg",
+        "ee": "extinct_egg",
+        "de": "dragon_egg",
+        "me": "mythic_egg",
+        "cse": "cosmic_egg",
+    }
+
+        item_id = ITEM_ALIASES.get(item_id, item_id)
 
         if amount <= 0:
             return await ctx.send("❌ Amount must be greater than 0.")
