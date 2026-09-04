@@ -1,10 +1,32 @@
 from operator import inv
-
+import re
+import unicodedata
+from .creatures import CREATURES
 import discord
 from discord.ext import commands
 from discord.ui import View, Button
 import database
 
+def creature_item_id(egg_type, creature_name):
+    """
+    Creates the same inventory ID used by hatch.py.
+    """
+
+    normalized = unicodedata.normalize("NFKD", creature_name)
+    normalized = normalized.encode("ascii", "ignore").decode("ascii")
+
+    normalized = normalized.lower()
+    normalized = re.sub(r"[^a-z0-9]+", "_", normalized)
+    normalized = normalized.strip("_")
+
+    return f"{egg_type}_{normalized}"
+
+
+CREATURE_RARITY_BY_ID = {
+    creature_item_id(egg_type, creature["name"]): creature["rarity"]
+    for egg_type, creatures in CREATURES.items()
+    for creature in creatures
+}
 
 INVENTORY_PAGES = [
 
@@ -381,38 +403,70 @@ class InventoryView(View):
         ]
     }
         elif self.page == 7:
+
+            creature_counts = {
+                "Common": 0,
+                "Uncommon": 0,
+                "Rare": 0,
+                "Very Rare": 0,
+                "Legendary": 0,
+                "Mythic": 0,
+                "???": 0
+            }
+
+            # Count all owned creatures by rarity
+            for item_id, quantity in self.inv.items():
+
+                if quantity <= 0:
+                    continue
+
+                rarity = CREATURE_RARITY_BY_ID.get(item_id)
+
+                if rarity in creature_counts:
+                    creature_counts[rarity] += quantity
+
             data = {
                 "title": "🐾 CREATURE STORAGE",
-                "description": "Your creature collection.",
+                "description": "Your creature collection by rarity.",
                 "fields": [
 
-            (
-                "Common Creatures",
-                f"**{self.inv.get('common_creature', 0)}**"
-            ),
+                    (
+                        "⚪ Common",
+                        f"**{creature_counts['Common']}**"
+                    ),
 
-            (
-                "Rare Creatures",
-                f"**{self.inv.get('rare_creature', 0)}**"
-            ),
+                    (
+                        "🟢 Uncommon",
+                        f"**{creature_counts['Uncommon']}**"
+                    ),
 
-            (
-                "Epic Creatures",
-                f"**{self.inv.get('epic_creature', 0)}**"
-            ),
+                    (
+                        "🔵 Rare",
+                        f"**{creature_counts['Rare']}**"
+                    ),
 
-            (
-                "Legendary Creatures",
-                f"**{self.inv.get('legendary_creature', 0)}**"
-            ),
+                    (
+                        "🟣 Very Rare",
+                        f"**{creature_counts['Very Rare']}**"
+                    ),
 
-            (
-                "Mythic Creatures",
-                f"**{self.inv.get('mythic_creature', 0)}**"
-            )
+                    (
+                        "🟠 Legendary",
+                        f"**{creature_counts['Legendary']}**"
+                    ),
 
-        ]
-    }
+                    (
+                        "🔴 Mythic",
+                        f"**{creature_counts['Mythic']}**"
+                    ),
+
+                    (
+                        "❓ ???",
+                        f"**{creature_counts['???']}**"
+                    )
+
+                ]
+            }
         embed = discord.Embed(
             title=data["title"],
             description=data["description"],
