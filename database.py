@@ -14,6 +14,57 @@ async def setup_database():
         quantity INTEGER DEFAULT 0,
         PRIMARY KEY(user_id, item_id))
         """)
+        await db.execute("""
+        CREATE TABLE IF NOT EXISTS creature_instances(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        creature_number INTEGER NOT NULL,
+        creature_id TEXT NOT NULL,
+        creature_name TEXT NOT NULL,
+        rarity TEXT NOT NULL,
+        realm TEXT NOT NULL)
+        """)
+        # Add creature_number to old databases if it doesn't exist
+        cursor = await db.execute("PRAGMA table_info(creature_instances)")
+        columns = await cursor.fetchall()
+
+        column_names = [column[1] for column in columns]
+
+        if "creature_number" not in column_names:
+            await db.execute("""
+        ALTER TABLE creature_instances
+        ADD COLUMN creature_number INTEGER
+    """)
+
+        # Number existing creatures separately for each user
+        cursor = await db.execute("""
+            SELECT id, user_id
+            FROM creature_instances
+            ORDER BY user_id, id
+        """)
+
+        rows = await cursor.fetchall()
+
+        user_numbers = {}
+
+        for creature_id, user_id in rows:
+            user_numbers[user_id] = user_numbers.get(user_id, 0) + 1
+
+            await db.execute("""
+                UPDATE creature_instances
+                SET creature_number = ?
+                WHERE id = ?
+            """, (
+                user_numbers[user_id],
+                creature_id
+            ))
+
+        # Make sure one user cannot have duplicate creature numbers
+        await db.execute("""
+            CREATE UNIQUE INDEX IF NOT EXISTS
+            idx_creature_user_number
+            ON creature_instances(user_id, creature_number)
+        """)
         await db.execute("""CREATE TABLE IF NOT EXISTS reputation(
         user_id INTEGER PRIMARY KEY,
         rep INTEGER DEFAULT 0)
@@ -713,4 +764,252 @@ async def cleanup_inventory():
         )
 
         await db.commit()
+
+# CREATURE INSTANCES
+
+async def add_creature_instance(
+    user_id,
+    creature_id,
+    creature_name,
+    rarity,
+    realm
+):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        # Get the next creature number for THIS user
+        cursor = await db.execute("""
+            SELECT COALESCE(MAX(creature_number), 0) + 1
+            FROM creature_instances
+            WHERE user_id = ?
+        """, (user_id,))
+
+        row = await cursor.fetchone()
+        creature_number = row[0]
+
+        # Create the permanent creature instance
+        await db.execute("""
+            INSERT INTO creature_instances(
+                user_id,
+                creature_number,
+                creature_id,
+                creature_name,
+                rarity,
+                realm
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (
+            user_id,
+            creature_number,
+            creature_id,
+            creature_name,
+            rarity,
+            realm
+        ))
+
+        await db.commit()
+
+        return creature_number
         
+async def get_creature_instance(creature_number):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute(
+            """
+            SELECT
+                id,
+                user_id,
+                creature_id,
+                creature_name,
+                rarity,
+                realm
+            FROM creature_instances
+            WHERE id = ?
+            """,
+            (creature_number,)
+        )
+
+        return await cursor.fetchone()
+
+
+async def get_user_creatures(user_id):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute(
+            """
+            SELECT
+                id,
+                creature_id,
+                creature_name,
+                rarity,
+                realm
+            FROM creature_instances
+            WHERE user_id = ?
+            ORDER BY id ASC
+            """,
+            (user_id,)
+        )
+
+        return await cursor.fetchall()
+
+async def delete_creature_instance(creature_number, user_id):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        # Find the actual database ID using the user's collection position
+        cursor = await db.execute(
+            """
+            SELECT id
+            FROM creature_instances
+            WHERE user_id = ?
+            ORDER BY id ASC
+            LIMIT 1 OFFSET ?
+            """,
+            (user_id, creature_number - 1)
+        )
+
+        creature = await cursor.fetchone()
+
+        if creature is None:
+            return False
+
+        database_id = creature[0]
+
+        # Delete the actual creature instance
+        await db.execute(
+            """
+            DELETE FROM creature_instances
+            WHERE id = ? AND user_id = ?
+            """,
+            (database_id, user_id)
+        )
+
+        await db.commit()
+
+        return cursor.rowcount > 0
+
+
+async def transfer_creature_instance(
+    creature_number,
+    from_user,
+    to_user
+):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        # Find the actual database ID using the sender's
+        # current collection position
+        cursor = await db.execute(
+            """
+            SELECT id
+            FROM creature_instances
+            WHERE user_id = ?
+            ORDER BY id ASC
+            LIMIT 1 OFFSET ?
+            """,
+            (from_user, creature_number - 1)
+        )
+
+        creature = await cursor.fetchone()
+
+        if creature is None:
+            return False
+
+        database_id = creature[0]
+
+        # Transfer the actual creature instance
+        cursor = await db.execute(
+            """
+            UPDATE creature_instances
+            SET user_id = ?
+            WHERE id = ? AND user_id = ?
+            """,
+            (
+                to_user,
+                database_id,
+                from_user
+            )
+        )
+
+        await db.commit()
+
+        return cursor.rowcount > 0
+
+async def get_user_creature_instance(user_id, creature_number):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute(
+            """
+            SELECT
+                id,
+                creature_id,
+                creature_name,
+                rarity,
+                realm
+            FROM creature_instances
+            WHERE user_id = ?
+            ORDER BY id ASC
+            LIMIT 1 OFFSET ?
+            """,
+            (user_id, creature_number - 1)
+        )
+
+        creature = await cursor.fetchone()
+
+        return creature
+
+async def release_creature_instance(user_id, creature_number):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        # Find the creature using its POSITION in the user's collection
+        cursor = await db.execute(
+            """
+            SELECT id, creature_id, rarity
+            FROM creature_instances
+            WHERE user_id = ?
+            ORDER BY id ASC
+            LIMIT 1 OFFSET ?
+            """,
+            (user_id, creature_number - 1)
+        )
+
+        creature = await cursor.fetchone()
+
+        if creature is None:
+            return None
+
+        database_id, creature_id, rarity = creature
+
+        # Remove the actual creature instance
+        await db.execute(
+            """
+            DELETE FROM creature_instances
+            WHERE id = ? AND user_id = ?
+            """,
+            (database_id, user_id)
+        )
+
+        # Remove one copy from inventory
+        await db.execute(
+            """
+            UPDATE inventory
+            SET quantity = quantity - 1
+            WHERE user_id = ? AND item_id = ?
+            """,
+            (user_id, creature_id)
+        )
+
+        # Remove zero-quantity inventory entries
+        await db.execute(
+            """
+            DELETE FROM inventory
+            WHERE user_id = ?
+            AND item_id = ?
+            AND quantity <= 0
+            """,
+            (user_id, creature_id)
+        )
+
+        await db.commit()
+
+        return {
+            "creature_id": creature_id,
+            "rarity": rarity
+        }
