@@ -15,7 +15,7 @@ class Crates(commands.Cog):
     def __init__(self, bot):
         self.bot = bot   
     
-    @commands.command(aliases=["crate", "open"])
+    @commands.command(aliases=["oc"])
     async def opencrate(self, ctx, amount: int = 1):
         if amount <= 0:
             return await ctx.send(
