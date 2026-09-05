@@ -1,9 +1,9 @@
 CREATURES = {
 
     "common": [
-        {"name": "Wolf", "rarity": "Common", "weight": 100},
+        {"name": "Wolf", "rarity": "Common", "weight": 100, "image": "assets/creatures/wolf.png"},
         {"name": "Fox", "rarity": "Common", "weight": 95},
-        {"name": "Bear", "rarity": "Common", "weight": 90},
+        {"name": "Bear", "rarity": "Common", "weight": 90, "image": "assets/creatures/bear.png"},
         {"name": "Lion", "rarity": "Common", "weight": 85},
         {"name": "Python", "rarity": "Common", "weight": 80},
         {"name": "Stag", "rarity": "Common", "weight": 75},
@@ -13,7 +13,7 @@ CREATURES = {
         {"name": "Eagle", "rarity": "Uncommon", "weight": 83},
         {"name": "Crocodile", "rarity": "Uncommon", "weight": 79},
 
-        {"name": "Dire Hound", "rarity": "Rare", "weight": 42},
+        {"name": "Dire Hound", "rarity": "Rare", "weight": 42, "image": "assets/creatures/dire hound.png"},
         {"name": "Moon Owl", "rarity": "Rare", "weight": 40},
         {"name": "Crystal Stag", "rarity": "Rare", "weight": 38},
 
@@ -75,45 +75,45 @@ CREATURES = {
         {"name": "Naga", "rarity": "Uncommon", "weight": 80},
 
         {"name": "Fenrir", "rarity": "Rare", "weight": 36},
-        {"name": "Cerberus", "rarity": "Rare", "weight": 34},
+        {"name": "Cerberus", "rarity": "Rare", "weight": 34, "image": "assets/creatures/cerberus.png"},
         {"name": "Roc", "rarity": "Rare", "weight": 32},
         {"name": "Kelpie", "rarity": "Rare", "weight": 30},
 
-        {"name": "Unicorn", "rarity": "Rare", "weight": 31},
+        {"name": "Unicorn", "rarity": "Rare", "weight": 31, "image": "assets/creatures/unicorn.png"},
         {"name": "Hippogriff", "rarity": "Rare", "weight": 29},
 
-        {"name": "Jörmungandr", "rarity": "Very Rare", "weight": 30},
+        {"name": "Jörmungandr", "rarity": "Very Rare", "weight": 30, "image": "assets/creatures/jormungandr.png"},
         {"name": "Thunderbird", "rarity": "Very Rare", "weight": 28},
         {"name": "Manticore", "rarity": "Very Rare", "weight": 26},
 
         {"name": "Quetzalcoatl", "rarity": "Legendary", "weight": 25},
-        {"name": "Phoenix", "rarity": "Legendary", "weight": 24},
+        {"name": "Phoenix", "rarity": "Legendary", "weight": 24, "image": "assets/creatures/phoenix.png"},
 
         {"name": "Leviathan", "rarity": "Mythic", "weight": 13},
-        {"name": "Amaterasu's Wolf", "rarity": "Mythic", "weight": 12},
+        {"name": "Amaterasu's Wolf", "rarity": "Mythic", "weight": 12, "image": "assets/creatures/amaterasu's wolf.png"},
     ],
 
 
     "cosmic": [
         {"name": "Lunar Wolf", "rarity": "Common", "weight": 100},
-        {"name": "Comet Serpent", "rarity": "Common", "weight": 95},
+        {"name": "Comet Serpent", "rarity": "Common", "weight": 95, "image": "assets/creatures/comet serpent.png"},
 
         {"name": "Void Raven", "rarity": "Uncommon", "weight": 88},
         {"name": "Stellar Stag", "rarity": "Uncommon", "weight": 84},
 
-        {"name": "Eclipse Panther", "rarity": "Rare", "weight": 55},
+        {"name": "Eclipse Panther", "rarity": "Rare", "weight": 55, "image": "assets/creatures/eclipse panther.png"},
         {"name": "Solar Lion", "rarity": "Rare", "weight": 52},
         {"name": "Planetary Leviathan", "rarity": "Rare", "weight": 49},
 
-        {"name": "Nebula Dragon", "rarity": "Very Rare", "weight": 56},
-        {"name": "Void Hydra", "rarity": "Very Rare", "weight": 53},
+        {"name": "Nebula Dragon", "rarity": "Very Rare", "weight": 56, "image": "assets/creatures/nebula dragon.png"},
+        {"name": "Void Hydra", "rarity": "Very Rare", "weight": 53, "image": "assets/creatures/void hydra.png"},
 
-        {"name": "Celestial Phoenix", "rarity": "Legendary", "weight": 33},
-        {"name": "Starforged Dragon", "rarity": "Legendary", "weight": 31},
+        {"name": "Celestial Phoenix", "rarity": "Legendary", "weight": 33, "image": "assets/creatures/celestial phoenix.png"},
+        {"name": "Starforged Dragon", "rarity": "Legendary", "weight": 31, "image": "assets/creatures/starforged dragon.png"},
         {"name": "Eclipse Sovereign", "rarity": "Legendary", "weight": 29},
 
-        {"name": "Voidwalker", "rarity": "Mythic", "weight": 19},
-        {"name": "The Observer", "rarity": "Mythic", "weight": 18},
-        {"name": "Cosmic Devourer", "rarity": "Mythic", "weight": 17},
+        {"name": "Voidwalker", "rarity": "Mythic", "weight": 19, "image": "assets/creatures/voidwalker.png"},
+        {"name": "The Observer", "rarity": "Mythic", "weight": 18, "image": "assets/creatures/the observer.png"},
+        {"name": "Cosmic Devourer", "rarity": "Mythic", "weight": 17, "image": "assets/creatures/cosmic devourer.png"},
     ]
 }

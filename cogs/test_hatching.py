@@ -1,8 +1,8 @@
 from cogs.hatching import hatch_creature
 from collections import Counter
 
-EGG_TYPE = "cosmic"
-TESTS = 51
+EGG_TYPE = "mythic"
+TESTS = 10000
 
 results = []
 
