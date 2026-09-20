@@ -8,6 +8,11 @@ async def setup_database():
         xp INTEGER DEFAULT 0,
         level INTEGER DEFAULT 1)
         """)
+        await db.execute("""CREATE TABLE IF NOT EXISTS favorite_creatures(
+        user_id INTEGER NOT NULL,
+        creature_instance_id INTEGER NOT NULL,
+        PRIMARY KEY(user_id, creature_instance_id))
+        """)
         await db.execute("""CREATE TABLE IF NOT EXISTS inventory(
         user_id INTEGER,
         item_id, TEXT,
@@ -851,6 +856,27 @@ async def get_user_creatures(user_id):
 
         return await cursor.fetchall()
 
+async def search_user_creatures(user_id, search_term):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute("""
+            SELECT
+                id,
+                creature_id,
+                creature_name,
+                rarity,
+                realm
+            FROM creature_instances
+            WHERE user_id = ?
+            AND creature_name LIKE ?
+            ORDER BY id ASC
+        """, (
+            user_id,
+            f"%{search_term}%"
+        ))
+
+        return await cursor.fetchall()
+
 async def delete_creature_instance(creature_number, user_id):
     async with aiosqlite.connect(DB_NAME) as db:
 
@@ -1013,3 +1039,92 @@ async def release_creature_instance(user_id, creature_number):
             "creature_id": creature_id,
             "rarity": rarity
         }
+
+    # FAVORITE CREATURES
+
+async def add_favorite_creature(user_id, creature_instance_id):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        await db.execute("""
+            INSERT OR IGNORE INTO favorite_creatures(
+                user_id,
+                creature_instance_id
+            )
+            VALUES (?, ?)
+        """, (
+            user_id,
+            creature_instance_id
+        ))
+
+        await db.commit()
+
+
+async def remove_favorite_creature(user_id, creature_instance_id):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute("""
+            DELETE FROM favorite_creatures
+            WHERE user_id = ?
+            AND creature_instance_id = ?
+        """, (
+            user_id,
+            creature_instance_id
+        ))
+
+        await db.commit()
+
+        return cursor.rowcount > 0
+
+
+async def get_favorite_creatures(user_id):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute("""
+            SELECT
+                creature_instances.id,
+                creature_instances.creature_id,
+                creature_instances.creature_name,
+                creature_instances.rarity,
+                creature_instances.realm
+            FROM favorite_creatures
+
+            INNER JOIN creature_instances
+                ON favorite_creatures.creature_instance_id
+                = creature_instances.id
+
+            WHERE favorite_creatures.user_id = ?
+            AND creature_instances.user_id = ?
+
+            ORDER BY creature_instances.id ASC
+        """, (
+            user_id,
+            user_id
+        ))
+
+        return await cursor.fetchall()
+
+async def is_favorite_creature(user_id, creature_instance_id):
+    async with aiosqlite.connect(DB_NAME) as db:
+
+        cursor = await db.execute("""
+            SELECT 1
+            FROM favorite_creatures
+            WHERE user_id = ?
+            AND creature_instance_id = ?
+        """, (
+            user_id,
+            creature_instance_id
+        ))
+
+        return await cursor.fetchone() is not None
+
+async def is_favorite_creature(user_id, creature_instance_id):
+    async with aiosqlite.connect(DB_NAME) as db:
+        cursor = await db.execute("""
+            SELECT 1
+            FROM favorite_creatures
+            WHERE user_id = ?
+            AND creature_instance_id = ?
+        """, (user_id, creature_instance_id))
+
+        return await cursor.fetchone() is not None

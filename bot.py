@@ -52,6 +52,7 @@ async def on_ready():
     await bot.load_extension("cogs.collection")
     await bot.load_extension("cogs.show")
     await bot.load_extension("cogs.release")
+    await bot.load_extension("cogs.favourites")
 
     print(f"{bot.user} is online!")
 

@@ -43,8 +43,12 @@ class CollectionView(discord.ui.View):
         self.update_buttons()
 
     def update_buttons(self):
+
         self.previous_button.disabled = self.page == 0
-        self.next_button.disabled = self.page >= self.total_pages - 1
+
+        self.next_button.disabled = (
+            self.page >= self.total_pages - 1
+        )
 
     def create_embed(self):
 
@@ -60,7 +64,6 @@ class CollectionView(discord.ui.View):
             start=start + 1
         ):
 
-            # Database ID is NOT used as the collection number.
             creature_id = creature[1]
             creature_name = creature[2]
             rarity = creature[3]
@@ -163,6 +166,10 @@ class Collection(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    # --------------------------------
+    # !CREATURES
+    # --------------------------------
+
     @commands.command(
         name="creatures",
         aliases=["c"]
@@ -201,6 +208,146 @@ class Collection(commands.Cog):
         await ctx.send(
             embed=view.create_embed(),
             view=view
+        )
+
+    # --------------------------------
+    # !SC / !SEARCHCREATURE
+    # --------------------------------
+
+    @commands.command(
+        name="searchcreature",
+        aliases=["search", "sc"]
+    )
+    async def searchcreature(
+        self,
+        ctx,
+        *search_terms
+    ):
+
+        """
+        Searches the user's creature collection
+        by creature name.
+        """
+
+        # --------------------------------
+        # NO SEARCH TERM
+        # --------------------------------
+
+        if not search_terms:
+
+            embed = discord.Embed(
+                title="🔎 CREATURE SEARCH",
+                description=(
+                    "Enter the name of the creature you want to search for.\n\n"
+                    "**Examples:**\n"
+                    "`!sc nebula`\n"
+                    "`!sc dragon`\n"
+                    "`!sc celestial phoenix`"
+                ),
+                color=discord.Color.purple()
+            )
+
+            await ctx.send(embed=embed)
+            return
+
+        # Join multiple words together
+        search_term = " ".join(search_terms).strip()
+
+        # --------------------------------
+        # SEARCH DATABASE
+        # --------------------------------
+
+        matches = await database.search_user_creatures(
+            ctx.author.id,
+            search_term
+        )
+
+        # --------------------------------
+        # NO MATCHES
+        # --------------------------------
+
+        if not matches:
+
+            embed = discord.Embed(
+                title="🔎 CREATURE SEARCH",
+                description=(
+                    f"No creatures found matching "
+                    f"**{search_term}**."
+                ),
+                color=discord.Color.purple()
+            )
+
+            await ctx.send(embed=embed)
+            return
+
+        # --------------------------------
+        # CREATE RESULT LIST
+        # --------------------------------
+
+        # Get the user's full collection so that
+        # we can determine the permanent collection
+        # number of each matching creature.
+        all_creatures = await database.get_user_creatures(
+            ctx.author.id
+        )
+
+        # Map database ID -> collection number
+        creature_numbers = {
+            creature[0]: index
+            for index, creature in enumerate(
+                all_creatures,
+                start=1
+            )
+        }
+
+        lines = []
+
+        for creature in matches:
+
+            database_id = creature[0]
+            creature_name = creature[2]
+            rarity = creature[3]
+            realm = creature[4]
+
+            collection_number = creature_numbers.get(
+                database_id
+            )
+
+            rarity_emoji = RARITY_EMOJIS.get(
+                rarity,
+                "❔"
+            )
+
+            realm_emoji = REALM_EMOJIS.get(
+                realm,
+                "🌍"
+            )
+
+            lines.append(
+                f"**#{collection_number}** "
+                f"{realm_emoji} **{creature_name}** "
+                f"{rarity_emoji}"
+            )
+
+        # --------------------------------
+        # SEARCH EMBED
+        # --------------------------------
+
+        embed = discord.Embed(
+            title="🔎 CREATURE SEARCH",
+            description=(
+                f"Results for **{search_term}**\n\n"
+                + "\n".join(lines)
+            ),
+            color=discord.Color.purple()
+        )
+
+        embed.set_footer(
+            text=f"{len(matches)} matching creature instance(s)"
+        )
+
+        await ctx.send(
+            embed=embed
         )
 
 

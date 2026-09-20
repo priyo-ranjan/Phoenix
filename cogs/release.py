@@ -90,23 +90,76 @@ class Release(commands.Cog):
             for number in creature_numbers
         ]
 
+        # Keep track of ONLY creatures that were actually released
+        released_creatures = []
+
         # IMPORTANT:
         # Delete from highest number to lowest number.
         # This prevents collection-number shifting.
         for number in sorted(creature_numbers, reverse=True):
 
-            await database.release_creature_instance(
+            # Get the original creature from the collection
+            creature = creature_lookup[number]
+
+            # Database ID of this exact creature instance
+            database_id = creature[0]
+
+            # Check if this creature is favorited
+            if await database.is_favorite_creature(
+                user_id,
+                database_id
+            ):
+
+                await ctx.send(
+                    f"⭐ **#{number} is one of your favorite creatures!**\n"
+                    f"Unfavorite it first using `!unfav {number}` "
+                    f"before releasing it."
+                )
+
+                # Do NOT release it
+                continue
+
+            # Release the creature
+            result = await database.release_creature_instance(
                 user_id,
                 number
             )
 
+            # Only add it to the released list if it was actually released
+            if result is not None:
+                released_creatures.append(
+                    (number, creature)
+                )
+
+        # If nothing was released
+        if not released_creatures:
+
+            embed = discord.Embed(
+                title="🗑️ CREATURES RELEASED",
+                description=(
+                    "No creatures were released.\n\n"
+                    "All selected creatures are either favorites "
+                    "or could not be released."
+                ),
+                color=discord.Color.orange()
+            )
+
+            embed.set_footer(
+                text="0 creature(s) released"
+            )
+
+            await ctx.send(embed=embed)
+            return
+
         # Build result message
         lines = []
 
-        for number, creature in zip(
-            creature_numbers,
-            selected_creatures
-        ):
+        # Sort back into the order the user originally entered
+        released_creatures.sort(
+            key=lambda item: creature_numbers.index(item[0])
+        )
+
+        for number, creature in released_creatures:
 
             creature_name = creature[2]
             rarity = creature[3]
@@ -123,7 +176,7 @@ class Release(commands.Cog):
         )
 
         embed.set_footer(
-            text=f"{len(selected_creatures)} creature(s) released"
+            text=f"{len(released_creatures)} creature(s) released"
         )
 
         await ctx.send(embed=embed)
